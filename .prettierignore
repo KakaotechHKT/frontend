@@ -1,0 +1,10 @@
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+/.next
+/.husky
+package.json
+package-lock.json
+.github
+.vscode
