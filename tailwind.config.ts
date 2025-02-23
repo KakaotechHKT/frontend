@@ -63,6 +63,10 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+        dohyeon: ['var(--font-dohyeon)'],
+      },
       boxShadow: {
         'rc-shadow': '0px 2px 3px 0px rgba(0, 0, 0, 0.18)',
       },

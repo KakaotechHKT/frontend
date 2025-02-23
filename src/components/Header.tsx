@@ -1,0 +1,54 @@
+'use client'
+import { URL } from '@lib/constants/routes'
+import { cn } from '@lib/utils/utils'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ReactNode } from 'react'
+
+import LogoImage from '@public/images/logo.png'
+
+export const LINKS = {
+  NotAuthenticated: [URL.PART.INDEX, URL.AUTH.LOGIN, URL.AUTH.REGISTER],
+  Authenticated: [URL.PART.INDEX, URL.AUTH.MYPAGE],
+}
+
+const Header = (): ReactNode => {
+  return (
+    <header
+      className={cn(
+        'fixed top-0 z-10 mx-auto flex h-[12dvh] items-center justify-between px-8 backdrop-blur-sm',
+        'w-full max-w-xl md:max-w-4xl lg:max-w-7xl',
+      )}
+    >
+      <Link href={URL.MAIN.INDEX.value} className='flex h-full w-max max-w-xs items-center justify-start gap-6 font-dohyeon text-2xl'>
+        <Image alt='밥팟 로고' src={LogoImage} />
+        밥팟
+      </Link>
+
+      <DesktopNavBar />
+    </header>
+  )
+}
+
+export default Header
+
+interface DesktopNavBarProps {
+  className?: string
+}
+
+const DesktopNavBar = ({ className }: DesktopNavBarProps): ReactNode => {
+  return (
+    <nav className={cn('font-normal', className)}>
+      <ul className='flex items-center justify-evenly gap-6 text-sm'>
+        {LINKS.NotAuthenticated.map((link, index) => (
+          <li
+            key={link.value}
+            className={cn('cursor-pointer', link.value === URL.PART.INDEX.value && 'rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold')}
+          >
+            <Link href={link.value}>{link.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

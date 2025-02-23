@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { cn } from '@lib/utils'
+import { cn } from '@lib/utils/utils'
 import { doHyeon, pretendard } from '@public/fonts/font'
 
 import './globals.css'
