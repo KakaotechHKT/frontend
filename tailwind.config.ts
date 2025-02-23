@@ -46,7 +46,7 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-        // colors
+        // service colors
         rcKakaoYellow: '#EEC71E',
         rcKakaoLightYellow: '#FFF7C2',
         rcRed: '#FC2312',
@@ -57,6 +57,9 @@ export default {
         rcWhite: '#FFFFFF',
         rcChatGray: '#E8E9EB60',
         rcBackdrop: '#00000026',
+
+        // Hover colors
+        rcKakaoYellowHover: '#FFDC44',
       },
       borderRadius: {
         lg: 'var(--radius)',

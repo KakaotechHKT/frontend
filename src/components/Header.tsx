@@ -1,4 +1,3 @@
-'use client'
 import { URL } from '@lib/constants/routes'
 import { cn } from '@lib/utils/utils'
 import Image from 'next/image'
@@ -12,14 +11,13 @@ export const LINKS = {
   Authenticated: [URL.PART.INDEX, URL.AUTH.MYPAGE],
 }
 
-const Header = (): ReactNode => {
+interface HeaderProps {
+  className?: string
+}
+
+const Header = ({ className }: HeaderProps): ReactNode => {
   return (
-    <header
-      className={cn(
-        'fixed top-0 z-10 mx-auto flex h-[12dvh] items-center justify-between px-8 backdrop-blur-sm',
-        'w-full max-w-xl md:max-w-4xl lg:max-w-7xl',
-      )}
-    >
+    <header className={cn(className, 'relative mx-auto flex items-center justify-between px-8 backdrop-blur-sm')}>
       <Link href={URL.MAIN.INDEX.value} className='flex h-full w-max max-w-xs items-center justify-start gap-6 font-dohyeon text-2xl'>
         <Image alt='밥팟 로고' src={LogoImage} />
         밥팟
