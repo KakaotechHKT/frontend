@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss'
 
 export default {
   darkMode: ['class'],
-  content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: ['./src/lib/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -56,7 +56,7 @@ export default {
         rcBlack: '#000000',
         rcWhite: '#FFFFFF',
         rcChatGray: '#E8E9EB60',
-        rcBackdrop: '#00000026',
+        rcBackdrop: '#00000040',
 
         // Hover colors
         rcKakaoYellowHover: '#FFDC44',

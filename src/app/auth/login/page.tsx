@@ -1,13 +1,25 @@
+'use client'
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
 import { URL } from '@lib/constants/routes'
+import useModal from '@lib/hooks/useModal'
 import LucideIcon from '@lib/icons/LucideIcon'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
 const LoginPage = (): ReactNode => {
+  const { isOpen, handleOpen, Modal } = useModal()
+
+  // Functions
+  const loginHandler = () => {
+    handleOpen({
+      type: 'info',
+      title: '로그인',
+      details: '존재하지 않는 회원정보입니다. 아이디와 비밀번호를 확인해주세요.',
+    })
+  }
   return (
     <>
       <Introduce className='flex flex-col items-center justify-start gap-6' />
@@ -21,7 +33,7 @@ const LoginPage = (): ReactNode => {
             <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
           </div>
 
-          <Button variant='rcKakaoYellow' className='my-1 w-full'>
+          <Button onClick={loginHandler} variant='rcKakaoYellow' className='my-1 w-full'>
             로그인하기
           </Button>
 
@@ -46,6 +58,7 @@ const LoginPage = (): ReactNode => {
           </Link>
         </div>
       </div>
+      <Modal />
     </>
   )
 }

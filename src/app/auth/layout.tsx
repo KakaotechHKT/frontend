@@ -5,7 +5,7 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout = ({ children }: AuthLayoutProps): ReactNode => {
-  return <main className='flex h-screen w-screen flex-col items-center justify-center bg-rcLightGray'>{children}</main>
+  return <main className='relative flex h-screen w-screen flex-col items-center justify-center bg-rcLightGray'>{children}</main>
 }
 
 export default AuthLayout

@@ -17,6 +17,7 @@ const buttonVariants = cva(
 
         // Custom Buttons
         rcKakaoYellow: 'bg-rcKakaoYellow text-black hover:bg-rcKakaoYellowHover',
+        rcKakaoLightYellow: 'bg-rcKakaoLightYellow text-black hover:opacity-75',
       },
       size: {
         default: 'h-9 px-4 py-2',

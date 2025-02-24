@@ -5,18 +5,31 @@ import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { URL } from '@lib/constants/routes'
+import useModal from '@lib/hooks/useModal'
 import LucideIcon from '@lib/icons/LucideIcon'
 import Link from 'next/link'
 import { ReactNode, useState } from 'react'
 
 const RegisterPage = (): ReactNode => {
+  const { isOpen, handleOpen, Modal } = useModal()
+
   const [step, setStep] = useState<number>(0)
 
+  // Functions
+  // TODO: 회원가입 API 연동
+  const registerHandler = () => {
+    handleOpen({
+      type: 'info',
+      title: '카테부 정보 입력',
+      details: '이미 존재하는 회원 정보입니다. 로그인을 이용해주세요.',
+    })
+  }
   return (
     <>
       <Introduce className='flex flex-col items-center justify-start gap-6' />
 
-      {step === 0 ? <RegisterStep onNextStep={() => setStep(1)} /> : <InfoStep />}
+      {step === 0 ? <RegisterStep onNextStep={() => setStep(1)} /> : <KTBInfoStep registerHandler={registerHandler} />}
+      <Modal />
     </>
   )
 }
@@ -60,11 +73,12 @@ const RegisterStep = ({ onNextStep }: RegisterPageProps) => {
   )
 }
 
-interface InfoStepProps {
+interface KTBInfoStepProps {
   className?: string
+  registerHandler: () => void
 }
 
-const InfoStep = ({ className }: InfoStepProps) => {
+const KTBInfoStep = ({ className, registerHandler }: KTBInfoStepProps) => {
   return (
     <div className='mt-8 flex w-1/2 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='flex w-full flex-col items-start justify-start self-start px-12 font-dohyeon text-xl'>
@@ -97,7 +111,7 @@ const InfoStep = ({ className }: InfoStepProps) => {
           <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
         </div>
 
-        <Button variant='rcKakaoYellow' className='my-1 w-full'>
+        <Button variant='rcKakaoYellow' className='my-1 w-full' onClick={registerHandler}>
           회원가입하기
         </Button>
       </div>
