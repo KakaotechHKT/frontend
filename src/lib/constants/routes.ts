@@ -32,6 +32,10 @@ export const URL = {
       name: '마이페이지',
       value: '/auth/mypage',
     },
+    FIND_PASSWORD: {
+      name: '비밀번호 찾기',
+      value: '/auth/find_password',
+    },
   },
   PART: {
     INDEX: {
