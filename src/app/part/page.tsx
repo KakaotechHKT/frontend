@@ -5,9 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
+import { Input } from '@components/ui/input'
+import LucideIcon from '@lib/icons/LucideIcon'
+import { MainCategories } from '@public/data/keywords'
 import LogoImage from '@public/images/logo.png'
 
-const MAIN_CATEGORIES = ['한식', '중식', '분식', '베트남식', '인도식', '양식']
 // TODO: 진짜 음식점 데이터 페칭해서 처리
 const make_DUMMY_DATA = (id: number) => {
   return {
@@ -37,7 +39,6 @@ const DUMMY_PLACE_DATA = Array.from(Array(20), (_, index) => {
 })
 
 const PartPage = (): ReactNode => {
-  // useKakaoLoader()
   return (
     <>
       {/* 선호 음식 */}
@@ -47,17 +48,21 @@ const PartPage = (): ReactNode => {
           밥팟
         </Link>
 
-        <div className='px-8 font-dohyeon text-2xl'>선호 음식</div>
-        <ul className='mb-2 grid w-full grid-cols-3 grid-rows-2 gap-2 px-8'>
-          {MAIN_CATEGORIES.map(category => (
-            <li
-              className='flex cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-rcGray px-4 py-1 text-[10px] font-semibold hover:bg-rcKakaoYellow'
-              key={category}
-            >
-              {category}
-            </li>
-          ))}
-        </ul>
+        <div className='flex flex-col items-start justify-start gap-1 pl-8'>
+          <span className='font-dohyeon text-2xl'>선호 음식</span>
+          <span className='text-xss text-rcDarkGray'>* 선호 음식을 눌러 카테부 주변의 맛집을 추천 받아보세요!</span>
+
+          <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-2'>
+            {MainCategories.map(category => (
+              <li
+                className='flex cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-rcGray px-1 py-2 text-[10px] font-semibold hover:bg-rcKakaoYellow'
+                key={category}
+              >
+                {category}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <div className='my-1 h-1 w-full bg-rcLightGray' />
 
@@ -78,7 +83,7 @@ const PartPage = (): ReactNode => {
                     <span key={cat}># {cat}</span>
                   ))}
                 </div>
-                <span className='my-1 font-semibold text-rcBlack'>대표메뉴</span>
+                <span className='my-1 text-xs text-rcBlack'>대표메뉴</span>
                 <ul className='flex flex-col items-start justify-start text-xss'>
                   {placeData.menu.map(menu => (
                     <li key={menu}>-{menu}</li>
@@ -91,7 +96,20 @@ const PartPage = (): ReactNode => {
       </div>
 
       {/* 채팅 */}
-      <div className='h-screen w-1/4'></div>
+      <div className='relative flex h-screen w-1/4 flex-col items-center justify-between pb-3 pt-5'>
+        <span className='flex w-full items-center justify-center font-dohyeon text-2xl'>밥팟 AI 챗봇</span>
+
+        {/* 채팅내용 */}
+        <div></div>
+        <div className='flex w-[90%] items-center justify-between rounded-3xl border-sm border-solid border-rcBlack bg-rcLightGray pr-2'>
+          <Input
+            type='text'
+            placeholder='메세지를 입력해주세요.'
+            className='border-none text-xss shadow-none outline-none focus:outline-none focus-visible:ring-0'
+          />
+          <LucideIcon name='CircleArrowUp' size={30} strokeWidth={1} />
+        </div>
+      </div>
 
       {/* 카카오맵 */}
       <div className='h-screen grow'>
