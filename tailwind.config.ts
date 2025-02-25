@@ -50,6 +50,7 @@ export default {
         rcKakaoYellow: '#EEC71E',
         rcKakaoLightYellow: '#FFF7C2',
         rcRed: '#FC2312',
+        rcBlue: '#175EB5',
         rcGray: '#E1E2E6',
         rcLightGray: '#E8E9EB',
         rcDarkGray: '#5D5F62',
@@ -72,6 +73,10 @@ export default {
       },
       boxShadow: {
         'rc-shadow': '0px 2px 3px 0px rgba(0, 0, 0, 0.18)',
+      },
+      fontSize: {
+        xss: '0.625rem',
+        tiny: '0.5rem',
       },
     },
   },

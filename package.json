@@ -21,6 +21,7 @@
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-kakao-maps-sdk": "^1.1.27",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-jihostudy": "^0.0.9"
