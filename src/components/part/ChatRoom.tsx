@@ -16,7 +16,7 @@ interface ChatroomProps {
   addChatHandler: (newChat: ChatType) => void
   setChatDoneHandler: (target_index: number) => void
   mainCategoryClickHandler: (...args: any[]) => any
-  keywordClickHandler: (keyword: string) => void
+  keywordClickHandler: (keyword: string, chat_index: number) => void
 }
 
 const Chatroom = ({
@@ -54,9 +54,9 @@ const Chatroom = ({
       addChatHandler(Chatting.MainCategoryResponse(mainCategory))
     }
 
-    static keyword = (keyword: string) => {
+    static keyword = (keyword: string, chat_index: number) => {
       // 키워드 변경
-      keywordClickHandler(keyword)
+      keywordClickHandler(keyword, chat_index)
       console.log('클릭 핸들러에서 받은 keywords: ', keyword)
 
       // // 유저 채팅 더하기
@@ -113,15 +113,19 @@ const Chatroom = ({
                   <ul className={cn(keywordCategories.length <= 4 ? 'grid-rows-1' : 'grid-rows-2', 'mb-2 grid w-full grid-cols-4 gap-x-1')}>
                     {keywordCategories.map(kw => (
                       <li
-                        onClick={() => ClickHandlers.keyword(kw)}
-                        className='group flex cursor-pointer flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium'
+                        onClick={!chat.doneClicking ? () => ClickHandlers.keyword(kw, chat_index) : undefined}
+                        className={cn(
+                          !chat.doneClicking && 'cursor-pointer',
+                          'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
+                        )}
                         key={kw}
                       >
                         <Image src={LogoImage} alt='선호 키워드 선택지' className='aspect-square w-6' />
                         <span
                           className={cn(
-                            category.keywords?.includes(kw) && 'bg-rcKakaoYellow hover:bg-rcKakaoYellowHover',
-                            'rounded-md px-1 py-1 group-hover:bg-rcKakaoYellow',
+                            category.keywords?.includes(kw) && 'bg-rcKakaoYellow',
+                            !chat.doneClicking && 'group-hover:bg-rcKakaoYellow',
+                            'rounded-md px-1 py-1',
                           )}
                         >
                           {kw}

@@ -20,6 +20,7 @@ export type CategoryType = {
 const PartPage = (): ReactNode => {
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
+  const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
   const [category, setCategory] = useState<CategoryType>({
     mainCategory: null,
     keywords: null,
@@ -33,7 +34,7 @@ const PartPage = (): ReactNode => {
     })
   }
 
-  const keywordClickHandler = (keyword: string) => {
+  const keywordClickHandler = (keyword: string, chat_index: number) => {
     // 키워드가 없었던 경우
     let newKeywords: string[] | null
     if (!category.keywords) {
@@ -42,15 +43,11 @@ const PartPage = (): ReactNode => {
         ...prev,
         keywords: newKeywords,
       }))
-      console.log('newKeywords: ', newKeywords)
     }
     // 기존에 키워드가 있었던 경우
     else {
       // 키워드 있었으면 제거, 없었으면 추가
       newKeywords = category.keywords.includes(keyword) ? category.keywords.filter(k => k !== keyword) : [...category.keywords, keyword]
-
-      console.log('newKeywords: ', newKeywords)
-
       setCategory(prev => ({
         ...prev,
         keywords: newKeywords,
@@ -64,10 +61,25 @@ const PartPage = (): ReactNode => {
 
     // 새로운 타이머 설정 (1초 후 요청 실행)
     const newTimeout = setTimeout(() => {
-      sendKeywordSelection(newKeywords)
+      sendKeywordSelection(newKeywords, chat_index)
     }, 1000)
 
     setTimeoutId(newTimeout)
+  }
+
+  // TODO: 키워드 선택 요청 함수
+  const sendKeywordSelection = (newKeywords: string[], chat_index: number) => {
+    // if (keywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
+
+    // 채팅 사용완료 표시
+    setChatDoneHandler(chat_index)
+
+    // 유저 채팅 더하기
+    if (category.keywords) {
+      const keywords = newKeywords.join(', ')
+      const userChat = `${category.mainCategory}, ${keywords}`
+      addChatHandler(Chatting.UserRequest(userChat))
+    }
   }
 
   // [Case2] 채팅 함수
@@ -88,21 +100,6 @@ const PartPage = (): ReactNode => {
   const addChatHandler = (newChat: ChatType) => {
     setChats(prev => [...prev, newChat])
   }
-
-  // TODO: 키워드 선택 요청 함수
-  const sendKeywordSelection = (newKeywords: string[]) => {
-    // if (keywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
-
-    console.log('키워드 선택 요청 보냈다고 가정', category.keywords)
-    // 유저 채팅 더하기
-    if (category.keywords) {
-      const keywords = newKeywords.join(', ')
-      const userChat = `${category.mainCategory}, ${keywords}`
-      addChatHandler(Chatting.UserRequest(userChat))
-    }
-  }
-
-  const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
   useEffect(() => {
     console.log(chats)
