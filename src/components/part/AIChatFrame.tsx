@@ -1,4 +1,4 @@
-import LogoImage from '@public/images/logo.png'
+import LogoImage from '@public/images/logo.svg'
 import Image from 'next/image'
 import { ReactNode } from 'react'
 

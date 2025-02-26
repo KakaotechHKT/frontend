@@ -10,7 +10,7 @@ import PlaceList from '@components/part/PlaceList'
 import { cn } from '@lib/utils/utils'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType } from '@public/data/ChatResponse'
-import LogoImage from '@public/images/logo.png'
+import LogoImage from '@public/images/logo.svg'
 
 export type CategoryType = {
   mainCategory: MainCategoriesType | null

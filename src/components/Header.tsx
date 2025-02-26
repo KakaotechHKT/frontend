@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { ReactNode } from 'react'
 
 import { useAuthData } from '@lib/hooks/useAuthData'
-import LogoImage from '@public/images/logo.png'
+import LogoImage from '@public/images/logo.svg'
 
 export const LINKS = {
   NotAuthenticated: [URL.PART.INDEX, URL.AUTH.LOGIN, URL.AUTH.REGISTER],

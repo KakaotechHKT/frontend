@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ReactNode } from 'react'
 
 import { cn } from '@lib/utils/utils'
-import LogoImage from '@public/images/logo.png'
+import LogoImage from '@public/images/logo.svg'
 
 interface IntroduceProps {
   className?: string

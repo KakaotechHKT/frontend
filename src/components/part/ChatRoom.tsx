@@ -6,7 +6,7 @@ import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 import { Categories, MainCategories, MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType, ResponseType } from '@public/data/ChatResponse'
-import LogoImage from '@public/images/logo.png'
+import LogoImage from '@public/images/logo.svg'
 import Image from 'next/image'
 import { ReactNode, useRef } from 'react'
 
