@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 
 const buttonVariants = cva(
-  'font-dohyeon shadow-rc-shadow inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'font-dohyeon  inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -16,8 +16,8 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
 
         // Custom Buttons
-        rcKakaoYellow: 'bg-rcKakaoYellow text-black hover:bg-rcKakaoYellowHover',
-        rcKakaoLightYellow: 'bg-rcKakaoLightYellow text-black hover:opacity-75',
+        rcKakaoYellow: 'bg-rcKakaoYellow text-black hover:bg-rcKakaoYellowHover shadow-rc-shadow',
+        rcKakaoLightYellow: 'bg-rcKakaoLightYellow text-black hover:opacity-75 shadow-rc-shadow',
       },
       size: {
         default: 'h-9 px-4 py-2',

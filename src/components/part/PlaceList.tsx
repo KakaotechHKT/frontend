@@ -1,9 +1,9 @@
-import { Geo } from '@app/part/page'
+import { Geo, PartDTO } from '@app/part/page'
 import { Button } from '@components/ui/button'
 import { cn } from '@lib/utils/utils'
 import LogoImage from '@public/images/logo.svg'
 import Image from 'next/image'
-import { ReactNode } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 // TODO: 진짜 음식점 데이터 페칭해서 처리
 const make_DUMMY_DATA = (id: number) => {
@@ -60,17 +60,27 @@ export const DUMMY_PLACE_DATA = Array.from(Array(20), (_, index) => {
 
 interface PlaceListProps {
   centerHandler: (center: Geo) => void
-  focusedPlaceId: number
+  focusedPlaceId: number | undefined
   focusedPlaceIdHandler: (id: number) => void
+
+  updatePartData: (partial: Partial<PartDTO>) => void
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const PlaceList = ({ centerHandler, focusedPlaceId, focusedPlaceIdHandler }: PlaceListProps): ReactNode => {
+const PlaceList = ({ centerHandler, focusedPlaceId, focusedPlaceIdHandler, updatePartData, setIsModalOpen }: PlaceListProps): ReactNode => {
   const placeClickHandler = (placeData: any) => {
     centerHandler({
       latitude: placeData.latitude,
       longitude: placeData.longitude,
     })
     focusedPlaceIdHandler(placeData.id)
+  }
+
+  // 밥맛 만들기 버튼 클릭시
+  const selectPlaceHandler = (placeData: any) => {
+    setIsModalOpen(true)
+
+    updatePartData({ placeId: placeData.id, placeName: placeData.name })
   }
   return (
     <ul className='relative flex w-full grow flex-col items-start justify-start overflow-y-auto overflow-x-hidden'>
@@ -103,7 +113,11 @@ const PlaceList = ({ centerHandler, focusedPlaceId, focusedPlaceIdHandler }: Pla
           </div>
 
           {placeData.id === focusedPlaceId && (
-            <Button variant='rcKakaoYellow' className='absolute bottom-2 right-1 px-2 py-1 font-dohyeon text-xs'>
+            <Button
+              onClick={() => selectPlaceHandler(placeData)}
+              variant='rcKakaoYellow'
+              className='absolute bottom-2 right-1 px-2 py-1 font-dohyeon text-xs'
+            >
               밥팟 만들기
             </Button>
           )}

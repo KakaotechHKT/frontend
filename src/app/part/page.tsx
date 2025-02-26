@@ -5,8 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode, useEffect, useState } from 'react'
 
+import { Track } from '@app/auth/register/page'
 import Chatroom from '@components/part/ChatRoom'
+import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
+import { useAuthData } from '@lib/hooks/useAuthData'
 import { cn } from '@lib/utils/utils'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType } from '@public/data/ChatResponse'
@@ -27,7 +30,24 @@ export const KTB_Position: Geo = {
   longitude: 127.1067144,
 }
 
+export type PartDTO = {
+  leader: {
+    id: number
+    name: string
+    nickname: string
+    track: Track
+  }
+  placeName: string | undefined
+  placeId: number | undefined
+  date: string | undefined
+  time: string | undefined
+  headCount: number | undefined
+  comment: string | undefined
+  mealSpeed: 'FAST' | 'MIDDLE' | 'SLOW'
+}
+
 const PartPage = (): ReactNode => {
+  const { id, name, nickname, track } = useAuthData()
   // 지도 관련 상태
   const [center, setCenter] = useState<Geo>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
@@ -38,6 +58,31 @@ const PartPage = (): ReactNode => {
     keywords: null,
   })
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
+
+  // 밥팟 데이터
+  const [partData, setPartData] = useState<PartDTO>({
+    leader: {
+      id,
+      name,
+      nickname,
+      track,
+    },
+    placeName: undefined,
+    placeId: undefined,
+    date: undefined,
+    time: undefined,
+    headCount: undefined,
+    comment: undefined,
+    mealSpeed: 'MIDDLE',
+  })
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const updatePartData = (partial: Partial<PartDTO>) => {
+    setPartData(prev => ({ ...prev, ...partial }))
+  }
+
+  useEffect(() => {
+    console.log(partData)
+  }, [partData])
 
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
@@ -166,7 +211,13 @@ const PartPage = (): ReactNode => {
 
         <div className='my-1 h-1 w-full bg-rcLightGray' />
 
-        <PlaceList centerHandler={centerHandler} focusedPlaceId={focusedPlaceId} focusedPlaceIdHandler={focusedPlaceIdHandler} />
+        <PlaceList
+          centerHandler={centerHandler}
+          focusedPlaceId={focusedPlaceId}
+          focusedPlaceIdHandler={focusedPlaceIdHandler}
+          updatePartData={updatePartData}
+          setIsModalOpen={setIsModalOpen}
+        />
       </div>
 
       {/* 채팅 */}
@@ -187,6 +238,8 @@ const PartPage = (): ReactNode => {
       <div className='h-screen grow'>
         <KakaoMap center={center} />
       </div>
+
+      {isModalOpen && <PartCreationModal partData={partData} updatePartData={updatePartData} />}
     </>
   )
 }

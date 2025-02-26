@@ -15,6 +15,11 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
 export type Track = 'FULLSTACK' | 'AI' | 'CLOUD'
+export const TrackTransformer = {
+  FULLSTACK: '풀스택',
+  AI: 'AI',
+  CLOUD: '클라우드',
+}
 
 type RegisterDTO = {
   id: string
