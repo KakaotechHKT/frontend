@@ -1,7 +1,9 @@
-import { cn } from '@lib/utils/utils'
 import React from 'react'
+
+import { cn } from '@lib/utils/utils'
+
 import { Input } from '../input'
-import { Period, TimePickerType, getArrowByType, getDateByType, setDateByType } from './utils'
+import { getArrowByType, getDateByType, Period, setDateByType, TimePickerType } from './utils'
 
 export interface TimePickerInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   picker: TimePickerType

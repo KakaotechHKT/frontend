@@ -1,6 +1,7 @@
-import LogoImage from '@public/images/logo.svg'
 import Image from 'next/image'
 import { ReactNode } from 'react'
+
+import LogoImage from '@public/images/logo.svg'
 
 interface AIChatFrameProps {
   content: string

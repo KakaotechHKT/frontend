@@ -1,11 +1,11 @@
 'use client'
-import { URL } from '@lib/constants/routes'
-import { cn } from '@lib/utils/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
+import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
+import { cn } from '@lib/utils/utils'
 import LogoImage from '@public/images/logo.svg'
 
 export const LINKS = {

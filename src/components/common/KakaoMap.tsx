@@ -1,8 +1,11 @@
-import { Geo, KTB_Position } from '@app/part/page'
-import { DUMMY_PLACE_DATA } from '@components/part/PlaceList'
-import useKakaoLoader from '@lib/hooks/useKakaoLoader'
 import { ReactNode } from 'react'
 import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk'
+
+import { Geo } from '@app/part/page'
+import { DUMMY_PLACE_DATA } from '@components/part/PlaceList'
+import useKakaoLoader from '@lib/hooks/useKakaoLoader'
+import { KTB_Position } from '@public/data'
+
 import { PlaceMapMarker } from './MapPin'
 
 // import useMapStore from '@/lib/context/mapStore'

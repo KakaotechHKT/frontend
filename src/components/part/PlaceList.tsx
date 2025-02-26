@@ -1,9 +1,10 @@
+import Image from 'next/image'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
+
 import { Geo, PartDTO } from '@app/part/page'
 import { Button } from '@components/ui/button'
 import { cn } from '@lib/utils/utils'
 import LogoImage from '@public/images/logo.svg'
-import Image from 'next/image'
-import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 // TODO: 진짜 음식점 데이터 페칭해서 처리
 const make_DUMMY_DATA = (id: number) => {

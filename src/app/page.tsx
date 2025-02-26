@@ -1,7 +1,8 @@
+import Link from 'next/link'
+
 import Header from '@components/Header'
 import { Button } from '@components/ui/button'
 import { URL } from '@lib/constants/routes'
-import Link from 'next/link'
 
 export default function Home() {
   return (

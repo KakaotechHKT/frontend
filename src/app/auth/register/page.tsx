@@ -1,5 +1,9 @@
 'use client'
 
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { ReactNode, useEffect, useState } from 'react'
+
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -10,16 +14,8 @@ import { DuplicateCheckType, RegisterType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
 
 export type Track = 'FULLSTACK' | 'AI' | 'CLOUD'
-export const TrackTransformer = {
-  FULLSTACK: '풀스택',
-  AI: 'AI',
-  CLOUD: '클라우드',
-}
 
 type RegisterDTO = {
   id: string

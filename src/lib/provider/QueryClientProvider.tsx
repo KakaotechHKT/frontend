@@ -1,7 +1,8 @@
 'use client'
+import { ReactNode } from 'react'
+
 import useApiError from '@lib/hooks/useAPIError'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactNode } from 'react'
 
 interface CustomQueryClientProviderProps {
   children: React.ReactNode

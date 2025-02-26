@@ -1,4 +1,8 @@
 'use client'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { ReactNode, useState } from 'react'
+
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
@@ -8,9 +12,6 @@ import useModal from '@lib/hooks/useModal'
 import { LoginType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { ReactNode, useState } from 'react'
 
 const LoginPage = (): ReactNode => {
   const router = useRouter()

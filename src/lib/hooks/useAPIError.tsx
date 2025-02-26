@@ -1,7 +1,6 @@
 'use client'
-import { toast } from 'sonner'
-
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 
 const useApiError = () => {
   const defaultHandler = (httpMessage: string) => {

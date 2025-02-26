@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   description: '카카오테크 부트캠프 밥팟 커뮤니티',
 }
 
-interface RootLayoutProps {}
 export default function RootLayout({
   children,
 }: Readonly<{

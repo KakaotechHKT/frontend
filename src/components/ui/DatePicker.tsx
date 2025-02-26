@@ -1,12 +1,13 @@
 'use client'
 
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
+
 import { PartDTO } from '@app/part/page'
 import { Button } from '@components/ui/button'
 import { Calendar } from '@components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 import { cn } from '@lib/utils/utils'
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
 
 interface DatePickerProps {
   date: Date | undefined

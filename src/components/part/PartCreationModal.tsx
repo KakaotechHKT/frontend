@@ -1,12 +1,12 @@
 'use client'
-import { TrackTransformer } from '@app/auth/register/page'
-import { PartDTO } from '@app/part/page'
 import { format } from 'date-fns'
+import { ReactNode, useEffect, useState } from 'react'
 
+import { PartDTO } from '@app/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { DatePicker } from '@components/ui/DatePicker'
 import { TimePicker } from '@components/ui/timepicker/timepicker'
-import { ReactNode, useEffect, useState } from 'react'
+import { TrackTransformer } from '@public/data'
 
 interface PartCreationModalProps {
   partData: PartDTO

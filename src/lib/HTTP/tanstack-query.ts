@@ -1,9 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
-
 import { DuplicateCheck, Login, Register } from '@lib/HTTP/API/auth'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
+import { useMutation } from '@tanstack/react-query'
 
 /**
  * GET

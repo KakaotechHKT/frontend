@@ -1,16 +1,17 @@
 'use client'
-import KakaoMap from '@components/common/KakaoMap'
-import { URL } from '@lib/constants/routes'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode, useEffect, useState } from 'react'
 
 import { Track } from '@app/auth/register/page'
+import KakaoMap from '@components/common/KakaoMap'
 import Chatroom from '@components/part/ChatRoom'
 import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
+import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { cn } from '@lib/utils/utils'
+import { KTB_Position } from '@public/data'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType } from '@public/data/ChatResponse'
 import LogoImage from '@public/images/logo.svg'
@@ -23,11 +24,6 @@ export type CategoryType = {
 export type Geo = {
   latitude: number
   longitude: number
-}
-
-export const KTB_Position: Geo = {
-  latitude: 37.40031,
-  longitude: 127.1067144,
 }
 
 export type PartDTO = {

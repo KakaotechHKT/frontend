@@ -34,6 +34,7 @@ const eslintConfig = [
       'no-unused-vars': 'off', // 기본 no-unused-vars 비활성화
       'unused-imports/no-unused-imports': 'error', // 사용되지 않은 import에 대한 경고
       '@typescript-eslint/no-unused-vars': 'off', // TypeScript 관련 unused-vars 비활성화
+      '@typescript-eslint/no-explicit-any': 'off',
     },
     languageOptions: {
       parserOptions: {
