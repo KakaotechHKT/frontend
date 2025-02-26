@@ -29,4 +29,5 @@ export const Categories: PlaceCategories = {
   양식,
 }
 
-export const MainCategories = Object.keys(Categories)
+export const MainCategories = Object.keys(Categories) as (keyof PlaceCategories)[]
+export type MainCategoriesType = (typeof MainCategories)[number]

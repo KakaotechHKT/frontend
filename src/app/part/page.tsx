@@ -3,42 +3,96 @@ import KakaoMap from '@components/common/KakaoMap'
 import { URL } from '@lib/constants/routes'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
-import { Input } from '@components/ui/input'
-import LucideIcon from '@lib/icons/LucideIcon'
-import { MainCategories } from '@public/data/keywords'
+import Chatroom from '@components/part/ChatRoom'
+import PlaceList from '@components/part/PlaceList'
+import { cn } from '@lib/utils/utils'
+import { MainCategories, MainCategoriesType } from '@public/data/categories'
+import { Chatting, ChatType } from '@public/data/ChatResponse'
 import LogoImage from '@public/images/logo.png'
 
-// TODO: 진짜 음식점 데이터 페칭해서 처리
-const make_DUMMY_DATA = (id: number) => {
-  return {
-    id,
-    name: '판교테크노벨리점afsdfsadf12213 청년다방 ',
-    menu: ['떡튀순 떡볶이', '차돌 떡볶이', '통큰오짱 떡볶이'],
-    mainCategory: '분식',
-    subCategory: ['떡볶이', '만원 이상'],
-  }
+export type CategoryType = {
+  mainCategory: MainCategoriesType | null
+  keywords: string[] | null
 }
-const make_DUMMY_DATA2 = (id: number) => {
-  return {
-    id,
-    name: '청년다방 판교테크노벨리점',
-    menu: ['떡튀순 떡볶이', '차돌 떡볶이', '통큰오짱 떡볶이'],
-    mainCategory: '분식',
-    subCategory: ['떡볶이', '만원 이상'],
-  }
-}
-
-const DUMMY_PLACE_DATA = Array.from(Array(20), (_, index) => {
-  if (index % 2) {
-    return make_DUMMY_DATA(index)
-  } else {
-    return make_DUMMY_DATA2(index)
-  }
-})
 
 const PartPage = (): ReactNode => {
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+
+  const [category, setCategory] = useState<CategoryType>({
+    mainCategory: null,
+    keywords: null,
+  })
+
+  // 카테고리 함수
+  const mainCategoryClickHandler = (mainCategory: MainCategoriesType) => {
+    setCategory({
+      ...category,
+      mainCategory,
+    })
+  }
+  const keywordClickHandler = (keyword: string) => {
+    // 키워드가 없었던 경우
+    let newKeywords: string[] | null
+    if (!category.keywords) {
+      newKeywords = [keyword]
+      setCategory(prev => ({
+        ...prev,
+        keywords: newKeywords,
+      }))
+      console.log('newKeywords: ', newKeywords)
+    }
+    // 기존에 키워드가 있었던 경우
+    else {
+      // 키워드 있었으면 제거, 없었으면 추가
+      newKeywords = category.keywords.includes(keyword) ? category.keywords.filter(k => k !== keyword) : [...category.keywords, keyword]
+
+      console.log('newKeywords: ', newKeywords)
+
+      setCategory(prev => ({
+        ...prev,
+        keywords: newKeywords,
+      }))
+    }
+
+    // 기존 타이머가 있다면 취소
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+
+    // 새로운 타이머 설정 (1초 후 요청 실행)
+    const newTimeout = setTimeout(() => {
+      sendKeywordSelection(newKeywords)
+    }, 1000)
+
+    setTimeoutId(newTimeout)
+  }
+
+  // 채팅 함수
+  const addChatHandler = (newChat: ChatType) => {
+    setChats(prev => [...prev, newChat])
+  }
+
+  // TODO: 키워드 선택 요청 함수
+  const sendKeywordSelection = (newKeywords: string[]) => {
+    // if (keywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
+
+    console.log('키워드 선택 요청 보냈다고 가정', category.keywords)
+    // 유저 채팅 더하기
+    if (category.keywords) {
+      const keywords = newKeywords.join(', ')
+      const userChat = `${category.mainCategory}, ${keywords}`
+      addChatHandler(Chatting.UserRequest(userChat))
+    }
+  }
+
+  const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
+
+  useEffect(() => {
+    console.log(chats)
+  }, [chats])
+
   return (
     <>
       {/* 선호 음식 */}
@@ -53,12 +107,16 @@ const PartPage = (): ReactNode => {
           <span className='text-xss text-rcDarkGray'>* 선호 음식을 눌러 카테부 주변의 맛집을 추천 받아보세요!</span>
 
           <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-2'>
-            {MainCategories.map(category => (
+            {MainCategories.map(cat => (
               <li
-                className='flex cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-rcGray px-1 py-2 text-[10px] font-semibold hover:bg-rcKakaoYellow'
-                key={category}
+                onClick={() => mainCategoryClickHandler(cat)}
+                className={cn(
+                  cat === category.mainCategory && 'bg-rcKakaoYellow hover:bg-rcKakaoYellowHover',
+                  'flex cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-rcGray px-1 py-2 text-[10px] font-semibold hover:bg-rcKakaoYellow',
+                )}
+                key={cat}
               >
-                {category}
+                {cat}
               </li>
             ))}
           </ul>
@@ -66,33 +124,7 @@ const PartPage = (): ReactNode => {
 
         <div className='my-1 h-1 w-full bg-rcLightGray' />
 
-        <ul className='relative flex w-full grow flex-col items-start justify-start overflow-y-auto overflow-x-hidden'>
-          {DUMMY_PLACE_DATA.map(placeData => (
-            <li
-              key={placeData.id}
-              className='relative flex w-full items-center justify-start gap-4 border-b-[1px] border-solid border-rcLightGray px-2 py-3'
-            >
-              <Image className='aspect-square w-[45%] shrink-0' src={LogoImage} alt='식당 이미지 ' />
-
-              <div className='relative flex h-full grow flex-col items-start justify-start text-xs text-rcDarkGray'>
-                <div className='w-full text-ellipsis whitespace-nowrap font-dohyeon text-sm text-rcBlue'>{placeData.name}</div>
-
-                <div className='my-1 flex items-center justify-start gap-2 text-xss'>
-                  <span># {placeData.mainCategory}</span>
-                  {placeData.subCategory.map(cat => (
-                    <span key={cat}># {cat}</span>
-                  ))}
-                </div>
-                <span className='my-1 text-xs text-rcBlack'>대표메뉴</span>
-                <ul className='flex flex-col items-start justify-start text-xss'>
-                  {placeData.menu.map(menu => (
-                    <li key={menu}>-{menu}</li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <PlaceList />
       </div>
 
       {/* 채팅 */}
@@ -100,15 +132,13 @@ const PartPage = (): ReactNode => {
         <span className='flex w-full items-center justify-center font-dohyeon text-2xl'>밥팟 AI 챗봇</span>
 
         {/* 채팅내용 */}
-        <div></div>
-        <div className='flex w-[90%] items-center justify-between rounded-3xl border-sm border-solid border-rcBlack bg-rcLightGray pr-2'>
-          <Input
-            type='text'
-            placeholder='메세지를 입력해주세요.'
-            className='border-none text-xss shadow-none outline-none focus:outline-none focus-visible:ring-0'
-          />
-          <LucideIcon name='CircleArrowUp' size={30} strokeWidth={1} />
-        </div>
+        <Chatroom
+          category={category}
+          chats={chats}
+          addChatHandler={addChatHandler}
+          mainCategoryClickHandler={mainCategoryClickHandler}
+          keywordClickHandler={keywordClickHandler}
+        />
       </div>
 
       {/* 카카오맵 */}
