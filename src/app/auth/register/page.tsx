@@ -6,19 +6,22 @@ import { Input } from '@components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
-import { DuplicateCheckType } from '@lib/HTTP/API/auth'
+import { DuplicateCheckType, RegisterType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
+
+export type Track = 'fullstack' | 'ai' | 'cloud'
 
 type RegisterDTO = {
   id: string
   password: string
   nickname: string // 카테부 영어이름
   name: string // 실명
-  track: 'fullstack' | 'ai' | 'cloud'
+  track: Track | null
 }
 
 const RegisterPage = (): ReactNode => {
@@ -31,7 +34,7 @@ const RegisterPage = (): ReactNode => {
     password: '',
     nickname: '',
     name: '',
-    track: 'fullstack', // 기본값
+    track: null, // 기본값
   })
 
   useEffect(() => {
@@ -42,15 +45,7 @@ const RegisterPage = (): ReactNode => {
   const updateData = (partial: Partial<RegisterDTO>) => {
     setData(prev => ({ ...prev, ...partial }))
   }
-  // Functions
-  // TODO: 회원가입 API 연동
-  const registerHandler = () => {
-    handleOpen({
-      type: 'info',
-      title: '카테부 정보 입력',
-      details: '이미 존재하는 회원 정보입니다. 로그인을 이용해주세요.',
-    })
-  }
+
   return (
     <>
       <Introduce className='flex flex-col items-center justify-start gap-6' />
@@ -58,7 +53,7 @@ const RegisterPage = (): ReactNode => {
       {step === 0 ? (
         <RegisterStep data={data} updateData={updateData} onNextStep={() => setStep(1)} />
       ) : (
-        <KTBInfoStep data={data} updateData={updateData} registerHandler={registerHandler} />
+        <KTBInfoStep data={data} updateData={updateData} />
       )}
       <Modal />
     </>
@@ -149,11 +144,34 @@ const RegisterStep = ({ data, onNextStep, updateData }: RegisterPageProps) => {
 interface KTBInfoStepProps {
   className?: string
   data: RegisterDTO
-  registerHandler: () => void
   updateData: (partial: Partial<RegisterDTO>) => void
 }
 
-const KTBInfoStep = ({ className, data, registerHandler, updateData }: KTBInfoStepProps) => {
+const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
+  const router = useRouter()
+
+  const selectHandler = (track: Track) => {
+    updateData({ track: track })
+  }
+
+  const { mutate: RegisterMutate, isPending } = useMutationStore<RegisterType>(['register'])
+  // Functions
+  const registerHandler = () => {
+    const { id, name, nickname, password, track } = data
+    if (!track) {
+      alert('트랙을 선택하세요')
+      return
+    }
+    RegisterMutate(
+      { id, password, nickname, name, track },
+      {
+        onSuccess(data, variables, context) {
+          alert('회원가입 성공')
+          router.push(URL.AUTH.LOGIN.value)
+        },
+      },
+    )
+  }
   return (
     <div className='mt-8 flex w-1/2 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='flex w-full flex-col items-start justify-start self-start px-12 font-dohyeon text-xl'>
@@ -164,7 +182,7 @@ const KTBInfoStep = ({ className, data, registerHandler, updateData }: KTBInfoSt
       </h1>
 
       <div className='relative flex w-full flex-col items-start justify-start gap-3 px-12'>
-        <Select>
+        <Select onValueChange={selectHandler}>
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='과정 선택' />
           </SelectTrigger>
@@ -177,12 +195,24 @@ const KTBInfoStep = ({ className, data, registerHandler, updateData }: KTBInfoSt
           </SelectContent>
         </Select>
         <div className='relative h-11 w-full rounded-md'>
-          <Input type='text' placeholder='영어 닉네임' className='h-full w-full' />
+          <Input
+            type='text'
+            placeholder='영어 닉네임'
+            className='h-full w-full'
+            value={data.nickname}
+            onChange={e => updateData({ nickname: e.target.value })}
+          />
           <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
         </div>
 
         <div className='relative h-11 w-full rounded-md'>
-          <Input type='text' placeholder='실명' className='h-full w-full' />
+          <Input
+            type='text'
+            placeholder='실명'
+            className='h-full w-full'
+            value={data.name}
+            onChange={e => updateData({ name: e.target.value })}
+          />
           <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
         </div>
 

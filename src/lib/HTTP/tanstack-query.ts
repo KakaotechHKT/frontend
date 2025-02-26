@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { DuplicateCheck, Login } from '@lib/HTTP/API/auth'
+import { DuplicateCheck, Login, Register } from '@lib/HTTP/API/auth'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
@@ -32,7 +32,7 @@ export const MUTATION_KEYS = {
     },
     REGISTER: {
       key: ['register'],
-      // function: Register,
+      function: Register,
     },
     DUPLICATE: {
       key: ['check_IDDuplicate'],
@@ -86,6 +86,13 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.LOGIN.key, {
 })
 queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.DUPLICATE.key, {
   mutationFn: MUTATION_KEYS.AUTH.DUPLICATE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+
+queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.REGISTER.key, {
+  mutationFn: MUTATION_KEYS.AUTH.REGISTER.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },
