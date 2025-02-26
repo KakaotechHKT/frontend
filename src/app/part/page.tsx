@@ -39,7 +39,7 @@ export type PartDTO = {
   }
   placeName: string | undefined
   placeId: number | undefined
-  date: string | undefined
+  date: Date | undefined
   time: string | undefined
   headCount: number | undefined
   comment: string | undefined

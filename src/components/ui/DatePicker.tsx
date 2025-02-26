@@ -16,7 +16,7 @@ interface DatePickerProps {
 export function DatePicker({ date, updatePartData }: DatePickerProps) {
   const selectHandler = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      updatePartData({ date: format(selectedDate, 'yyyy-MM-dd') })
+      updatePartData({ date: selectedDate })
     }
   }
   return (
