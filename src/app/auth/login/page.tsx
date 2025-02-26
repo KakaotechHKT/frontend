@@ -7,6 +7,7 @@ import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
+import Loading from '@components/ui/Loading'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
 import { LoginType } from '@lib/HTTP/API/auth'
@@ -60,9 +61,13 @@ const LoginPage = (): ReactNode => {
             <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
           </div>
 
-          <Button onClick={loginHandler} variant='rcKakaoYellow' className='my-1 w-full'>
-            로그인하기
-          </Button>
+          {!isPending ? (
+            <Button onClick={loginHandler} variant='rcKakaoYellow' className='my-1 w-full'>
+              로그인하기
+            </Button>
+          ) : (
+            <Loading className='my-1 flex h-9 w-full items-center justify-center' />
+          )}
 
           <div className='mb-3 mt-3 flex w-full items-center justify-between text-xs font-normal text-rcDarkGray'>
             <div className='flex cursor-pointer items-center justify-start gap-2'>

@@ -7,6 +7,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
+import Loading from '@components/ui/Loading'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
@@ -105,9 +106,11 @@ const RegisterStep = ({ data, onNextStep, updateData }: RegisterPageProps) => {
             value={data.id}
             onChange={e => updateData({ id: e.target.value })}
           />
-          <Button onClick={duplicateHandler} variant='rcKakaoYellow' className='h-full'>
-            중복 검사
-          </Button>
+          {
+            <Button onClick={duplicateHandler} variant='rcKakaoYellow' className='h-full w-24'>
+              {!isPending ? '중복 검사' : <Loading />}
+            </Button>
+          }
         </div>
         <div className='relative h-11 w-full rounded-md'>
           <Input
@@ -218,7 +221,7 @@ const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
         </div>
 
         <Button variant='rcKakaoYellow' className='my-1 w-full' onClick={registerHandler}>
-          회원가입하기
+          {!isPending ? '회원가입하기' : <Loading />}
         </Button>
       </div>
 
