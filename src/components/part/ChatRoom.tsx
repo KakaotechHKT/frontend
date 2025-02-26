@@ -14,19 +14,11 @@ interface ChatroomProps {
   category: CategoryType
   chats: ChatType[]
   addChatHandler: (newChat: ChatType) => void
-  setChatDoneHandler: (target_index: number) => void
   mainCategoryClickHandler: (...args: any[]) => any
   keywordClickHandler: (keyword: string, chat_index: number) => void
 }
 
-const Chatroom = ({
-  category,
-  chats,
-  addChatHandler,
-  setChatDoneHandler,
-  mainCategoryClickHandler,
-  keywordClickHandler,
-}: ChatroomProps): ReactNode => {
+const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, keywordClickHandler }: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   if (chatContainerRef.current) {
     // chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
@@ -43,10 +35,8 @@ const Chatroom = ({
     // #1. 메인 카테고리 선택 시
     static mainCategory = (mainCategory: MainCategoriesType, chat_index: number): void => {
       // 메인 카테고리 변경
-      mainCategoryClickHandler(mainCategory)
+      mainCategoryClickHandler(mainCategory, chat_index)
 
-      // 채팅 사용완료 표시
-      setChatDoneHandler(chat_index)
       // 유저 채팅 더하기
       addChatHandler(Chatting.UserRequest(mainCategory))
 
@@ -90,7 +80,9 @@ const Chatroom = ({
                       <Image src={LogoImage} alt='선호 음식 선택지' className='aspect-square w-6' />
                       <span
                         className={cn(
-                          cat === category.mainCategory && 'bg-rcKakaoYellow',
+                          chat.lastMainCategory === undefined
+                            ? cat === category.mainCategory && 'bg-rcKakaoYellow'
+                            : cat === chat.lastMainCategory && 'bg-rcKakaoYellow',
                           !chat.doneClicking && 'group-hover:bg-rcKakaoYellow',
                           'rounded-md px-1 py-1',
                         )}

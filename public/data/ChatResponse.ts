@@ -12,6 +12,9 @@ export type ChatType = {
   content: string
   type?: ResponseType
   doneClicking: boolean // 메인카테고리 or 키워드 선택하였는지 여부
+
+  lastMainCategory?: MainCategoriesType
+  lastKeywords?: string[]
 }
 
 export class Chatting {
@@ -19,7 +22,6 @@ export class Chatting {
   static UserRequest = (UserRequest: string): ChatType => {
     return {
       speaker: 'user',
-
       content: UserRequest,
       doneClicking: true,
     }
@@ -32,6 +34,7 @@ export class Chatting {
       content: `안녕하세요, 밥팟입니다.\n카테부 근처 식당을 추천해줄게요!\n\n좌측 선호 음식을 선택하거나 채팅 기능을 통해 말씀해주시면 알맞는 음식점을 추천해줄게요!`,
       type: ResponseType.START,
       doneClicking: false,
+      lastMainCategory: undefined,
     }
   }
 
@@ -42,6 +45,7 @@ export class Chatting {
       content: `${mainCategory}을 선택하셨네요.\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
       type: ResponseType.MAIN_CATEGORY,
       doneClicking: false,
+      lastKeywords: undefined,
     }
   }
 

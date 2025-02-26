@@ -18,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body className={cn(pretendard.variable, doHyeon.variable, 'relative flex flex-col items-center justify-start')}>{children}</body>
+      <body className={cn(pretendard.variable, doHyeon.variable, 'justify-star relative flex flex-col items-center font-pretendard')}>
+        {children}
+      </body>
     </html>
   )
 }

@@ -17,21 +17,48 @@ export type CategoryType = {
   keywords: string[] | null
 }
 
-const PartPage = (): ReactNode => {
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+export type Geo = {
+  latitude: number
+  longitude: number
+}
 
-  const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
+export const KTB_Position: Geo = {
+  latitude: 37.40031,
+  longitude: 127.1067144,
+}
+
+const PartPage = (): ReactNode => {
+  // 지도 관련 상태
+  const [center, setCenter] = useState<Geo>(KTB_Position)
+  const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
+  // 채팅 관련 상태
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
   const [category, setCategory] = useState<CategoryType>({
     mainCategory: null,
     keywords: null,
   })
+  const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
   // 카테고리 함수
-  const mainCategoryClickHandler = (mainCategory: MainCategoriesType) => {
+  const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
     setCategory({
       ...category,
       mainCategory,
     })
+    // 채팅에서 클릭한 경우
+    if (chat_index !== undefined) {
+      const newChat = chats.map((chat, index) =>
+        chat_index === index
+          ? {
+              ...chat,
+              lastMainCategory: mainCategory,
+              doneClicking: true,
+            }
+          : chat,
+      )
+
+      setChats(newChat)
+    }
   }
 
   const keywordClickHandler = (keyword: string, chat_index: number) => {
@@ -72,7 +99,16 @@ const PartPage = (): ReactNode => {
     // if (keywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
 
     // 채팅 사용완료 표시
-    setChatDoneHandler(chat_index)
+    const newChat = chats.map((chat, index) =>
+      chat_index === index
+        ? {
+            ...chat,
+            doneClicking: true,
+            lastKeywords: newKeywords,
+          }
+        : chat,
+    )
+    setChats(newChat)
 
     // 유저 채팅 더하기
     if (category.keywords) {
@@ -82,21 +118,7 @@ const PartPage = (): ReactNode => {
     }
   }
 
-  // [Case2] 채팅 함수
-
-  // 2-1: 사용완료 함수
-  const setChatDoneHandler = (target_index: number) => {
-    const newChat = chats.map((chat, index) =>
-      target_index === index
-        ? {
-            ...chat,
-            doneClicking: true,
-          }
-        : chat,
-    )
-    setChats(newChat)
-  }
-  // 2-2: 더하기 함수
+  //  채팅 추가하기 함수
   const addChatHandler = (newChat: ChatType) => {
     setChats(prev => [...prev, newChat])
   }
@@ -104,6 +126,14 @@ const PartPage = (): ReactNode => {
   useEffect(() => {
     console.log(chats)
   }, [chats])
+
+  // 지도 관련 함수
+  const centerHandler = (center: Geo) => {
+    setCenter(center)
+  }
+  const focusedPlaceIdHandler = (id: number) => {
+    setFocusedPlaceId(id)
+  }
 
   return (
     <>
@@ -136,7 +166,7 @@ const PartPage = (): ReactNode => {
 
         <div className='my-1 h-1 w-full bg-rcLightGray' />
 
-        <PlaceList />
+        <PlaceList centerHandler={centerHandler} focusedPlaceId={focusedPlaceId} focusedPlaceIdHandler={focusedPlaceIdHandler} />
       </div>
 
       {/* 채팅 */}
@@ -148,7 +178,6 @@ const PartPage = (): ReactNode => {
           category={category}
           chats={chats}
           addChatHandler={addChatHandler}
-          setChatDoneHandler={setChatDoneHandler}
           mainCategoryClickHandler={mainCategoryClickHandler}
           keywordClickHandler={keywordClickHandler}
         />
@@ -156,7 +185,7 @@ const PartPage = (): ReactNode => {
 
       {/* 카카오맵 */}
       <div className='h-screen grow'>
-        <KakaoMap />
+        <KakaoMap center={center} />
       </div>
     </>
   )

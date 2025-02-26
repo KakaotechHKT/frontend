@@ -1,3 +1,6 @@
+import { Geo } from '@app/part/page'
+import { Button } from '@components/ui/button'
+import { cn } from '@lib/utils/utils'
 import LogoImage from '@public/images/logo.svg'
 import Image from 'next/image'
 import { ReactNode } from 'react'
@@ -55,15 +58,30 @@ export const DUMMY_PLACE_DATA = Array.from(Array(20), (_, index) => {
   }
 })
 
-interface PlaceListProps {}
+interface PlaceListProps {
+  centerHandler: (center: Geo) => void
+  focusedPlaceId: number
+  focusedPlaceIdHandler: (id: number) => void
+}
 
-const PlaceList = ({}: PlaceListProps): ReactNode => {
+const PlaceList = ({ centerHandler, focusedPlaceId, focusedPlaceIdHandler }: PlaceListProps): ReactNode => {
+  const placeClickHandler = (placeData: any) => {
+    centerHandler({
+      latitude: placeData.latitude,
+      longitude: placeData.longitude,
+    })
+    focusedPlaceIdHandler(placeData.id)
+  }
   return (
     <ul className='relative flex w-full grow flex-col items-start justify-start overflow-y-auto overflow-x-hidden'>
       {DUMMY_PLACE_DATA.map((placeData, index) => (
         <li
           key={placeData.id}
-          className='relative flex w-full cursor-pointer items-center justify-start gap-4 border-b-[1px] border-solid border-rcLightGray px-2 py-3'
+          onClick={() => placeClickHandler(placeData)}
+          className={cn(
+            placeData.id === focusedPlaceId && 'bg-rcKakaoLightYellow',
+            'relative flex w-full cursor-pointer items-center justify-start gap-4 border-b-[1px] border-solid border-rcLightGray px-2 py-3',
+          )}
         >
           <Image className='aspect-square w-[45%] shrink-0' src={LogoImage} alt='식당 이미지 ' />
 
@@ -83,6 +101,12 @@ const PlaceList = ({}: PlaceListProps): ReactNode => {
               ))}
             </ul>
           </div>
+
+          {placeData.id === focusedPlaceId && (
+            <Button variant='rcKakaoYellow' className='absolute bottom-2 right-1 px-2 py-1 font-dohyeon text-xs'>
+              밥팟 만들기
+            </Button>
+          )}
         </li>
       ))}
     </ul>

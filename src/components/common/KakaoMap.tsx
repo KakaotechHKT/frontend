@@ -1,3 +1,4 @@
+import { Geo, KTB_Position } from '@app/part/page'
 import { DUMMY_PLACE_DATA } from '@components/part/PlaceList'
 import useKakaoLoader from '@lib/hooks/useKakaoLoader'
 import { ReactNode } from 'react'
@@ -12,16 +13,10 @@ import { PlaceMapMarker } from './MapPin'
 // import { MAP_MARKER_COLORS, SpriteMapMarker } from './MapPin'
 
 type KakaoMapProps = {
-  modalLat?: number
-  modalLng?: number
+  center: Geo
 }
 
-const KTB_Position = {
-  latitude: 37.40031,
-  longitude: 127.1067144,
-}
-
-const KakaoMap = ({ modalLat, modalLng }: KakaoMapProps): ReactNode => {
+const KakaoMap = ({ center }: KakaoMapProps): ReactNode => {
   useKakaoLoader() // 카카오 지도 로딩
   // const { pins, center, focusedPlacePin } = useMapStore()
 
@@ -30,8 +25,8 @@ const KakaoMap = ({ modalLat, modalLng }: KakaoMapProps): ReactNode => {
       id='map'
       center={{
         // 카카오테크 부트캠프의 주심좌표
-        lat: KTB_Position.latitude,
-        lng: KTB_Position.longitude,
+        lat: center.latitude,
+        lng: center.longitude,
       }}
       isPanto={true}
       style={{
