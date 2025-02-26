@@ -2,6 +2,7 @@
 import { format } from 'date-fns'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
+import { Track } from '@app/auth/register/page'
 import { PartDTO, Speed } from '@app/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { DatePicker } from '@components/ui/DatePicker'
@@ -12,15 +13,22 @@ import LucideIcon from '@lib/provider/LucideIcon'
 import { TrackTransformer } from '@public/data'
 
 interface PartCreationModalProps {
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>
+  authData: {
+    id: number
+    name: string
+    nickname: string
+    track: Track
+  }
+
   partData: PartDTO
   updatePartData: (partial: Partial<PartDTO>) => void
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const PartCreationModal = ({ setIsModalOpen, partData, updatePartData }: PartCreationModalProps): ReactNode => {
-  const { leader, placeName, placeId, date, time, headCount, comment, mealSpeed } = partData
+const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen }: PartCreationModalProps): ReactNode => {
+  const { placeName, placeId, date, time, headCount, comment, mealSpeed } = partData
   const [tmpTime, setTmpTime] = useState<Date>()
-  const leaderName = `${leader.nickname} (${leader.name}) / ${TrackTransformer[leader.track]} `
+  const leaderName = `${authData.nickname} (${authData.name}) / ${TrackTransformer[authData.track]} `
 
   useEffect(() => {
     if (tmpTime) {

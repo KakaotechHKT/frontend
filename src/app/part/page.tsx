@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode, useEffect, useState } from 'react'
 
-import { Track } from '@app/auth/register/page'
 import KakaoMap from '@components/common/KakaoMap'
 import Chatroom from '@components/part/ChatRoom'
 import PartCreationModal from '@components/part/PartCreationModal'
@@ -28,12 +27,12 @@ export type Geo = {
 
 export type Speed = 'FAST' | 'MIDDLE' | 'SLOW'
 export type PartDTO = {
-  leader: {
-    id: number
-    name: string
-    nickname: string
-    track: Track
-  }
+  // leader: {
+  //   id: number
+  //   name: string
+  //   nickname: string
+  //   track: Track
+  // }
   placeName: string | undefined
   placeId: number | undefined
   date: Date | undefined
@@ -44,7 +43,8 @@ export type PartDTO = {
 }
 
 const PartPage = (): ReactNode => {
-  const { id, name, nickname, track } = useAuthData()
+  const authData = useAuthData()
+  console.log('authData: ', authData)
 
   // 지도 관련 상태
   const [center, setCenter] = useState<Geo>(KTB_Position)
@@ -59,12 +59,6 @@ const PartPage = (): ReactNode => {
 
   // 밥팟 데이터
   const [partData, setPartData] = useState<PartDTO>({
-    leader: {
-      id,
-      name,
-      nickname,
-      track,
-    },
     placeName: undefined,
     placeId: undefined,
     date: undefined,
@@ -241,7 +235,9 @@ const PartPage = (): ReactNode => {
         <KakaoMap center={center} />
       </div>
 
-      {isModalOpen && <PartCreationModal setIsModalOpen={setIsModalOpen} partData={partData} updatePartData={updatePartData} />}
+      {isModalOpen && (
+        <PartCreationModal setIsModalOpen={setIsModalOpen} authData={authData} partData={partData} updatePartData={updatePartData} />
+      )}
     </>
   )
 }
