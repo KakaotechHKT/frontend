@@ -2,7 +2,7 @@
 import { CategoryType } from '@app/part/page'
 import AIChatFrame from '@components/part/AIChatFrame'
 import { Input } from '@components/ui/input'
-import LucideIcon from '@lib/icons/LucideIcon'
+import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 import { Categories, MainCategories, MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType, ResponseType } from '@public/data/ChatResponse'

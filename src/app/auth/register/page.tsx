@@ -6,7 +6,7 @@ import { Input } from '@components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
-import LucideIcon from '@lib/icons/LucideIcon'
+import LucideIcon from '@lib/provider/LucideIcon'
 import Link from 'next/link'
 import { ReactNode, useState } from 'react'
 

@@ -5,7 +5,7 @@ import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
-import LucideIcon from '@lib/icons/LucideIcon'
+import LucideIcon from '@lib/provider/LucideIcon'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
