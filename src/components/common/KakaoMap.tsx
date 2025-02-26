@@ -1,7 +1,7 @@
 import { DUMMY_PLACE_DATA } from '@components/part/PlaceList'
 import useKakaoLoader from '@lib/hooks/useKakaoLoader'
 import { ReactNode } from 'react'
-import { Map, MapMarker } from 'react-kakao-maps-sdk'
+import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk'
 import { PlaceMapMarker } from './MapPin'
 
 // import useMapStore from '@/lib/context/mapStore'
@@ -40,6 +40,7 @@ const KakaoMap = ({ modalLat, modalLng }: KakaoMapProps): ReactNode => {
       }}
       level={3} // 지도의 확대 레벨
     >
+      <ZoomControl position={'RIGHT'} />
       {/* 카테부 위치 */}
       <MapMarker
         position={{
@@ -49,19 +50,8 @@ const KakaoMap = ({ modalLat, modalLng }: KakaoMapProps): ReactNode => {
       />
 
       {DUMMY_PLACE_DATA.map(place => (
-        <PlaceMapMarker key={place.id} latitude={place.latitude} longitude={place.longitude} />
+        <PlaceMapMarker key={place.id} latitude={place.latitude} longitude={place.longitude} name={place.name} />
       ))}
-
-      {/* 경로 */}
-      {/* {pins?.map((dayPin, dayPinIndex) => (
-        <Polyline
-          key={dayPinIndex}
-          path={getPath(dayPin)}
-          strokeColor={colorSet[MAP_MARKER_COLORS[dayPinIndex] as ColorType]}
-          strokeStyle='shortdot'
-          strokeWeight={4}
-        />
-      ))} */}
     </Map>
   )
 }
