@@ -32,6 +32,7 @@ const PartPage = (): ReactNode => {
       mainCategory,
     })
   }
+
   const keywordClickHandler = (keyword: string) => {
     // 키워드가 없었던 경우
     let newKeywords: string[] | null
@@ -69,7 +70,21 @@ const PartPage = (): ReactNode => {
     setTimeoutId(newTimeout)
   }
 
-  // 채팅 함수
+  // [Case2] 채팅 함수
+
+  // 2-1: 사용완료 함수
+  const setChatDoneHandler = (target_index: number) => {
+    const newChat = chats.map((chat, index) =>
+      target_index === index
+        ? {
+            ...chat,
+            doneClicking: true,
+          }
+        : chat,
+    )
+    setChats(newChat)
+  }
+  // 2-2: 더하기 함수
   const addChatHandler = (newChat: ChatType) => {
     setChats(prev => [...prev, newChat])
   }
@@ -136,6 +151,7 @@ const PartPage = (): ReactNode => {
           category={category}
           chats={chats}
           addChatHandler={addChatHandler}
+          setChatDoneHandler={setChatDoneHandler}
           mainCategoryClickHandler={mainCategoryClickHandler}
           keywordClickHandler={keywordClickHandler}
         />

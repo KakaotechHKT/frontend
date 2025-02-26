@@ -45,7 +45,12 @@ const DesktopNavBar = ({ className }: DesktopNavBarProps): ReactNode => {
         {links.map((link, index) => (
           <li
             key={link.value}
-            className={cn('cursor-pointer', link.value === URL.PART.INDEX.value && 'rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold')}
+            className={cn(
+              'cursor-pointer',
+              link.value === URL.PART.INDEX.value
+                ? 'rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold hover:bg-rcKakaoYellowHover'
+                : 'hover:font-semibold',
+            )}
           >
             <Link href={link.value}>{link.name}</Link>
           </li>

@@ -14,20 +14,21 @@ interface ChatroomProps {
   category: CategoryType
   chats: ChatType[]
   addChatHandler: (newChat: ChatType) => void
+  setChatDoneHandler: (target_index: number) => void
   mainCategoryClickHandler: (...args: any[]) => any
   keywordClickHandler: (keyword: string) => void
 }
 
-const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, keywordClickHandler }: ChatroomProps): ReactNode => {
+const Chatroom = ({
+  category,
+  chats,
+  addChatHandler,
+  setChatDoneHandler,
+  mainCategoryClickHandler,
+  keywordClickHandler,
+}: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
-
-  console.log('chats: ', chats)
-
   if (chatContainerRef.current) {
-    console.log('scrolling down')
-    console.log('scrollTOp: ', chatContainerRef.current.scrollTop)
-    console.log('scrollheight: ', chatContainerRef.current.scrollHeight)
-
     // chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
     requestAnimationFrame(() => {
       chatContainerRef.current?.scrollTo({
@@ -39,10 +40,13 @@ const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, k
 
   // Click Functions
   class ClickHandlers {
-    static mainCategory = (mainCategory: MainCategoriesType): void => {
+    // #1. 메인 카테고리 선택 시
+    static mainCategory = (mainCategory: MainCategoriesType, chat_index: number): void => {
       // 메인 카테고리 변경
       mainCategoryClickHandler(mainCategory)
 
+      // 채팅 사용완료 표시
+      setChatDoneHandler(chat_index)
       // 유저 채팅 더하기
       addChatHandler(Chatting.UserRequest(mainCategory))
 
@@ -64,7 +68,7 @@ const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, k
     }
   }
 
-  const CHATS = chats.map((chat, index) => {
+  const CHATS = chats.map((chat, chat_index) => {
     // #1. AI 응답인 경우
     if (chat.speaker == 'ai' && chat.type) {
       switch (chat.type) {
@@ -76,15 +80,19 @@ const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, k
                 <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-x-1'>
                   {MainCategories.map(cat => (
                     <li
-                      onClick={() => ClickHandlers.mainCategory(cat)}
-                      className='group flex cursor-pointer flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium'
+                      onClick={!chat.doneClicking ? () => ClickHandlers.mainCategory(cat, chat_index) : undefined}
+                      className={cn(
+                        !chat.doneClicking && 'cursor-pointer',
+                        'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
+                      )}
                       key={cat}
                     >
                       <Image src={LogoImage} alt='선호 음식 선택지' className='aspect-square w-6' />
                       <span
                         className={cn(
                           cat === category.mainCategory && 'bg-rcKakaoYellow',
-                          'rounded-md px-1 py-1 group-hover:bg-rcKakaoYellow',
+                          !chat.doneClicking && 'group-hover:bg-rcKakaoYellow',
+                          'rounded-md px-1 py-1',
                         )}
                       >
                         {cat}

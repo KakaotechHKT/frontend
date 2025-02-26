@@ -49,6 +49,7 @@ export default {
         // service colors
         rcKakaoYellow: '#EEC71E',
         rcKakaoLightYellow: '#FFF7C2',
+        rcGreen: '#A3DB7E',
         rcRed: '#FC2312',
         rcBlue: '#175EB5',
         rcGray: '#E1E2E6',
@@ -61,6 +62,7 @@ export default {
 
         // Hover colors
         rcKakaoYellowHover: '#FFDC44',
+        rcGreenHover: '#B9E49C',
       },
       borderRadius: {
         lg: 'var(--radius)',

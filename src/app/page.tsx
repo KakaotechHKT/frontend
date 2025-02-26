@@ -20,7 +20,9 @@ export default function Home() {
           <h1>여러분 환영합니다!</h1>
         </section>
         <section className='flex flex-col items-center justify-start gap-2 font-pretendard text-xl font-semibold'>
-          <h3>따듯한 한 끼 함께하는 밥자리에서 새로운 인연을 만들어보세요!</h3>
+          <h3>
+            함께하는 밥자리 <span className='underline underline-offset-4'>밥팟</span>에서 새로운 인연을 만들어보세요!
+          </h3>
         </section>
         <Link href={URL.PART.INDEX.value} className='relative h-12 w-60'>
           <Button className='h-full w-full text-lg' variant='rcKakaoYellow'>
