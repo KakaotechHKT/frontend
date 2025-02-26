@@ -9,9 +9,11 @@ import { LoginType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
 const LoginPage = (): ReactNode => {
+  const router = useRouter()
   const { isOpen, handleOpen, Modal } = useModal()
   // States for storing user input
   const [id, setId] = useState('')
@@ -22,8 +24,6 @@ const LoginPage = (): ReactNode => {
 
   // Functions
   const loginHandler = () => {
-    console.log('clicked login')
-
     if (id.length === 0 || password.length === 0) {
       console.log('데이터가 충분하지 않습니다.')
       return
@@ -33,7 +33,9 @@ const LoginPage = (): ReactNode => {
       { id, password },
       {
         onSuccess(data, variables, context) {
-          console.log('성공')
+          router.push(URL.MAIN.INDEX.value)
+          // 로그인 정보를 SessionStorage에 저장
+          sessionStorage.setItem('auth', JSON.stringify(data.data))
         },
       },
     )

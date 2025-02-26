@@ -1,9 +1,11 @@
+'use client'
 import { URL } from '@lib/constants/routes'
 import { cn } from '@lib/utils/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
+import { useAuthData } from '@lib/hooks/useAuthData'
 import LogoImage from '@public/images/logo.png'
 
 export const LINKS = {
@@ -35,10 +37,12 @@ interface DesktopNavBarProps {
 }
 
 const DesktopNavBar = ({ className }: DesktopNavBarProps): ReactNode => {
+  const { id, name, nickname, track } = useAuthData()
+  const links = !id ? LINKS.NotAuthenticated : LINKS.Authenticated
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
-        {LINKS.NotAuthenticated.map((link, index) => (
+        {links.map((link, index) => (
           <li
             key={link.value}
             className={cn('cursor-pointer', link.value === URL.PART.INDEX.value && 'rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold')}

@@ -14,7 +14,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
-export type Track = 'fullstack' | 'ai' | 'cloud'
+export type Track = 'FULLSTACK' | 'AI' | 'CLOUD'
 
 type RegisterDTO = {
   id: string
@@ -188,9 +188,9 @@ const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value='fullstack'>풀스택</SelectItem>
-              <SelectItem value='ai'>AI</SelectItem>
-              <SelectItem value='cloud'>클라우드</SelectItem>
+              <SelectItem value='FULLSTACK'>풀스택</SelectItem>
+              <SelectItem value='AI'>AI</SelectItem>
+              <SelectItem value='CLOUD'>클라우드</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
