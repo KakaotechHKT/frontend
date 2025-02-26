@@ -6,7 +6,7 @@ export const useAuthData = (): {
   nickname: string
   track: Track
 } => {
-  const authData = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null
+  const authData = typeof window !== 'undefined' ? sessionStorage.getItem('auth') : null
   if (authData) {
     return JSON.parse(authData)
   }

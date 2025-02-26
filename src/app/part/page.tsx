@@ -26,6 +26,7 @@ export type Geo = {
   longitude: number
 }
 
+export type Speed = 'FAST' | 'MIDDLE' | 'SLOW'
 export type PartDTO = {
   leader: {
     id: number
@@ -39,11 +40,12 @@ export type PartDTO = {
   time: string | undefined
   headCount: number | undefined
   comment: string | undefined
-  mealSpeed: 'FAST' | 'MIDDLE' | 'SLOW'
+  mealSpeed: Speed
 }
 
 const PartPage = (): ReactNode => {
   const { id, name, nickname, track } = useAuthData()
+
   // 지도 관련 상태
   const [center, setCenter] = useState<Geo>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
@@ -235,7 +237,7 @@ const PartPage = (): ReactNode => {
         <KakaoMap center={center} />
       </div>
 
-      {isModalOpen && <PartCreationModal partData={partData} updatePartData={updatePartData} />}
+      {isModalOpen && <PartCreationModal setIsModalOpen={setIsModalOpen} partData={partData} updatePartData={updatePartData} />}
     </>
   )
 }
