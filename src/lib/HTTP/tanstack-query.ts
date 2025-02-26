@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 
+import { DuplicateCheck, Login } from '@lib/HTTP/API/auth'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
+import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
 
 /**
@@ -26,7 +28,7 @@ export const MUTATION_KEYS = {
   AUTH: {
     LOGIN: {
       key: ['login'],
-      // function: Login,
+      function: Login,
     },
     REGISTER: {
       key: ['register'],
@@ -34,7 +36,7 @@ export const MUTATION_KEYS = {
     },
     DUPLICATE: {
       key: ['check_IDDuplicate'],
-      // function: Check_IDDuplicate
+      function: DuplicateCheck,
     },
   },
   CHAT: {
@@ -76,18 +78,18 @@ export const MUTATION_KEYS = {
  * 컴포넌트 내부 필요 로직은 useMutation의 return 값인 mutation의 options를 사용해주세요
  */
 // #1. Auth
-// queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.LOGIN.key, {
-//   mutationFn: MUTATION_KEYS.AUTH.LOGIN.function,
-//   onSuccess(data, variables, context) {
-//     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
-//   },
-// })
-// queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.REGISTER.key, {
-//   mutationFn: MUTATION_KEYS.AUTH.REGISTER.function,
-//   onSuccess(data, variables, context) {
-//     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
-//   },
-// })
+queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.LOGIN.key, {
+  mutationFn: MUTATION_KEYS.AUTH.LOGIN.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.DUPLICATE.key, {
+  mutationFn: MUTATION_KEYS.AUTH.DUPLICATE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
 // queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.UNREGISTER.key, {
 //   mutationFn: MUTATION_KEYS.AUTH.UNREGISTER.function,
 //   onSuccess(data, variables, context) {

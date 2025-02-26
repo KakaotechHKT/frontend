@@ -1,3 +1,4 @@
+import CustomQueryClientProvider from '@lib/provider/QueryClientProvider'
 import { ReactNode } from 'react'
 
 interface AuthLayoutProps {
@@ -5,7 +6,11 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout = ({ children }: AuthLayoutProps): ReactNode => {
-  return <main className='relative flex h-screen w-screen flex-col items-center justify-center bg-rcLightGray'>{children}</main>
+  return (
+    <CustomQueryClientProvider>
+      <main className='relative flex h-screen w-screen flex-col items-center justify-center bg-rcLightGray'>{children}</main>
+    </CustomQueryClientProvider>
+  )
 }
 
 export default AuthLayout

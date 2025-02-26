@@ -5,20 +5,38 @@ import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
+import { LoginType } from '@lib/HTTP/API/auth'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 const LoginPage = (): ReactNode => {
   const { isOpen, handleOpen, Modal } = useModal()
+  // States for storing user input
+  const [id, setId] = useState('')
+  const [password, setPassword] = useState('')
+
+  // Mutations
+  const { mutate: LoginMutate, isPending } = useMutationStore<LoginType>(['login'])
 
   // Functions
   const loginHandler = () => {
-    handleOpen({
-      type: 'info',
-      title: '로그인',
-      details: '존재하지 않는 회원정보입니다. 아이디와 비밀번호를 확인해주세요.',
-    })
+    console.log('clicked login')
+
+    if (id.length === 0 || password.length === 0) {
+      console.log('데이터가 충분하지 않습니다.')
+      return
+    }
+
+    LoginMutate(
+      { id, password },
+      {
+        onSuccess(data, variables, context) {
+          console.log('성공')
+        },
+      },
+    )
   }
   return (
     <>
@@ -27,9 +45,15 @@ const LoginPage = (): ReactNode => {
         <h1 className='self-start px-12 font-dohyeon text-xl'>로그인</h1>
 
         <div className='relative flex w-full flex-col items-start justify-start gap-3 px-12'>
-          <Input type='text' placeholder='아이디' className='rounded-md' />
+          <Input type='text' placeholder='아이디' className='rounded-md' value={id} onChange={e => setId(e.target.value)} />
           <div className='relative h-11 w-full rounded-md'>
-            <Input type='password' placeholder='비밀번호' className='h-full w-full' />
+            <Input
+              type='password'
+              placeholder='비밀번호'
+              className='h-full w-full'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
             <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
           </div>
 

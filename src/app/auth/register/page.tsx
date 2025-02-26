@@ -6,15 +6,42 @@ import { Input } from '@components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
+import { DuplicateCheckType } from '@lib/HTTP/API/auth'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { cn } from '@lib/utils/utils'
 import Link from 'next/link'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
+
+type RegisterDTO = {
+  id: string
+  password: string
+  nickname: string // 카테부 영어이름
+  name: string // 실명
+  track: 'fullstack' | 'ai' | 'cloud'
+}
 
 const RegisterPage = (): ReactNode => {
   const { isOpen, handleOpen, Modal } = useModal()
 
   const [step, setStep] = useState<number>(0)
 
+  const [data, setData] = useState<RegisterDTO>({
+    id: '',
+    password: '',
+    nickname: '',
+    name: '',
+    track: 'fullstack', // 기본값
+  })
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
+  // formData 일부를 업데이트하는 헬퍼 함수
+  const updateData = (partial: Partial<RegisterDTO>) => {
+    setData(prev => ({ ...prev, ...partial }))
+  }
   // Functions
   // TODO: 회원가입 API 연동
   const registerHandler = () => {
@@ -28,7 +55,11 @@ const RegisterPage = (): ReactNode => {
     <>
       <Introduce className='flex flex-col items-center justify-start gap-6' />
 
-      {step === 0 ? <RegisterStep onNextStep={() => setStep(1)} /> : <KTBInfoStep registerHandler={registerHandler} />}
+      {step === 0 ? (
+        <RegisterStep data={data} updateData={updateData} onNextStep={() => setStep(1)} />
+      ) : (
+        <KTBInfoStep data={data} updateData={updateData} registerHandler={registerHandler} />
+      )}
       <Modal />
     </>
   )
@@ -37,17 +68,59 @@ const RegisterPage = (): ReactNode => {
 export default RegisterPage
 
 interface RegisterPageProps {
+  data: RegisterDTO
   onNextStep: () => void
+  updateData: (partial: Partial<RegisterDTO>) => void
 }
-const RegisterStep = ({ onNextStep }: RegisterPageProps) => {
+const RegisterStep = ({ data, onNextStep, updateData }: RegisterPageProps) => {
+  const [duplicateChecked, setDuplicatedChecked] = useState<boolean>(false)
+  // 중보검사 함수
+  const { mutate: DuplicateCheckMutate, isPending } = useMutationStore<DuplicateCheckType>(['check_IDDuplicate'])
+
+  const duplicateHandler = () => {
+    // TODO: 에러 핸들링 UI 필요
+    if (data.id.length === 0) {
+      alert('아이디 길이가 0이어서 안됨')
+      return
+    }
+    DuplicateCheckMutate(
+      {
+        id: data.id,
+      },
+      {
+        onSuccess(data, variables, context) {
+          alert('중복 검사 성공')
+
+          setDuplicatedChecked(true)
+        },
+      },
+    )
+  }
   return (
-    <div className='mt-8 flex w-1/2 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
+    <div className='mt-8 flex w-[70%] max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='self-start px-12 font-dohyeon text-xl'>회원가입 (1/2)</h1>
 
       <div className='relative flex w-full flex-col items-start justify-start gap-3 px-12'>
-        <Input type='text' placeholder='아이디' className='rounded-md' />
+        <div className='relative flex w-full items-center justify-between gap-2'>
+          <Input
+            type='text'
+            placeholder='아이디'
+            className={cn(duplicateChecked && 'border-rcBlue', 'rounded-md')}
+            value={data.id}
+            onChange={e => updateData({ id: e.target.value })}
+          />
+          <Button onClick={duplicateHandler} variant='rcKakaoYellow' className='h-full'>
+            중복 검사
+          </Button>
+        </div>
         <div className='relative h-11 w-full rounded-md'>
-          <Input type='password' placeholder='비밀번호 (10자리 이상)' className='h-full w-full' />
+          <Input
+            type='password'
+            placeholder='비밀번호 (10자리 이상)'
+            className='h-full w-full'
+            value={data.password}
+            onChange={e => updateData({ password: e.target.value })}
+          />
           <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
         </div>
 
@@ -75,10 +148,12 @@ const RegisterStep = ({ onNextStep }: RegisterPageProps) => {
 
 interface KTBInfoStepProps {
   className?: string
+  data: RegisterDTO
   registerHandler: () => void
+  updateData: (partial: Partial<RegisterDTO>) => void
 }
 
-const KTBInfoStep = ({ className, registerHandler }: KTBInfoStepProps) => {
+const KTBInfoStep = ({ className, data, registerHandler, updateData }: KTBInfoStepProps) => {
   return (
     <div className='mt-8 flex w-1/2 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='flex w-full flex-col items-start justify-start self-start px-12 font-dohyeon text-xl'>
