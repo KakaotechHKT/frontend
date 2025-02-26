@@ -48,7 +48,6 @@ const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, k
     static keyword = (keyword: string, chat_index: number) => {
       // 키워드 변경
       keywordClickHandler(keyword, chat_index)
-      console.log('클릭 핸들러에서 받은 keywords: ', keyword)
 
       // // 유저 채팅 더하기
       // if (category.keywords) {

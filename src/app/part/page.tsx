@@ -117,7 +117,11 @@ const PartPage = (): ReactNode => {
     // 기존에 키워드가 있었던 경우
     else {
       // 키워드 있었으면 제거, 없었으면 추가
-      newKeywords = category.keywords.includes(keyword) ? category.keywords.filter(k => k !== keyword) : [...category.keywords, keyword]
+      newKeywords = category.keywords.includes(keyword)
+        ? category.keywords.filter(k => k !== keyword)
+        : category.keywords.length < 3
+          ? [...category.keywords, keyword]
+          : category.keywords
       setCategory(prev => ({
         ...prev,
         keywords: newKeywords,
