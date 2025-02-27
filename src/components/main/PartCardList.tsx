@@ -31,7 +31,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     contents = data.data.babpats.map((elm: babpartDTO) => <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />)
   }
 
-  return <ul className={cn('grid w-full grid-cols-4 place-items-start gap-x-6 gap-y-8 px-8', className)}>{contents}</ul>
+  return <ul className={cn('grid w-full grid-cols-4 place-items-start gap-x-8 gap-y-10 px-8', className)}>{contents}</ul>
 }
 
 export default PartCardList

@@ -12,7 +12,7 @@ export const TrackTransformer = {
 }
 
 export const SpeedTransformer = {
-  FAST: '빠른 식사',
-  MIDDLE: '적당한 속도 식사',
-  SLOW: '천천히 식사',
+  FAST: '빠르게',
+  MIDDLE: '적당히',
+  SLOW: '천천히',
 }

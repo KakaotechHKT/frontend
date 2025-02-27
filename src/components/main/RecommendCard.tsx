@@ -1,6 +1,6 @@
 'use client'
 import { Menu } from '@app/part/page'
-import SpoonImage from '@public/images/spoon.svg'
+import { cn } from '@lib/utils/utils'
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
@@ -20,9 +20,11 @@ export type RecommendBabpartDTO = {
 }
 interface RecommendPartCardProps {
   pardData: RecommendBabpartDTO
+  isVisible: boolean
+  className?: string
 }
 
-const RecommendPartCard = ({ pardData }: RecommendPartCardProps): ReactNode => {
+const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCardProps): ReactNode => {
   const { name, categories, mainMenus, thumbnailUrl, isPromotion } = pardData
 
   const parseMenus = (menuString: string): Menu[] => {
@@ -43,28 +45,51 @@ const RecommendPartCard = ({ pardData }: RecommendPartCardProps): ReactNode => {
   }
   const mainMenu: Menu[] = parseMenus(mainMenus)
 
+  const getAveragePrice = (menuList: Menu[]): number => {
+    if (menuList.length === 0) return 0 // 빈 배열 방지
+
+    const totalPrice = menuList.reduce((sum, menu) => sum + menu.price, 0)
+    return totalPrice / menuList.length
+  }
+
+  const averagePrice: string = getAveragePrice(mainMenu) >= 10000 ? '만원 이상' : '만원 미만'
+
+  const kakaoLink = `https://map.kakao.com/?sName=카카오테크 부트캠프 교육장&eName=${name}`
   return (
-    <>
-      <li className='group relative flex h-full flex-col items-start justify-between rounded-xl border-sm border-solid border-rcBlack px-3 py-3'>
-        <div className='flex w-full items-center justify-center font-dohyeon'>
-          <span className='text-ellipsis text-nowrap text-lg'>{name}</span>
-          {isPromotion && <Image className='absolute right-3' src={SpoonImage} alt='spoon-image' />}
+    <li
+      onClick={() => window.open(kakaoLink, '_blank')}
+      className={cn(
+        'group relative flex h-full w-full cursor-pointer items-start justify-between rounded-xl border-sm border-solid border-rcBlack shadow-rc-shadow',
+        className,
+        `transition-opacity duration-700 ease-in-out`,
+        `${isVisible ? 'opacity-100' : 'opacity-0'}`,
+      )}
+    >
+      <div className='relative h-full'>
+        <Image
+          className='aspect-square h-full min-w-40 shrink-0 rounded-l-xl shadow-rc-shadow group-hover:opacity-40'
+          src={thumbnailUrl}
+          width={100}
+          height={100}
+          alt='식당 이미지 '
+        />
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-dohyeon text-lg text-transparent underline underline-offset-4 group-hover:text-rcBlack'>
+          지도 링크
         </div>
+      </div>
+      {/* {isPromotion && <Image className='absolute right-3' src={SpoonImage} alt='spoon-image' />} */}
+      <div className='flex h-full flex-grow flex-col items-start justify-start px-3 py-2'>
+        <span className='flex w-full items-center justify-start text-ellipsis text-nowrap font-dohyeon text-rcBlue'>{name}</span>
+
         <div className='mt-2 flex w-full items-start justify-start gap-4'>
-          <Image
-            className='aspect-square w-[45%] shrink-0 rounded-xl shadow-rc-shadow'
-            src={thumbnailUrl}
-            width={100}
-            height={100}
-            alt='식당 이미지 '
-          />
           <div className='relative flex h-full grow flex-col items-start justify-start text-xs text-rcDarkGray'>
             <div className='my-1 flex items-center justify-start gap-2 text-xss'>
               {categories.map(cat => (
                 <span key={cat}># {cat}</span>
               ))}
             </div>
-            <span className='my-1 text-xs text-rcBlack'>대표메뉴</span>
+            <span className='text-xss'># {averagePrice}</span>
+            <span className='my-1 mt-3 text-xs font-semibold text-rcBlack'>대표메뉴</span>
             <ul className='flex flex-col items-start justify-start text-xss'>
               {mainMenu.slice(0, 3).map(menu => (
                 <li key={menu.name}>-{menu.name}</li>
@@ -72,8 +97,8 @@ const RecommendPartCard = ({ pardData }: RecommendPartCardProps): ReactNode => {
             </ul>
           </div>
         </div>
-      </li>
-    </>
+      </div>
+    </li>
   )
 }
 

@@ -1,7 +1,6 @@
 'use client'
 import { Track } from '@app/auth/register/page'
 import { Menu, Speed } from '@app/part/page'
-import { Button } from '@components/ui/button'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
@@ -61,26 +60,23 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   const { name, mainMenus, categories, thumbnailUrl } = restaurantInfo
   const { id, comment, capacity, mealSpeed, date, time, leaderProfile } = babpatInfo
 
-  console.log(mainMenus)
+  const parseMenus = (menuString: string): Menu[] => {
+    // 1. 메뉴 항목 `{}` 단위로 분리
+    const menuItems = menuString.match(/\{[^{}]*\}/g)
+    if (!menuItems) return []
 
-  const parseMainMenusSimple = (mainMenus: string): Menu[] => {
-    return mainMenus
-      .slice(1, -1) // 앞뒤 대괄호 제거
-      .split('}, {') // 아이템별 분리
-      .slice(0, 3) // 최대 3개만 처리
-      .map(item => {
-        const obj: any = {} // 빈 객체 생성
-        item
-          .replace(/[{}]/g, '') // `{}` 제거
-          .split(', ') // 속성 분리
-          .forEach(pair => {
-            const [key, value] = pair.split('=') // `=` 기준으로 키-값 분리
-            obj[key.trim()] = isNaN(Number(value)) ? value.trim() : Number(value) // 숫자는 숫자로 변환
-          })
-        return obj as Menu
-      })
+    // 2. 각 메뉴 항목을 파싱하여 Menu 타입 리스트로 변환
+    return menuItems.map(item => {
+      const nameMatch = item.match(/name=([^,]*)/) // name= 뒤의 값 가져오기
+      const priceMatch = item.match(/price=(\d+)/) // price= 뒤의 숫자 가져오기
+
+      return {
+        name: nameMatch ? nameMatch[1].trim() : '', // 공백 제거 후 저장
+        price: priceMatch ? Number(priceMatch[1]) : 0, // 숫자로 변환
+      }
+    })
   }
-  const mainMenu: Menu[] = parseMainMenusSimple(mainMenus)
+  const mainMenu: Menu[] = parseMenus(mainMenus)
 
   const { mutate: PartApplyMutate, isPending } = useMutationStore<PartApplyType>(['part'])
 
@@ -111,53 +107,59 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   }
   return (
     <>
-      <li className='group relative flex h-full flex-col items-start justify-between rounded-xl border-sm border-solid border-rcBlack px-3 py-3 hover:scale-105'>
-        <div className='flex w-full items-center justify-between font-dohyeon'>
-          <span className='text-ellipsis text-nowrap text-lg'>{comment}</span>
-          <span className='text-sm'>
-            {capacity.filledSlots}/{capacity.totalSlots}
-          </span>
-        </div>
-        <div className='mt-2 flex w-full items-start justify-start gap-4'>
+      <li
+        onClick={applyHandler}
+        className='group relative flex h-full cursor-pointer flex-col items-start justify-start rounded-xl border-sm border-solid border-rcBlack'
+      >
+        <div className='relative w-full'>
           <Image
-            className='aspect-square w-[45%] shrink-0 rounded-xl shadow-rc-shadow'
+            className='aspect-square w-full shrink-0 rounded-t-xl shadow-rc-shadow group-hover:opacity-40'
             src={thumbnailUrl}
             width={100}
             height={100}
             alt='식당 이미지 '
           />
-          <div className='relative flex h-full grow flex-col items-start justify-start text-xs text-rcDarkGray'>
-            <div className='w-full text-ellipsis whitespace-nowrap font-dohyeon text-sm text-rcBlue group-hover:text-rcBlueHover'>
-              {name}
-            </div>
-            <div className='flex items-center justify-between gap-1 text-xss'>
-              <span>{date}</span>
-              <span>{time.slice(0, 5)}</span>
-            </div>
-
-            <div className='my-1 flex items-center justify-start gap-2 text-xss'>
-              {categories.map(cat => (
-                <span key={cat}># {cat}</span>
-              ))}
-            </div>
-            <span className='my-1 text-xs text-rcBlack'>대표메뉴</span>
-            <ul className='flex flex-col items-start justify-start text-xss'>
-              {mainMenu.map(menu => (
-                <li key={menu.name}>-{menu.name}</li>
-              ))}
-            </ul>
+          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-dohyeon text-lg text-transparent underline underline-offset-4 group-hover:text-rcBlack'>
+            밥팟 참여하기
           </div>
         </div>
+        <div className='relative flex w-full flex-col items-start justify-start py-3'>
+          <div className='mb-2 flex w-full flex-col items-start justify-start px-2'>
+            <span className='text-ellipsis text-nowrap text-lg'>{comment}</span>
+            <span className='mb-2 mt-2 w-full text-ellipsis whitespace-nowrap text-xs font-medium text-rcBlue group-hover:text-rcBlueHover'>
+              {name}
+            </span>
 
-        <span className='mt-2 w-full font-dohyeon text-sm'>
-          {leaderProfile.nickname} ({leaderProfile.name} / {TrackTransformer[leaderProfile.track]})
-        </span>
+            <div className='flex w-full items-center justify-between'>
+              <div className='my-1 flex items-center justify-start gap-1 text-xss'>
+                {categories.map(cat => (
+                  <span key={cat}># {cat}</span>
+                ))}
+                <span className='text-xss'># {SpeedTransformer[mealSpeed]}</span>
+              </div>
 
-        <div className='flex w-full items-end justify-between'>
+              <div className='flex items-center justify-between gap-1 text-xss'>
+                <span>{date}</span>
+                <span>{time.slice(0, 5)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className='flex w-full items-center justify-between border-t-sm border-solid border-rcDarkGray px-2 pt-2 text-xs'>
+            <span className=''>
+              {leaderProfile.nickname} ({leaderProfile.name} / {TrackTransformer[leaderProfile.track]})
+            </span>
+            <span className=''>
+              {capacity.filledSlots}/{capacity.totalSlots}
+            </span>
+          </div>
+
+          {/* <div className='flex w-full items-end justify-between'>
           <span className='text-xss'># {SpeedTransformer[mealSpeed]}</span>
           <Button onClick={applyHandler} variant='rcKakaoYellow' className='h-8'>
             신청
           </Button>
+        </div> */}
         </div>
       </li>
       <Modal confirmCallback={comfirmHandler} />

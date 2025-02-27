@@ -29,9 +29,9 @@ export default function Home() {
           </Button>
         </Link> */}
 
-        <div className='mb-7 flex flex-col items-center justify-start gap-1'>
-          <span className='font-dohyeon text-2xl'>밥팟의 추천 장소</span>
-          <span className='text-xss text-rcDarkGray'>* 밥팟 사용자들의 선호도를 기반으로 추천드려요!</span>
+        <div className='mb-7 flex w-full flex-col items-center justify-start gap-1'>
+          <span className='font-dohyeon text-2xl'>밥팟의 추천 장소 🍚</span>
+          <span className='text-xss text-rcDarkGray'>* 밥팟팀의 선호도를 기반으로 추천드려요!</span>
           <RecommendCardList className='my-6' />
         </div>
         <div className='flex flex-col items-center justify-start gap-1'>

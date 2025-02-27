@@ -9,9 +9,7 @@ interface PlaceMapMarkerProps {
 
 export const PlaceMapMarker = ({ latitude, longitude, name }: PlaceMapMarkerProps): ReactNode => {
   const handleOpenKakaoMap = (startName: string, destName: string) => {
-    console.log(destName)
-
-    const kakaoMapUrl = `https://map.kakao.com/?sName=${startName}&eName=${destName}&by=FOOT`
+    const kakaoMapUrl = `https://map.kakao.com/?sName=${startName}&eName=${destName}`
 
     window.open(kakaoMapUrl, '_blank')
   }
