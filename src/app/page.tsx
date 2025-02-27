@@ -1,3 +1,4 @@
+import Footer from '@components/Footer'
 import Header from '@components/Header'
 import PartCardList from '@components/main/PartCardList'
 import RecommendCardList from '@components/main/RecommendCardList'
@@ -40,6 +41,7 @@ export default function Home() {
           <PartCardList className='my-6' />
         </div>
       </main>
+      <Footer className='z-10 h-[12dvh] w-full' />
     </>
   )
 }
