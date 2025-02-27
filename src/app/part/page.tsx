@@ -44,8 +44,51 @@ export type PartDTO = {
   mealSpeed: Speed | null
 }
 
+type Menu = {
+  name: string
+  price: number
+}
+
+export type placeDTO = {
+  id: number
+  name: string
+  mainCategory: string
+  subCategory: string
+  latitude: number
+  longitude: number
+  url: string
+  menu: Menu[]
+}
+
 const PartPage = (): ReactNode => {
   const authData = useAuthData()
+
+  // 검색값
+  const [placeList, setPlaceList] = useState<placeDTO[]>([
+    {
+      id: 1,
+      name: '봉피양 판교점',
+      mainCategory: '한식',
+      subCategory: '고기',
+      latitude: 37.4021235864699,
+      longitude: 127.10858950934346,
+      url: 'https://map.kakao.com/?q=%EB%B4%89%ED%94%BC%EC%96%91%20%ED%8C%90%EA%B5%90%EC%A0%90',
+      menu: [
+        {
+          name: '평양냉면',
+          price: 16000,
+        },
+        {
+          name: '돼지목심본갈비(270g)',
+          price: 36000,
+        },
+      ],
+    },
+  ])
+
+  useEffect(() => {
+    console.log(placeList)
+  }, [placeList])
 
   // 지도 관련 상태
   const [center, setCenter] = useState<Geo>(KTB_Position)
@@ -122,6 +165,7 @@ const PartPage = (): ReactNode => {
     let newKeywords: string[] | null
     if (!category.keywords) {
       newKeywords = [keyword]
+      console.log('newKeywords', newKeywords)
       setCategory(prev => ({
         ...prev,
         keywords: newKeywords,
@@ -135,6 +179,7 @@ const PartPage = (): ReactNode => {
         : category.keywords.length < 3
           ? [...category.keywords, keyword]
           : category.keywords
+
       setCategory(prev => ({
         ...prev,
         keywords: newKeywords,
@@ -157,6 +202,8 @@ const PartPage = (): ReactNode => {
   const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
 
   const sendKeywordSelection = (newKeywords: string[], chat_index: number) => {
+    console.log('send got keywords', newKeywords)
+
     if (newKeywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
 
     // 채팅 사용완료 표시
@@ -179,23 +226,23 @@ const PartPage = (): ReactNode => {
     }
 
     // AI 서버 유청 보내기
-    sendClickChat()
+    sendClickChat(newKeywords)
   }
   // 클릭으로 API 호출하는 경우
-  const sendClickChat = () => {
+  const sendClickChat = (newKeywords: string[]) => {
     if (chatId) {
       ChattingMutate(
         {
           chatId: chatId,
           category: {
             mainCategory: category.mainCategory,
-            keywords: category.keywords,
+            keywords: newKeywords,
           },
           chat: null,
         },
         {
           onSuccess(data, variables, context) {
-            console.log('created response of AI')
+            setPlaceList(data.data.placeList)
           },
         },
       )
@@ -268,6 +315,7 @@ const PartPage = (): ReactNode => {
         <div className='my-1 h-1 w-full bg-rcLightGray' />
 
         <PlaceList
+          placeList={placeList}
           centerHandler={centerHandler}
           focusedPlaceId={focusedPlaceId}
           focusedPlaceIdHandler={focusedPlaceIdHandler}
@@ -295,7 +343,7 @@ const PartPage = (): ReactNode => {
 
       {/* 카카오맵 */}
       <div className='h-screen grow'>
-        <KakaoMap center={center} />
+        <KakaoMap center={center} placeList={placeList} />
       </div>
 
       {isModalOpen && (
