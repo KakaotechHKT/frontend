@@ -78,7 +78,7 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   }
   const mainMenu: Menu[] = parseMenus(mainMenus)
 
-  const { mutate: PartApplyMutate, isPending } = useMutationStore<PartApplyType>(['part'])
+  const { mutate: PartApplyMutate, isPending } = useMutationStore<PartApplyType>(['part', 'apply'])
 
   const applyHandler = () => {
     const details = `${name} 밥팟을 신청하시겠습니까?`
@@ -90,6 +90,8 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   }
 
   const comfirmHandler = () => {
+    console.log('entered confirm')
+
     PartApplyMutate(
       {
         ID: userID,

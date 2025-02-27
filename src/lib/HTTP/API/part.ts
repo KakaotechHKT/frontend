@@ -114,6 +114,9 @@ export const PartApply = async ({ ID, babpatID }: PartApplyType) => {
     userId: ID,
     babpatId: babpatID,
   }
+  console.log('part apply')
+
+  console.log(body)
   const res = await customFetch(
     ROUTE.url,
     {
