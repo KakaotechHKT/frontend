@@ -26,5 +26,9 @@ export const API_ROUTES = {
       method: HttpMethod.POST,
       url: '/chat',
     },
+    CHATTING: {
+      method: HttpMethod.POST,
+      url: '/chat/chatting',
+    },
   },
 }

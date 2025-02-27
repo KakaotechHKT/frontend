@@ -4,7 +4,7 @@ import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
 import { useMutation } from '@tanstack/react-query'
-import { CreateChat } from './API/chat'
+import { Chatting, CreateChat } from './API/chat'
 
 /**
  * GET
@@ -65,7 +65,7 @@ export const MUTATION_KEYS = {
     },
     CHATTING: {
       key: ['chatting'],
-      // function: CHATTING,
+      function: Chatting,
     },
   },
 } as const
@@ -114,6 +114,13 @@ queryClient.setMutationDefaults(MUTATION_KEYS.PART.CREATE.key, {
  */
 queryClient.setMutationDefaults(MUTATION_KEYS.CHAT.CREATE.key, {
   mutationFn: MUTATION_KEYS.CHAT.CREATE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+
+queryClient.setMutationDefaults(MUTATION_KEYS.CHAT.CHATTING.key, {
+  mutationFn: MUTATION_KEYS.CHAT.CHATTING.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },

@@ -9,7 +9,7 @@ import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
 import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
-import { CreateChatType } from '@lib/HTTP/API/chat'
+import { ChattingType, CreateChatType } from '@lib/HTTP/API/chat'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
@@ -51,13 +51,15 @@ const PartPage = (): ReactNode => {
   const [center, setCenter] = useState<Geo>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
   // 채팅 관련 상태
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+  const [chatId, setChatId] = useState<number>()
   const [category, setCategory] = useState<CategoryType>({
     mainCategory: null,
     keywords: null,
   })
 
-  const [chatId, setChatId] = useState<number>()
+  const [userChat, setUserChat] = useState<string>('')
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
   // 밥팟 데이터
@@ -75,7 +77,7 @@ const PartPage = (): ReactNode => {
     setPartData(prev => ({ ...prev, ...partial }))
   }
 
-  const { mutate: CreateChatMutate, isPending } = useMutationStore<CreateChatType>(['chat'])
+  const { mutate: CreateChatMutate, isPending: isCreatingChat } = useMutationStore<CreateChatType>(['chat'])
 
   // #1. 첫 입장시 ChatID 만들기
   useEffect(() => {
@@ -152,9 +154,10 @@ const PartPage = (): ReactNode => {
     setTimeoutId(newTimeout)
   }
 
-  // TODO: 키워드 선택 요청 함수
+  const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
+
   const sendKeywordSelection = (newKeywords: string[], chat_index: number) => {
-    // if (keywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
+    if (newKeywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
 
     // 채팅 사용완료 표시
     const newChat = chats.map((chat, index) =>
@@ -174,16 +177,56 @@ const PartPage = (): ReactNode => {
       const userChat = `${category.mainCategory}, ${keywords}`
       addChatHandler(Chatting.UserRequest(userChat))
     }
+
+    // AI 서버 유청 보내기
+    sendClickChat()
+  }
+  // 클릭으로 API 호출하는 경우
+  const sendClickChat = () => {
+    if (chatId) {
+      ChattingMutate(
+        {
+          chatId: chatId,
+          category: {
+            mainCategory: category.mainCategory,
+            keywords: category.keywords,
+          },
+          chat: null,
+        },
+        {
+          onSuccess(data, variables, context) {
+            console.log('created response of AI')
+          },
+        },
+      )
+    }
+  }
+
+  // 유저가 채팅창 이용한 경우
+  const sendInputChat = () => {
+    if (chatId) {
+      ChattingMutate(
+        {
+          chatId: chatId,
+          category: {
+            mainCategory: null,
+            keywords: null,
+          },
+          chat: userChat,
+        },
+        {
+          onSuccess(data, variables, context) {
+            console.log('created response of AI')
+          },
+        },
+      )
+    }
   }
 
   //  채팅 추가하기 함수
   const addChatHandler = (newChat: ChatType) => {
     setChats(prev => [...prev, newChat])
   }
-
-  useEffect(() => {
-    console.log(chats)
-  }, [chats])
 
   // 지도 관련 함수
   const centerHandler = (center: Geo) => {
@@ -240,6 +283,9 @@ const PartPage = (): ReactNode => {
         {/* 채팅내용 */}
         <Chatroom
           category={category}
+          userChat={userChat}
+          setUserChat={setUserChat}
+          sendInputChat={sendInputChat}
           chats={chats}
           addChatHandler={addChatHandler}
           mainCategoryClickHandler={mainCategoryClickHandler}

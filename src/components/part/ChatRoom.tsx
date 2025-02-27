@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { ReactNode, useRef } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useRef } from 'react'
 
 import { CategoryType } from '@app/part/page'
 import AIChatFrame from '@components/part/AIChatFrame'
@@ -13,13 +13,25 @@ import LogoImage from '@public/images/logo.svg'
 
 interface ChatroomProps {
   category: CategoryType
+  userChat: string
+  setUserChat: Dispatch<SetStateAction<string>>
+  sendInputChat: () => void
   chats: ChatType[]
   addChatHandler: (newChat: ChatType) => void
   mainCategoryClickHandler: (...args: any[]) => any
   keywordClickHandler: (keyword: string, chat_index: number) => void
 }
 
-const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, keywordClickHandler }: ChatroomProps): ReactNode => {
+const Chatroom = ({
+  category,
+  userChat,
+  setUserChat,
+  sendInputChat,
+  chats,
+  addChatHandler,
+  mainCategoryClickHandler,
+  keywordClickHandler,
+}: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   if (chatContainerRef.current) {
     // chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
@@ -146,6 +158,11 @@ const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, k
     }
   })
 
+  const sendChatAndclear = () => {
+    sendInputChat()
+    setUserChat('')
+  }
+
   return (
     <>
       <div ref={chatContainerRef} className='flex grow flex-col items-start justify-start overflow-y-auto px-4 pb-2'>
@@ -156,13 +173,18 @@ const Chatroom = ({ category, chats, addChatHandler, mainCategoryClickHandler, k
           type='text'
           placeholder='메세지를 입력해주세요.'
           className='border-none text-xss shadow-none outline-none focus:outline-none focus-visible:ring-0'
+          value={userChat}
+          onChange={e => setUserChat(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              sendChatAndclear()
+            }
+          }}
         />
-        <LucideIcon name='CircleArrowUp' size={30} strokeWidth={1} />
+        <LucideIcon name='CircleArrowUp' size={30} strokeWidth={1} onClick={sendChatAndclear} />
       </div>
     </>
   )
 }
 
 export default Chatroom
-
-const AIChat = () => {}
