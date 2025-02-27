@@ -1,8 +1,5 @@
-import Link from 'next/link'
-
 import Header from '@components/Header'
-import { Button } from '@components/ui/button'
-import { URL } from '@lib/constants/routes'
+import PartCardList from '@components/main/PartCardList'
 
 export default function Home() {
   return (
@@ -25,11 +22,17 @@ export default function Home() {
             함께하는 밥자리 <span className='underline underline-offset-4'>밥팟</span>에서 새로운 인연을 만들어보세요!
           </h3>
         </section>
-        <Link href={URL.PART.INDEX.value} className='relative h-12 w-60'>
+        {/* <Link href={URL.PART.INDEX.value} className='relative h-12 w-60'>
           <Button className='h-full w-full text-lg' variant='rcKakaoYellow'>
             밥팟 생성하기
           </Button>
-        </Link>
+        </Link> */}
+        <div className='flex flex-col items-center justify-start gap-1'>
+          <span className='font-dohyeon text-2xl'>밥팟 참여하기</span>
+          <span className='text-xss text-rcDarkGray'>* 밥팟 사용자들의 선호도를 기반으로 추천드려요!</span>
+        </div>
+
+        <PartCardList />
       </main>
     </>
   )

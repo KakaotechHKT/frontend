@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { Speed } from '@app/part/page'
 import { API_ROUTES } from '@lib/constants/endpoint'
 
-import { customFetch } from '../Fetch'
+import { customFetch, SuccessResponse } from '../Fetch'
 
 export interface PartCreateType {
   leaderID: number
@@ -47,4 +47,28 @@ export const PartCreate = async ({ leaderID, placeID, date, time, headCount, com
   // const data: SuccessResponse = await res.json()
   // 204 응답으로 반환 데이터가 없습니다
   return null
+}
+
+export interface PartListType {}
+
+export const PartList = async ({}: PartListType) => {
+  const ROUTE = API_ROUTES.PART.LIST
+
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+    },
+    'WebServer',
+  )
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  const data: SuccessResponse = await res.json()
+  return data
 }

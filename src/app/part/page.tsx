@@ -45,7 +45,7 @@ export type PartDTO = {
   mealSpeed: Speed | null
 }
 
-type Menu = {
+export type Menu = {
   name: string
   price: number
 }
@@ -67,10 +67,6 @@ const PartPage = (): ReactNode => {
 
   // 검색값
   const [placeList, setPlaceList] = useState<placeDTO[]>(placeListDummyData)
-
-  useEffect(() => {
-    console.log(placeList)
-  }, [placeList])
 
   // 지도 관련 상태
   const [center, setCenter] = useState<Geo>(KTB_Position)

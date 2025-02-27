@@ -12,13 +12,8 @@ import { Chatting, CreateChat } from './API/chat'
  */
 
 export const QUERY_KEYS = {
-  SEAT: {
-    STATUS: ['seat'],
-    USER_STATUS: ['seat', 'user'],
-  },
-  ROOM: {
-    STATUS: ['room'],
-    USER_STATUS: ['room', 'user'],
+  PART: {
+    LIST: ['part'],
   },
 }
 /*

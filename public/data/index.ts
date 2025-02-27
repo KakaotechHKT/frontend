@@ -10,3 +10,9 @@ export const TrackTransformer = {
   AI: 'AI',
   CLOUD: '클라우드',
 }
+
+export const SpeedTransformer = {
+  FAST: '빠른 식사',
+  MIDDLE: '적당한 속도 식사',
+  SLOW: '천천히 식사',
+}
