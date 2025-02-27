@@ -72,3 +72,35 @@ export const PartList = async ({}: PartListType) => {
   const data: SuccessResponse = await res.json()
   return data
 }
+
+export interface PartApplyType {
+  ID: number
+  babpatID: number
+}
+
+export const PartApply = async ({ ID, babpatID }: PartApplyType) => {
+  const ROUTE = API_ROUTES.PART.APPLY
+
+  const body = {
+    userId: ID,
+    babpatId: babpatID,
+  }
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      body: JSON.stringify(body),
+    },
+    'WebServer',
+  )
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  const data: SuccessResponse = await res.json()
+  return data
+}

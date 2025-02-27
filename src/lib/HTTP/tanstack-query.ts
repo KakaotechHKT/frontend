@@ -1,5 +1,5 @@
 import { DuplicateCheck, Login, Register } from '@lib/HTTP/API/auth'
-import { PartCreate } from '@lib/HTTP/API/part'
+import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
@@ -46,11 +46,7 @@ export const MUTATION_KEYS = {
     },
     APPLY: {
       key: ['part'],
-      // function: PartApply
-    },
-    POSTS: {
-      key: ['part', 'id'],
-      // function: PartPosts,
+      function: PartApply,
     },
   },
   CHAT: {
@@ -99,6 +95,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.REGISTER.key, {
  */
 queryClient.setMutationDefaults(MUTATION_KEYS.PART.CREATE.key, {
   mutationFn: MUTATION_KEYS.PART.CREATE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.PART.APPLY.key, {
+  mutationFn: MUTATION_KEYS.PART.APPLY.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },
