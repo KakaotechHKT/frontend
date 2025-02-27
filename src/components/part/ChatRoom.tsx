@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { Dispatch, ReactNode, SetStateAction, useRef } from 'react'
+import { Dispatch, ReactNode, SetStateAction, useRef, useState } from 'react'
 
 import { CategoryType } from '@app/part/page'
 import AIChatButtonFrame from '@components/part/AIChatButtonFrame'
@@ -38,6 +38,8 @@ const Chatroom = ({
   restartClickHandler,
 }: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
+  const [isComposing, setIsComposing] = useState<boolean>(false) // 한글 조합 상태 추적
+
   if (chatContainerRef.current) {
     // chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
     requestAnimationFrame(() => {
@@ -69,7 +71,7 @@ const Chatroom = ({
 
     static restart = (chat_index: number) => {
       // 카테고리, 키워드 초기화
-      updateCategory({ keywords: null, mainCategory: null })
+      updateCategory({ keywords: '', mainCategory: '' })
 
       // 채팅 잠금
       restartClickHandler(chat_index)
@@ -118,8 +120,6 @@ const Chatroom = ({
             </AIChatFrame>
           )
         case ResponseType.MAIN_CATEGORY:
-          console.log('entered here', chat)
-
           if (category.mainCategory) {
             const keywordCategories = Categories[category.mainCategory]
             return (
@@ -162,6 +162,7 @@ const Chatroom = ({
               clickHandler={!chat.doneClicking ? () => ClickHandlers.restart(chat_index) : undefined}
             />
           )
+        // 유저의 채팅
         case ResponseType.ELSE:
           return <div key={key}>나머지</div>
       }
@@ -169,16 +170,21 @@ const Chatroom = ({
     // #2. 유저의 요청인 경우
     else if (chat.speaker === 'user') {
       return (
-        <div key={chat.content} className='self-end rounded-md bg-rcKakaoYellow px-2 py-3 text-xs'>
+        <div key={chat.content} className='my-2 self-end rounded-md bg-rcKakaoYellow px-2 py-3 text-xs'>
           {chat.content}
         </div>
       )
     }
   })
 
-  const sendChatAndclear = () => {
-    sendInputChat()
-    setUserChat('')
+  const sendChatAndClear = () => {
+    if (!isComposing && userChat.trim()) {
+      // 유저 요청 더하기
+      addChatHandler(Chatting.UserRequest(userChat))
+
+      sendInputChat()
+      setUserChat('')
+    }
   }
 
   return (
@@ -194,12 +200,14 @@ const Chatroom = ({
           value={userChat}
           onChange={e => setUserChat(e.target.value)}
           onKeyDown={e => {
-            if (e.key === 'Enter') {
-              sendChatAndclear()
+            if (e.key === 'Enter' && !isComposing) {
+              sendChatAndClear()
             }
           }}
+          onCompositionStart={() => setIsComposing(true)} // 한글 조합 시작
+          onCompositionEnd={() => setIsComposing(false)} // 한글 조합 끝
         />
-        <LucideIcon name='CircleArrowUp' size={30} strokeWidth={1} onClick={sendChatAndclear} />
+        <LucideIcon name='CircleArrowUp' size={30} strokeWidth={1} onClick={sendChatAndClear} />
       </div>
     </>
   )

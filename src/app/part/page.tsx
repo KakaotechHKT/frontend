@@ -19,8 +19,8 @@ import { placeListDummyData } from '@public/data/restaurant'
 import LogoImage from '@public/images/logo.svg'
 
 export type CategoryType = {
-  mainCategory: MainCategoriesType | null
-  keywords: string[] | null
+  mainCategory: MainCategoriesType | ''
+  keywords: string[] | ''
 }
 
 export type Geo = {
@@ -74,14 +74,15 @@ const PartPage = (): ReactNode => {
   // 채팅 관련 상태
   const [chatId, setChatId] = useState<number>()
   const [category, setCategory] = useState<CategoryType>({
-    mainCategory: null,
-    keywords: null,
+    mainCategory: '',
+    keywords: '',
   })
   const updateCategory = (partial: Partial<CategoryType>) => {
     setCategory(prev => ({ ...prev, ...partial }))
   }
 
   const [userChat, setUserChat] = useState<string>('')
+
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
@@ -102,6 +103,10 @@ const PartPage = (): ReactNode => {
   }
 
   const { mutate: CreateChatMutate, isPending: isCreatingChat } = useMutationStore<CreateChatType>(['chat'])
+
+  useEffect(() => {
+    console.log(userChat)
+  }, [userChat])
 
   // #1. 첫 입장시 ChatID 만들기
   useEffect(() => {
@@ -143,7 +148,7 @@ const PartPage = (): ReactNode => {
 
   const keywordClickHandler = (keyword: string, chat_index: number) => {
     // 키워드가 없었던 경우
-    let newKeywords: string[] | null
+    let newKeywords: string[] | ''
     if (!category.keywords) {
       newKeywords = [keyword]
       console.log('newKeywords', newKeywords)
@@ -218,6 +223,7 @@ const PartPage = (): ReactNode => {
     if (newKeywords) {
       const keywords = newKeywords.join(', ')
       const userChat = `${category.mainCategory}, ${keywords}`
+
       addChatHandler(Chatting.UserRequest(userChat))
     }
 
@@ -234,7 +240,7 @@ const PartPage = (): ReactNode => {
             mainCategory: category.mainCategory,
             keywords: newKeywords,
           },
-          chat: null,
+          chat: '',
         },
         {
           onSuccess(data, variables, context) {
@@ -252,18 +258,26 @@ const PartPage = (): ReactNode => {
   // 유저가 채팅창 이용한 경우
   const sendInputChat = () => {
     if (chatId) {
+      console.log('유저가 채팅창 이용한 경우')
+
       ChattingMutate(
         {
           chatId: chatId,
           category: {
-            mainCategory: null,
-            keywords: null,
+            mainCategory: '',
+            keywords: '',
           },
           chat: userChat,
         },
         {
           onSuccess(data, variables, context) {
-            console.log('created response of AI')
+            console.log('채팅 응답 성공')
+
+            // #1. 음식점 리스트 최신화
+            setPlaceList(data.data.placeList)
+
+            // #2. AI 응답 더하기
+            addChatHandler(Chatting.KeywordResponse(data.data.chat))
           },
         },
       )
@@ -312,7 +326,7 @@ const PartPage = (): ReactNode => {
           </ul>
         </div>
 
-        <div className='my-1 h-1 w-full bg-rcLightGray' />
+        <div className='my-1 h-[1px] w-full bg-rcLightGray' />
 
         <PlaceList
           placeList={placeList}

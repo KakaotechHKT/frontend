@@ -73,6 +73,30 @@ export const PartList = async ({}: PartListType) => {
   return data
 }
 
+export interface RecommendPartListType {}
+
+export const RecommendPartList = async ({}: RecommendPartListType) => {
+  const ROUTE = API_ROUTES.PART.RECOMMEND_LIST
+
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+    },
+    'WebServer',
+  )
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  const data: SuccessResponse = await res.json()
+  return data
+}
+
 export interface PartApplyType {
   ID: number
   babpatID: number

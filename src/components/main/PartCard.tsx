@@ -61,6 +61,8 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   const { name, mainMenus, categories, thumbnailUrl } = restaurantInfo
   const { id, comment, capacity, mealSpeed, date, time, leaderProfile } = babpatInfo
 
+  console.log(mainMenus)
+
   const parseMainMenusSimple = (mainMenus: string): Menu[] => {
     return mainMenus
       .slice(1, -1) // 앞뒤 대괄호 제거

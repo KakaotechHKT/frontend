@@ -124,7 +124,7 @@ const PlaceList = ({
               </div>
               <span className='my-1 text-xs text-rcBlack'>대표메뉴</span>
               <ul className='flex flex-col items-start justify-start text-xss'>
-                {placeData.menu.map(menu => (
+                {placeData.menu.slice(0, 3).map(menu => (
                   <li key={menu.name}>-{menu.name}</li>
                 ))}
               </ul>

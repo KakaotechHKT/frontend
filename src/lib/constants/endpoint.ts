@@ -24,6 +24,10 @@ export const API_ROUTES = {
       method: HttpMethod.GET,
       url: '/babpat/post',
     },
+    RECOMMEND_LIST: {
+      method: HttpMethod.GET,
+      url: '/restaurants/recommendation',
+    },
     APPLY: {
       method: HttpMethod.POST,
       url: '/babpat/post/apply',

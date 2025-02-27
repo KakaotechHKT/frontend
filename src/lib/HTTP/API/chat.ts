@@ -30,14 +30,20 @@ export const CreateChat = async ({}: CreateChatType) => {
 export interface ChattingType {
   chatId: number
   category: CategoryType
-  chat: string | null
+  chat: string | ''
 }
 
 export const Chatting = async ({ chatId, category, chat }: ChattingType) => {
   const ROUTE = API_ROUTES.CHAT.CHATTING
 
   const { mainCategory, keywords } = category
-  const joinKeywords = !keywords ? null : category.keywords?.join(', ')
+  let joinKeywords
+  if (keywords === '') {
+    joinKeywords = ''
+  } else {
+    joinKeywords = keywords.join(', ')
+  }
+  // const joinKeywords = keywords.length === 0 ? "" : keywords.join(', ')
   const body = {
     chatID: chatId,
     category: {

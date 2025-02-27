@@ -14,6 +14,7 @@ import { Chatting, CreateChat } from './API/chat'
 export const QUERY_KEYS = {
   PART: {
     LIST: ['part'],
+    RECOMMEND_LIST: ['part', 'recommend'],
   },
 }
 /*
@@ -39,10 +40,6 @@ export const MUTATION_KEYS = {
     CREATE: {
       key: ['part'],
       function: PartCreate,
-    },
-    LIST: {
-      key: ['part'],
-      // function: PartList,
     },
     APPLY: {
       key: ['part'],

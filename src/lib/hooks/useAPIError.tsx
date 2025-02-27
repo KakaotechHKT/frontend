@@ -32,8 +32,6 @@ const useApiError = () => {
 
   const handleError = useCallback(async (error: Error | Response) => {
     if (error instanceof Response) {
-      console.log('entered response')
-
       // Response 객체인 경우
       try {
         const httpStatus = error.status // HTTP 상태 코드
