@@ -5,12 +5,17 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { Track } from '@app/auth/register/page'
 import { PartDTO, Speed } from '@app/part/page'
 import Backdrop from '@components/common/Backdrop'
+import { Button } from '@components/ui/button'
 import { DatePicker } from '@components/ui/DatePicker'
 import { Input } from '@components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { TimePicker } from '@components/ui/timepicker/timepicker'
+import { URL } from '@lib/constants/routes'
+import { PartCreateType } from '@lib/HTTP/API/part'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { TrackTransformer } from '@public/data'
+import { useRouter } from 'next/navigation'
 
 interface PartCreationModalProps {
   authData: {
@@ -26,6 +31,9 @@ interface PartCreationModalProps {
 }
 
 const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen }: PartCreationModalProps): ReactNode => {
+  const router = useRouter()
+
+  const { id, name, nickname, track } = authData
   const { placeName, placeId, date, time, headCount, comment, mealSpeed } = partData
   const [tmpTime, setTmpTime] = useState<Date>()
   const leaderName = `${authData.nickname} (${authData.name}) / ${TrackTransformer[authData.track]} `
@@ -55,6 +63,36 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
   // 닫기
   const closeHandler = () => {
     setIsModalOpen(false)
+  }
+
+  const { mutate: PartCreateMutate, isPending } = useMutationStore<PartCreateType>(['part'])
+  const submitHandler = () => {
+    console.log(placeId, date, time, headCount, comment)
+
+    if (placeId !== undefined && date && time && headCount && comment) {
+      PartCreateMutate(
+        {
+          leaderID: id,
+          placeID: placeId,
+          date: date,
+          time: time,
+          headCount: headCount,
+          comment: comment,
+          mealSpeed: mealSpeed ? mealSpeed : null,
+        },
+        {
+          onSuccess(data, variables, context) {
+            alert('밥팟 생성 완료')
+            router.push(URL.MAIN.INDEX.value)
+          },
+          onError(error, variables, context) {
+            alert(error.message)
+          },
+        },
+      )
+    } else {
+      alert('필수 정보를 전부 입력해주세요!')
+    }
   }
   return (
     <>
@@ -115,6 +153,10 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
             </SelectContent>
           </Select>
         </div>
+
+        <Button onClick={submitHandler} variant='rcKakaoYellow' className='mt-4 w-full'>
+          밥팟 생성하기
+        </Button>
       </div>
     </>
   )

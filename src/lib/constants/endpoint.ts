@@ -15,4 +15,10 @@ export const API_ROUTES = {
       url: '/auth/register',
     },
   },
+  PART: {
+    CREATE: {
+      method: HttpMethod.POST,
+      url: '/babpat/post',
+    },
+  },
 }

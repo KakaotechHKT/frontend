@@ -1,3 +1,4 @@
+import CustomQueryClientProvider from '@lib/provider/QueryClientProvider'
 import { ReactNode } from 'react'
 
 interface PartLayoutProps {
@@ -5,7 +6,11 @@ interface PartLayoutProps {
 }
 
 const PartLayout = ({ children }: PartLayoutProps): ReactNode => {
-  return <main className='relative flex h-screen w-screen items-start justify-start bg-rcWhite'>{children}</main>
+  return (
+    <CustomQueryClientProvider>
+      <main className='relative flex h-screen w-screen items-start justify-start bg-rcWhite'>{children}</main>
+    </CustomQueryClientProvider>
+  )
 }
 
 export default PartLayout

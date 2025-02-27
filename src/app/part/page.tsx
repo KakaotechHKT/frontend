@@ -39,7 +39,7 @@ export type PartDTO = {
   time: string | undefined
   headCount: number | undefined
   comment: string | undefined
-  mealSpeed: Speed
+  mealSpeed: Speed | null
 }
 
 const PartPage = (): ReactNode => {
