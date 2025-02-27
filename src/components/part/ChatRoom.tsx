@@ -84,7 +84,8 @@ const Chatroom = ({
   const CHATS = chats.map((chat, chat_index) => {
     // #1. AI 응답인 경우
     if (chat.speaker == 'ai' && chat.type) {
-      const key = `${chat_index} + ${chat.content} `
+      const key = `${chat_index}`
+
       switch (chat.type) {
         case ResponseType.START:
           return (
@@ -92,14 +93,14 @@ const Chatroom = ({
               <div className='relative flex w-full flex-col items-center justify-start gap-1'>
                 <span className='font-dohyeon text-sm underline'>선호 음식 종류 선택</span>
                 <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-x-1'>
-                  {MainCategories.map(cat => (
+                  {MainCategories.map((cat, cat_index) => (
                     <li
                       onClick={!chat.doneClicking ? () => ClickHandlers.mainCategory(cat, chat_index) : undefined}
                       className={cn(
                         !chat.doneClicking && 'cursor-pointer',
                         'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
                       )}
-                      key={`${chat_index} + ${cat}`}
+                      key={`${cat_index}+${cat}`}
                     >
                       <Image src={LogoImage} alt='선호 음식 선택지' className='aspect-square w-6' />
                       <span
@@ -127,14 +128,14 @@ const Chatroom = ({
                 <div className='relative flex w-full flex-col items-center justify-start gap-1'>
                   <span className='font-dohyeon text-sm underline'>선호 키워드 선택</span>
                   <ul className={cn(keywordCategories.length <= 4 ? 'grid-rows-1' : 'grid-rows-2', 'mb-2 grid w-full grid-cols-4 gap-x-1')}>
-                    {keywordCategories.map(kw => (
+                    {keywordCategories.map((kw, kw_idx) => (
                       <li
                         onClick={!chat.doneClicking ? () => ClickHandlers.keyword(kw, chat_index) : undefined}
                         className={cn(
                           !chat.doneClicking && 'cursor-pointer',
                           'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
                         )}
-                        key={`${chat_index} + ${kw}`}
+                        key={`${kw_idx}${kw}`}
                       >
                         <Image src={LogoImage} alt='선호 키워드 선택지' className='aspect-square w-6' />
                         <span
@@ -170,7 +171,7 @@ const Chatroom = ({
     // #2. 유저의 요청인 경우
     else if (chat.speaker === 'user') {
       return (
-        <div key={chat.content} className='my-2 self-end rounded-md bg-rcKakaoYellow px-2 py-3 text-xs'>
+        <div key={chat_index} className='my-2 self-end rounded-md bg-rcKakaoYellow px-2 py-3 text-xs'>
           {chat.content}
         </div>
       )
