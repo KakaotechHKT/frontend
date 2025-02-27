@@ -63,6 +63,7 @@ export default {
         // Hover colors
         rcKakaoYellowHover: '#FFDC44',
         rcGreenHover: '#B9E49C',
+        rcBlueHover: '#3470B9',
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -15,6 +15,7 @@ import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType } from '@public/data/ChatResponse'
+import { placeListDummyData } from '@public/data/restaurant'
 import LogoImage from '@public/images/logo.svg'
 
 export type CategoryType = {
@@ -57,6 +58,7 @@ export type placeDTO = {
   latitude: number
   longitude: number
   url: string
+  thumbnail: string
   menu: Menu[]
 }
 
@@ -64,27 +66,7 @@ const PartPage = (): ReactNode => {
   const authData = useAuthData()
 
   // 검색값
-  const [placeList, setPlaceList] = useState<placeDTO[]>([
-    {
-      id: 1,
-      name: '봉피양 판교점',
-      mainCategory: '한식',
-      subCategory: '고기',
-      latitude: 37.4021235864699,
-      longitude: 127.10858950934346,
-      url: 'https://map.kakao.com/?q=%EB%B4%89%ED%94%BC%EC%96%91%20%ED%8C%90%EA%B5%90%EC%A0%90',
-      menu: [
-        {
-          name: '평양냉면',
-          price: 16000,
-        },
-        {
-          name: '돼지목심본갈비(270g)',
-          price: 36000,
-        },
-      ],
-    },
-  ])
+  const [placeList, setPlaceList] = useState<placeDTO[]>(placeListDummyData)
 
   useEffect(() => {
     console.log(placeList)
@@ -99,6 +81,9 @@ const PartPage = (): ReactNode => {
     mainCategory: null,
     keywords: null,
   })
+  const updateCategory = (partial: Partial<CategoryType>) => {
+    setCategory(prev => ({ ...prev, ...partial }))
+  }
 
   const [userChat, setUserChat] = useState<string>('')
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
@@ -134,9 +119,9 @@ const PartPage = (): ReactNode => {
     )
   }, [])
 
-  // useEffect(() => {
-  //   console.log(chatId)
-  // }, [chatId])
+  useEffect(() => {
+    console.log(chats)
+  }, [chats])
 
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
@@ -199,6 +184,21 @@ const PartPage = (): ReactNode => {
     setTimeoutId(newTimeout)
   }
 
+  const restartClickHandler = (chat_index: number) => {
+    // 재시작
+    if (chat_index !== undefined) {
+      const newChat = chats.map((chat, index) =>
+        chat_index === index
+          ? {
+              ...chat,
+              doneClicking: true,
+            }
+          : chat,
+      )
+      setChats(newChat)
+    }
+  }
+
   const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
 
   const sendKeywordSelection = (newKeywords: string[], chat_index: number) => {
@@ -219,7 +219,7 @@ const PartPage = (): ReactNode => {
     setChats(newChat)
 
     // 유저 채팅 더하기
-    if (category.keywords) {
+    if (newKeywords) {
       const keywords = newKeywords.join(', ')
       const userChat = `${category.mainCategory}, ${keywords}`
       addChatHandler(Chatting.UserRequest(userChat))
@@ -242,7 +242,11 @@ const PartPage = (): ReactNode => {
         },
         {
           onSuccess(data, variables, context) {
+            // #1. 음식점 리스트 최신화
             setPlaceList(data.data.placeList)
+
+            // #2. AI 응답 더하기
+            addChatHandler(Chatting.KeywordResponse(data.data.chat))
           },
         },
       )
@@ -331,6 +335,7 @@ const PartPage = (): ReactNode => {
         {/* 채팅내용 */}
         <Chatroom
           category={category}
+          updateCategory={updateCategory}
           userChat={userChat}
           setUserChat={setUserChat}
           sendInputChat={sendInputChat}
@@ -338,6 +343,7 @@ const PartPage = (): ReactNode => {
           addChatHandler={addChatHandler}
           mainCategoryClickHandler={mainCategoryClickHandler}
           keywordClickHandler={keywordClickHandler}
+          restartClickHandler={restartClickHandler}
         />
       </div>
 

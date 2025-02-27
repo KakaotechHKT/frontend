@@ -4,7 +4,6 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Geo, PartDTO, placeDTO } from '@app/part/page'
 import { Button } from '@components/ui/button'
 import { cn } from '@lib/utils/utils'
-import LogoImage from '@public/images/logo.svg'
 
 // const make_DUMMY_DATA = (id: number) => {
 //   return {
@@ -101,13 +100,21 @@ const PlaceList = ({
             onClick={() => placeClickHandler(placeData)}
             className={cn(
               placeData.id === focusedPlaceId && 'bg-rcKakaoLightYellow',
-              'relative flex w-full cursor-pointer items-center justify-start gap-4 border-b-[1px] border-solid border-rcLightGray px-2 py-3',
+              'group relative flex w-full cursor-pointer items-center justify-start gap-4 border-b-[1px] border-solid border-rcLightGray px-2 py-3',
             )}
           >
-            <Image className='aspect-square w-[45%] shrink-0' src={LogoImage} alt='식당 이미지 ' />
+            <Image
+              className='aspect-square w-[45%] shrink-0 rounded-xl group-hover:opacity-80'
+              src={placeData.thumbnail}
+              width={100}
+              height={100}
+              alt='식당 이미지 '
+            />
 
             <div className='relative flex h-full grow flex-col items-start justify-start text-xs text-rcDarkGray'>
-              <div className='w-full text-ellipsis whitespace-nowrap font-dohyeon text-sm text-rcBlue'>{placeData.name}</div>
+              <div className='w-full text-ellipsis whitespace-nowrap font-dohyeon text-sm text-rcBlue group-hover:text-rcBlueHover'>
+                {placeData.name}
+              </div>
 
               <div className='my-1 flex items-center justify-start gap-2 text-xss'>
                 <span># {placeData.mainCategory}</span>

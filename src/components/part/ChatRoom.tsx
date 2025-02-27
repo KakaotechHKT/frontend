@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Dispatch, ReactNode, SetStateAction, useRef } from 'react'
 
 import { CategoryType } from '@app/part/page'
+import AIChatButtonFrame from '@components/part/AIChatButtonFrame'
 import AIChatFrame from '@components/part/AIChatFrame'
 import { Input } from '@components/ui/input'
 import LucideIcon from '@lib/provider/LucideIcon'
@@ -13,6 +14,7 @@ import LogoImage from '@public/images/logo.svg'
 
 interface ChatroomProps {
   category: CategoryType
+  updateCategory: (partial: Partial<CategoryType>) => void
   userChat: string
   setUserChat: Dispatch<SetStateAction<string>>
   sendInputChat: () => void
@@ -20,10 +22,12 @@ interface ChatroomProps {
   addChatHandler: (newChat: ChatType) => void
   mainCategoryClickHandler: (...args: any[]) => any
   keywordClickHandler: (keyword: string, chat_index: number) => void
+  restartClickHandler: (chat_index: number) => void
 }
 
 const Chatroom = ({
   category,
+  updateCategory,
   userChat,
   setUserChat,
   sendInputChat,
@@ -31,6 +35,7 @@ const Chatroom = ({
   addChatHandler,
   mainCategoryClickHandler,
   keywordClickHandler,
+  restartClickHandler,
 }: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   if (chatContainerRef.current) {
@@ -60,23 +65,28 @@ const Chatroom = ({
     static keyword = (keyword: string, chat_index: number) => {
       // 키워드 변경
       keywordClickHandler(keyword, chat_index)
+    }
 
-      // // 유저 채팅 더하기
-      // if (category.keywords) {
-      //   const keywords = category.keywords.join(',')
-      //   const userChat = `${category.mainCategory}, ${keywords}`
-      //   addChatHandler(Chatting.UserRequest(userChat))
-      // }
+    static restart = (chat_index: number) => {
+      // 카테고리, 키워드 초기화
+      updateCategory({ keywords: null, mainCategory: null })
+
+      // 채팅 잠금
+      restartClickHandler(chat_index)
+
+      // 초기 채팅 더하기
+      addChatHandler(Chatting.StartResponse())
     }
   }
 
   const CHATS = chats.map((chat, chat_index) => {
     // #1. AI 응답인 경우
     if (chat.speaker == 'ai' && chat.type) {
+      const key = `${chat_index} + ${chat.content} `
       switch (chat.type) {
         case ResponseType.START:
           return (
-            <AIChatFrame key={chat.content} content={chat.content}>
+            <AIChatFrame key={key} content={chat.content}>
               <div className='relative flex w-full flex-col items-center justify-start gap-1'>
                 <span className='font-dohyeon text-sm underline'>선호 음식 종류 선택</span>
                 <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-x-1'>
@@ -87,7 +97,7 @@ const Chatroom = ({
                         !chat.doneClicking && 'cursor-pointer',
                         'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
                       )}
-                      key={cat}
+                      key={`${chat_index} + ${cat}`}
                     >
                       <Image src={LogoImage} alt='선호 음식 선택지' className='aspect-square w-6' />
                       <span
@@ -108,10 +118,12 @@ const Chatroom = ({
             </AIChatFrame>
           )
         case ResponseType.MAIN_CATEGORY:
+          console.log('entered here', chat)
+
           if (category.mainCategory) {
             const keywordCategories = Categories[category.mainCategory]
             return (
-              <AIChatFrame key={chat.content} content={chat.content}>
+              <AIChatFrame key={key} content={chat.content}>
                 <div className='relative flex w-full flex-col items-center justify-start gap-1'>
                   <span className='font-dohyeon text-sm underline'>선호 키워드 선택</span>
                   <ul className={cn(keywordCategories.length <= 4 ? 'grid-rows-1' : 'grid-rows-2', 'mb-2 grid w-full grid-cols-4 gap-x-1')}>
@@ -122,7 +134,7 @@ const Chatroom = ({
                           !chat.doneClicking && 'cursor-pointer',
                           'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
                         )}
-                        key={kw}
+                        key={`${chat_index} + ${kw}`}
                       >
                         <Image src={LogoImage} alt='선호 키워드 선택지' className='aspect-square w-6' />
                         <span
@@ -143,9 +155,15 @@ const Chatroom = ({
           }
 
         case ResponseType.KEYWORD:
-          return <div key={chat.content}>키워드</div>
+          return (
+            <AIChatButtonFrame
+              key={key}
+              content={chat.content}
+              clickHandler={!chat.doneClicking ? () => ClickHandlers.restart(chat_index) : undefined}
+            />
+          )
         case ResponseType.ELSE:
-          return <div key={chat.content}>나머지</div>
+          return <div key={key}>나머지</div>
       }
     }
     // #2. 유저의 요청인 경우
