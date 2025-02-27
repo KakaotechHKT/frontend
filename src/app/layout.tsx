@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { cn } from '@lib/utils/utils'
 import { doHyeon, pretendard } from '@public/fonts/font'
 
+import CustomQueryClientProvider from '@lib/provider/QueryClientProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body className={cn(pretendard.variable, doHyeon.variable, 'justify-star relative flex flex-col items-center font-pretendard')}>
-        {children}
+        <CustomQueryClientProvider>{children}</CustomQueryClientProvider>
       </body>
     </html>
   )

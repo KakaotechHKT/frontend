@@ -4,6 +4,7 @@ import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
 import { useMutation } from '@tanstack/react-query'
+import { CreateChat } from './API/chat'
 
 /**
  * GET
@@ -39,16 +40,6 @@ export const MUTATION_KEYS = {
       function: DuplicateCheck,
     },
   },
-  CHAT: {
-    CREATE: {
-      key: ['chat'],
-      // function: CREATECHAT,
-    },
-    CHATTING: {
-      key: ['chatting'],
-      // function: CHATTING,
-    },
-  },
   PART: {
     CREATE: {
       key: ['part'],
@@ -65,6 +56,16 @@ export const MUTATION_KEYS = {
     POSTS: {
       key: ['part', 'id'],
       // function: PartPosts,
+    },
+  },
+  CHAT: {
+    CREATE: {
+      key: ['chat'],
+      function: CreateChat,
+    },
+    CHATTING: {
+      key: ['chatting'],
+      // function: CHATTING,
     },
   },
 } as const
@@ -103,6 +104,16 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.REGISTER.key, {
  */
 queryClient.setMutationDefaults(MUTATION_KEYS.PART.CREATE.key, {
   mutationFn: MUTATION_KEYS.PART.CREATE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+
+/**
+ * [Chat]
+ */
+queryClient.setMutationDefaults(MUTATION_KEYS.CHAT.CREATE.key, {
+  mutationFn: MUTATION_KEYS.CHAT.CREATE.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },

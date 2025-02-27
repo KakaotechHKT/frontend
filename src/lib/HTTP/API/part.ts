@@ -1,6 +1,8 @@
+import { format } from 'date-fns'
+
 import { Speed } from '@app/part/page'
 import { API_ROUTES } from '@lib/constants/endpoint'
-import { format } from 'date-fns'
+
 import { customFetch } from '../Fetch'
 
 export interface PartCreateType {
@@ -26,10 +28,14 @@ export const PartCreate = async ({ leaderID, placeID, date, time, headCount, com
     mealSpeed,
   }
 
-  const res = await customFetch(ROUTE.url, {
-    method: ROUTE.method,
-    body: JSON.stringify(body),
-  })
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      body: JSON.stringify(body),
+    },
+    'WebServer',
+  )
 
   if (!res.ok) {
     const error = new Error()

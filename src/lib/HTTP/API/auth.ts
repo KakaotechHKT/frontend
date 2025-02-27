@@ -15,10 +15,14 @@ export const Login = async ({ id, password }: LoginType) => {
     password,
   }
 
-  const res = await customFetch(ROUTE.url, {
-    method: ROUTE.method,
-    body: JSON.stringify(body),
-  })
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      body: JSON.stringify(body),
+    },
+    'WebServer',
+  )
 
   if (!res.ok) {
     const error = new Error()
@@ -43,10 +47,14 @@ export const DuplicateCheck = async ({ id }: DuplicateCheckType) => {
     id,
   }
 
-  const res = await customFetch(ROUTE.url, {
-    method: ROUTE.method,
-    body: JSON.stringify(body),
-  })
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      body: JSON.stringify(body),
+    },
+    'WebServer',
+  )
 
   if (!res.ok) {
     const error = new Error()
@@ -81,10 +89,14 @@ export const Register = async ({ id, password, nickname, name, track }: Register
     track,
   }
 
-  const res = await customFetch(ROUTE.url, {
-    method: ROUTE.method,
-    body: JSON.stringify(body),
-  })
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      body: JSON.stringify(body),
+    },
+    'WebServer',
+  )
 
   console.log('register async')
 

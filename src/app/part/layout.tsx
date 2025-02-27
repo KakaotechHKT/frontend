@@ -1,5 +1,6 @@
-import CustomQueryClientProvider from '@lib/provider/QueryClientProvider'
 import { ReactNode } from 'react'
+
+import CustomQueryClientProvider from '@lib/provider/QueryClientProvider'
 
 interface PartLayoutProps {
   children: ReactNode

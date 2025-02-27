@@ -206,7 +206,7 @@ const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
             value={data.nickname}
             onChange={e => updateData({ nickname: e.target.value })}
           />
-          <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
+          {/* <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' /> */}
         </div>
 
         <div className='relative h-11 w-full rounded-md'>
@@ -217,7 +217,7 @@ const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
             value={data.name}
             onChange={e => updateData({ name: e.target.value })}
           />
-          <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
+          {/* <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' /> */}
         </div>
 
         <Button variant='rcKakaoYellow' className='my-1 w-full' onClick={registerHandler}>

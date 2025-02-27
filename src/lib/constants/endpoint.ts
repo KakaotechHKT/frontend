@@ -21,4 +21,10 @@ export const API_ROUTES = {
       url: '/babpat/post',
     },
   },
+  CHAT: {
+    CREATE: {
+      method: HttpMethod.POST,
+      url: '/chat',
+    },
+  },
 }

@@ -1,5 +1,6 @@
 'use client'
 import { format } from 'date-fns'
+import { useRouter } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
 import { Track } from '@app/auth/register/page'
@@ -15,7 +16,6 @@ import { PartCreateType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { TrackTransformer } from '@public/data'
-import { useRouter } from 'next/navigation'
 
 interface PartCreationModalProps {
   authData: {

@@ -39,6 +39,7 @@ interface DesktopNavBarProps {
 const DesktopNavBar = ({ className }: DesktopNavBarProps): ReactNode => {
   const { id, name, nickname, track } = useAuthData()
   const links = name === '' ? LINKS.NotAuthenticated : LINKS.Authenticated
+
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>

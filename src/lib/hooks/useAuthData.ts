@@ -1,6 +1,7 @@
 'use client'
-import { Track } from '@app/auth/register/page'
 import { useEffect, useState } from 'react'
+
+import { Track } from '@app/auth/register/page'
 
 export const useAuthData = (): {
   id: number

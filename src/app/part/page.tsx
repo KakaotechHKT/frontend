@@ -9,6 +9,8 @@ import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
 import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
+import { CreateChatType } from '@lib/HTTP/API/chat'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
@@ -44,7 +46,6 @@ export type PartDTO = {
 
 const PartPage = (): ReactNode => {
   const authData = useAuthData()
-  console.log('authData: ', authData)
 
   // 지도 관련 상태
   const [center, setCenter] = useState<Geo>(KTB_Position)
@@ -55,6 +56,8 @@ const PartPage = (): ReactNode => {
     mainCategory: null,
     keywords: null,
   })
+
+  const [chatId, setChatId] = useState<number>()
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
   // 밥팟 데이터
@@ -72,9 +75,23 @@ const PartPage = (): ReactNode => {
     setPartData(prev => ({ ...prev, ...partial }))
   }
 
+  const { mutate: CreateChatMutate, isPending } = useMutationStore<CreateChatType>(['chat'])
+
+  // #1. 첫 입장시 ChatID 만들기
   useEffect(() => {
-    console.log(partData)
-  }, [partData])
+    CreateChatMutate(
+      {},
+      {
+        onSuccess(data, variables, context) {
+          setChatId(data.data.chatID)
+        },
+      },
+    )
+  }, [])
+
+  // useEffect(() => {
+  //   console.log(chatId)
+  // }, [chatId])
 
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {

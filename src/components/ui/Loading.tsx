@@ -1,6 +1,7 @@
+import { ReactNode } from 'react'
+
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-import { ReactNode } from 'react'
 
 interface LoadingProps {
   className?: string

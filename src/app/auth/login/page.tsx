@@ -39,6 +39,9 @@ const LoginPage = (): ReactNode => {
           // 로그인 정보를 SessionStorage에 저장
           sessionStorage.setItem('auth', JSON.stringify(data.data))
         },
+        onError(error, variables, context) {
+          alert(error.message)
+        },
       },
     )
   }
