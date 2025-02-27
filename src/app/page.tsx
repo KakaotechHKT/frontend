@@ -24,11 +24,6 @@ export default function Home() {
             함께하는 밥자리 <span className='underline underline-offset-4'>밥팟</span>에서 새로운 인연을 만들어보세요!
           </h3>
         </section>
-        {/* <Link href={URL.PART.INDEX.value} className='relative h-12 w-60'>
-          <Button className='h-full w-full text-lg' variant='rcKakaoYellow'>
-            밥팟 생성하기
-          </Button>
-        </Link> */}
 
         <div className='mb-7 flex w-full flex-col items-center justify-start gap-1'>
           <span className='font-dohyeon text-2xl'>밥팟의 추천 장소 🍚</span>
@@ -41,7 +36,7 @@ export default function Home() {
           <PartCardList className='my-6' />
         </div>
       </main>
-      <Footer className='z-10 h-[12dvh] w-full' />
+      <Footer className='z-10 h-max w-full' />
     </>
   )
 }

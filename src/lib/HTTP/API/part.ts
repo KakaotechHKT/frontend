@@ -16,6 +16,8 @@ export interface PartCreateType {
 }
 
 export const PartCreate = async ({ leaderID, placeID, date, time, headCount, comment, mealSpeed }: PartCreateType) => {
+  console.log('entered part create12312312')
+
   const ROUTE = API_ROUTES.PART.CREATE
 
   const body = {
@@ -27,6 +29,9 @@ export const PartCreate = async ({ leaderID, placeID, date, time, headCount, com
     comment,
     mealSpeed,
   }
+
+  console.log('body')
+  console.log(body)
 
   const res = await customFetch(
     ROUTE.url,

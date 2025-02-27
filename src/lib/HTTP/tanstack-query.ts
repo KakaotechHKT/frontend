@@ -42,7 +42,7 @@ export const MUTATION_KEYS = {
       function: PartCreate,
     },
     APPLY: {
-      key: ['part'],
+      key: ['part', 'apply'],
       function: PartApply,
     },
   },

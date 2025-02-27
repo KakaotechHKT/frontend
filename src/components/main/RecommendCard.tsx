@@ -65,6 +65,7 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
         `${isVisible ? 'opacity-100' : 'opacity-0'}`,
       )}
     >
+      {/* {isPromotion && <Image className='absolute right-0 top-0 z-10' src={SpoonImage} alt='spoon-image' />} */}
       <div className='relative h-full'>
         <Image
           className='aspect-square h-full min-w-40 shrink-0 rounded-l-xl shadow-rc-shadow group-hover:opacity-40'
@@ -77,7 +78,7 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
           지도 링크
         </div>
       </div>
-      {/* {isPromotion && <Image className='absolute right-3' src={SpoonImage} alt='spoon-image' />} */}
+
       <div className='flex h-full flex-grow flex-col items-start justify-start px-3 py-2'>
         <span className='flex w-full items-center justify-start text-ellipsis text-nowrap font-dohyeon text-rcBlue'>{name}</span>
 
