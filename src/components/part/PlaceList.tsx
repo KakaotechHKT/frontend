@@ -5,56 +5,6 @@ import { Geo, PartDTO, placeDTO } from '@app/part/page'
 import { Button } from '@components/ui/button'
 import { cn } from '@lib/utils/utils'
 
-// const make_DUMMY_DATA = (id: number) => {
-//   return {
-//     id: id,
-//     name: '봉피양 판교점',
-//     mainCategory: '한식',
-//     subCategory: ['고기'],
-//     latitude: 37.4021235864699,
-//     longitude: 127.10858950934346,
-//     url: 'https://map.kakao.com/?q=%EB%B4%89%ED%94%BC%EC%96%91%20%ED%8C%90%EA%B5%90%EC%A0%90',
-//     menu: [
-//       {
-//         name: '평양냉면',
-//         price: '16000',
-//       },
-//       {
-//         name: '돼지목심본갈비(270g)',
-//         price: '36000',
-//       },
-//     ],
-//   }
-// }
-// const make_DUMMY_DATA2 = (id: number) => {
-//   return {
-//     id: id,
-//     name: '원조감자탕일미집 판교점',
-//     mainCategory: '한식',
-//     subCategory: ['감자탕'],
-//     latitude: 37.40209444163266,
-//     longitude: 127.109228804893,
-//     url: 'https://map.kakao.com/?q=%EC%9B%90%EC%A1%B0%EA%B0%90%EC%9E%90%ED%83%95%EC%9D%BC%EB%AF%B8%EC%A7%91%20%ED%8C%90%EA%B5%90%EC%A0%90',
-//     menu: [
-//       {
-//         name: '감자탕백반',
-//         price: '10000',
-//       },
-//       {
-//         name: '감자탕 - 소',
-//         price: '23000',
-//       },
-//     ],
-//   }
-// }
-// export const DUMMY_PLACE_DATA = Array.from(Array(20), (_, index) => {
-//   if (index % 2) {
-//     return make_DUMMY_DATA(index)
-//   } else {
-//     return make_DUMMY_DATA2(index)
-//   }
-// })
-
 interface PlaceListProps {
   placeList: placeDTO[]
 
@@ -74,7 +24,7 @@ const PlaceList = ({
   updatePartData,
   setIsModalOpen,
 }: PlaceListProps): ReactNode => {
-  console.log(placeList)
+  // console.log(placeList)
 
   const placeClickHandler = (placeData: any) => {
     centerHandler({

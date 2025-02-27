@@ -146,7 +146,7 @@ const PartPage = (): ReactNode => {
     }
   }
 
-  const keywordClickHandler = (keyword: string, chat_index: number) => {
+  const keywordClickHandler = (keyword: string, mainCategory: MainCategoriesType, chat_index: number) => {
     // 키워드가 없었던 경우
     let newKeywords: string[] | ''
     if (!category.keywords) {
@@ -179,7 +179,7 @@ const PartPage = (): ReactNode => {
 
     // 새로운 타이머 설정 (1초 후 요청 실행)
     const newTimeout = setTimeout(() => {
-      sendKeywordSelection(newKeywords, chat_index)
+      sendKeywordSelection(newKeywords, mainCategory, chat_index)
     }, 1000)
 
     setTimeoutId(newTimeout)
@@ -202,7 +202,7 @@ const PartPage = (): ReactNode => {
 
   const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
 
-  const sendKeywordSelection = (newKeywords: string[], chat_index: number) => {
+  const sendKeywordSelection = (newKeywords: string[], mainCategory: MainCategoriesType, chat_index: number) => {
     console.log('send got keywords', newKeywords)
 
     if (newKeywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
@@ -214,6 +214,7 @@ const PartPage = (): ReactNode => {
             ...chat,
             doneClicking: true,
             lastKeywords: newKeywords,
+            lastMainCategory: mainCategory,
           }
         : chat,
     )

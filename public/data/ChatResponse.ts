@@ -45,6 +45,7 @@ export class Chatting {
       content: `${mainCategory}을 선택하셨네요.\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
       type: ResponseType.MAIN_CATEGORY,
       doneClicking: false,
+      lastMainCategory: undefined,
       lastKeywords: undefined,
     }
   }

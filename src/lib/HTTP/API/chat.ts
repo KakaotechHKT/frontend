@@ -69,7 +69,6 @@ export const Chatting = async ({ chatId, category, chat }: ChattingType) => {
   }
 
   const data: SuccessResponse = await res.json()
-  console.log('success data:', data)
 
   return data
 }
