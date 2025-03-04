@@ -1,9 +1,10 @@
+import Image from 'next/image'
+
 import Footer from '@components/Footer'
 import Header from '@components/Header'
 import PartCardList from '@components/main/PartCardList'
 import RecommendCardList from '@components/main/RecommendCardList'
 import SpoonImage from '@public/images/spoon.svg'
-import Image from 'next/image'
 export default function Home() {
   return (
     <>
