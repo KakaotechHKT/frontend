@@ -35,6 +35,8 @@ const eslintConfig = [
       'unused-imports/no-unused-imports': 'error', // 사용되지 않은 import에 대한 경고
       '@typescript-eslint/no-unused-vars': 'off', // TypeScript 관련 unused-vars 비활성화
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-interface': 'off', // 빈 인터페이스 허용
+      '@typescript-eslint/no-empty-object-type': 'off', // 빈 객체 타입 허용
     },
     languageOptions: {
       parserOptions: {

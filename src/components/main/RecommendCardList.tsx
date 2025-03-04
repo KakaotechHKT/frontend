@@ -1,10 +1,12 @@
 'use client'
+import { ReactNode, useEffect, useState } from 'react'
+
 import Loading from '@components/ui/Loading'
 import { RecommendPartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
-import { ReactNode, useEffect, useState } from 'react'
+
 import RecommendPartCard, { RecommendBabpartDTO } from './RecommendCard'
 
 interface RecommendCardListProps {

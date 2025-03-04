@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
@@ -19,10 +19,16 @@ const LoginPage = (): ReactNode => {
   const { isOpen, handleOpen, Modal } = useModal()
   // States for storing user input
   const [id, setId] = useState('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [saveAuthData, setSaveAuthData] = useState<boolean>(true)
   const [password, setPassword] = useState('')
 
   // Mutations
   const { mutate: LoginMutate, isPending } = useMutationStore<LoginType>(['login'])
+
+  useEffect(() => {
+    console.log(saveAuthData)
+  }, [saveAuthData])
 
   // Functions
   const loginHandler = () => {
@@ -55,13 +61,17 @@ const LoginPage = (): ReactNode => {
           <Input type='text' placeholder='아이디' className='rounded-md' value={id} onChange={e => setId(e.target.value)} />
           <div className='relative h-11 w-full rounded-md'>
             <Input
-              type='password'
+              type={!showPassword ? 'password' : 'text'}
               placeholder='비밀번호'
               className='h-full w-full'
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
-            <LucideIcon name='EyeOff' className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray' />
+            <LucideIcon
+              onClick={() => setShowPassword(prev => !prev)}
+              name={!showPassword ? 'EyeOff' : 'Eye'}
+              className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray'
+            />
           </div>
 
           {!isPending ? (
@@ -74,7 +84,7 @@ const LoginPage = (): ReactNode => {
 
           <div className='mb-3 mt-3 flex w-full items-center justify-between text-xs font-normal text-rcDarkGray'>
             <div className='flex cursor-pointer items-center justify-start gap-2'>
-              <Checkbox id='login-state' defaultChecked={true} />
+              <Checkbox id='login-state' defaultChecked={true} onClick={() => setSaveAuthData(prev => !prev)} />
               <label htmlFor='login-state'>로그인 상태 유지</label>
             </div>
 

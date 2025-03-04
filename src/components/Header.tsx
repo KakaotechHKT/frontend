@@ -10,7 +10,8 @@ import LogoImage from '@public/images/logo.svg'
 
 export const LINKS = {
   NotAuthenticated: [URL.PART.INDEX, URL.AUTH.LOGIN, URL.AUTH.REGISTER],
-  Authenticated: [URL.PART.INDEX, URL.AUTH.MYPAGE],
+  // Authenticated: [URL.PART.INDEX, URL.AUTH.MYPAGE],
+  Authenticated: [URL.PART.INDEX],
 }
 
 interface HeaderProps {

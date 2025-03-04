@@ -1,8 +1,9 @@
 'use client'
-import { Menu } from '@app/part/page'
-import { cn } from '@lib/utils/utils'
 import Image from 'next/image'
 import { ReactNode } from 'react'
+
+import { Menu } from '@app/part/page'
+import { cn } from '@lib/utils/utils'
 
 /**
  *  mainMenus 형태

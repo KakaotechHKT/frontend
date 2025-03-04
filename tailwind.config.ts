@@ -84,6 +84,18 @@ export default {
         xss: '0.625rem',
         tiny: '0.5rem',
       },
+      animation: {
+        opacityDelay1: 'opacityFade 1.5s infinite',
+        opacityDelay2: 'opacityFade 1.5s 0.2s infinite',
+        opacityDelay3: 'opacityFade 1.5s 0.4s infinite',
+      },
+      keyframes: {
+        opacityFade: {
+          '0%': { opacity: '1' },
+          '50%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

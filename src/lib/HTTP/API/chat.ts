@@ -1,5 +1,6 @@
 import { CategoryType } from '@app/part/page'
 import { API_ROUTES } from '@lib/constants/endpoint'
+
 import { customFetch, SuccessResponse } from '../Fetch'
 
 export interface CreateChatType {}

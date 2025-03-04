@@ -11,6 +11,7 @@ import { DatePicker } from '@components/ui/DatePicker'
 import { Input } from '@components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { TimePicker } from '@components/ui/timepicker/timepicker'
+import { URL } from '@lib/constants/routes'
 import { PartCreateType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
@@ -93,7 +94,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
         {
           onSuccess(data, variables, context) {
             alert('밥팟 생성 완료')
-            // router.push(URL.MAIN.INDEX.value)
+            router.push(URL.MAIN.INDEX.value)
           },
           onError(error, variables, context) {
             alert(error.message)

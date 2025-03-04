@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Dispatch, ReactNode, SetStateAction, useRef, useState } from 'react'
 
 import { CategoryType } from '@app/part/page'
+import LoadingDots from '@components/common/LoadingShimmer'
 import AIChatButtonFrame from '@components/part/AIChatButtonFrame'
 import AIChatFrame from '@components/part/AIChatFrame'
 import { Input } from '@components/ui/input'
@@ -23,6 +24,7 @@ interface ChatroomProps {
   mainCategoryClickHandler: (...args: any[]) => any
   keywordClickHandler: (keyword: string, mainCategory: MainCategoriesType, chat_index: number) => void
   restartClickHandler: (chat_index: number) => void
+  isChatting: boolean
 }
 
 const Chatroom = ({
@@ -36,6 +38,7 @@ const Chatroom = ({
   mainCategoryClickHandler,
   keywordClickHandler,
   restartClickHandler,
+  isChatting,
 }: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const [isComposing, setIsComposing] = useState<boolean>(false) // 한글 조합 상태 추적
@@ -82,9 +85,9 @@ const Chatroom = ({
   }
 
   const CHATS = chats.map((chat, chat_index) => {
-    console.log('checking chat_number:', chat_index)
-    console.log('checking chat: ', chat)
-    console.log('CASE:', chat.type)
+    // console.log('checking chat_number:', chat_index)
+    // console.log('checking chat: ', chat)
+    // console.log('CASE:', chat.type)
 
     // #1. AI 응답인 경우
     if (chat.speaker == 'ai' && chat.type) {
@@ -92,7 +95,7 @@ const Chatroom = ({
 
       switch (chat.type) {
         case ResponseType.START:
-          console.log('ResponseType.START')
+          // console.log('ResponseType.START')
 
           return (
             <AIChatFrame key={key} content={chat.content}>
@@ -190,7 +193,7 @@ const Chatroom = ({
       )
     }
 
-    console.log()
+    // console.log()
   })
 
   const sendChatAndClear = () => {
@@ -202,11 +205,12 @@ const Chatroom = ({
       setUserChat('')
     }
   }
-
+  // const isChatting = true
   return (
     <>
       <div ref={chatContainerRef} className='flex grow flex-col items-start justify-start overflow-y-auto px-4 pb-2'>
         {CHATS}
+        {isChatting && <LoadingDots />}
       </div>
       <div className='flex w-[90%] items-center justify-between rounded-3xl border-sm border-solid border-rcBlack bg-rcLightGray pr-2'>
         <Input

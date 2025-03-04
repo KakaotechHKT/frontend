@@ -2,7 +2,8 @@ import Footer from '@components/Footer'
 import Header from '@components/Header'
 import PartCardList from '@components/main/PartCardList'
 import RecommendCardList from '@components/main/RecommendCardList'
-
+import SpoonImage from '@public/images/spoon.svg'
+import Image from 'next/image'
 export default function Home() {
   return (
     <>
@@ -26,7 +27,9 @@ export default function Home() {
         </section>
 
         <div className='mb-7 flex w-full flex-col items-center justify-start gap-1'>
-          <span className='font-dohyeon text-2xl'>밥팟의 추천 장소 🍚</span>
+          <span className='flex items-center justify-between gap-3 font-dohyeon text-2xl'>
+            밥팟의 추천 장소 <Image src={SpoonImage} alt='spoon-image' />
+          </span>
           <span className='text-xss text-rcDarkGray'>* 밥팟팀의 선호도를 기반으로 추천드려요!</span>
           <RecommendCardList className='my-6' />
         </div>

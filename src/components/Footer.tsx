@@ -1,8 +1,9 @@
-import { cn } from '@lib/utils/utils'
-import LogoImage from '@public/images/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode } from 'react'
+
+import { cn } from '@lib/utils/utils'
+import LogoImage from '@public/images/logo.svg'
 
 interface FooterProps {
   className?: string
