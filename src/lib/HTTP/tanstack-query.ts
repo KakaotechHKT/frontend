@@ -1,9 +1,9 @@
 import { DuplicateCheck, Login, Register } from '@lib/HTTP/API/auth'
 import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
-import { queryClient } from '@lib/provider/QueryClientProvider'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
 import { useMutation } from '@tanstack/react-query'
+import { queryClient } from '../provider/QueryClientProvider'
 
 import { Chatting, CreateChat } from './API/chat'
 
