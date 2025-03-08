@@ -8,7 +8,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      NEXT_PUBLIC_KAKAO_NATIVE: ${{ secrets.NEXT_PUBLIC_KAKAO_NATIVE }}
+      NEXT_PUBLIC_KAKAO_REST_API: ${{ secrets.NEXT_PUBLIC_KAKAO_REST_API }}
+      NEXT_PUBLIC_KAKAO_JAVASCRIPT_API: ${{ secrets.NEXT_PUBLIC_KAKAO_JAVASCRIPT_API }}
+      NEXT_PUBLIC_KAKAO_ADMIN_API: ${{ secrets.NEXT_PUBLIC_KAKAO_ADMIN_API }}
+      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
