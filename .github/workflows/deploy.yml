@@ -17,12 +17,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'pnpm'
+          # cache: 'pnpm'  <-- 옵션 제거
 
       - name: Enable Corepack and Install PNPM
         run: |
           corepack enable
           corepack prepare pnpm@latest --activate
+
+      - name: Check pnpm version
+        run: pnpm -v
 
       - name: Install Dependencies
         run: pnpm install
