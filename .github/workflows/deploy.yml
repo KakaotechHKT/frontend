@@ -3,7 +3,7 @@ name: Build and Deploy to S3
 on:
   push:
     branches:
-      - dev  # dev 브랜치에 push될 때 실행
+      - main  # main 브랜치에 push될 때 실행
 
 jobs:
   deploy:
@@ -15,6 +15,7 @@ jobs:
       NEXT_PUBLIC_KAKAO_ADMIN_API: ${{ secrets.NEXT_PUBLIC_KAKAO_ADMIN_API }}
       NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }}
       NEXT_PUBLIC_AI_SERVER: ${{ secrets.NEXT_PUBLIC_AI_SERVER }}
+
 
     steps:
       - name: Checkout Repository
