@@ -6,6 +6,7 @@ import { CategoryType } from '@app/part/page'
 import LoadingDots from '@components/common/LoadingShimmer'
 import AIChatButtonFrame from '@components/part/AIChatButtonFrame'
 import AIChatFrame from '@components/part/AIChatFrame'
+import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
@@ -23,6 +24,7 @@ interface ChatroomProps {
   addChatHandler: (newChat: ChatType) => void
   mainCategoryClickHandler: (...args: any[]) => any
   keywordClickHandler: (keyword: string, mainCategory: MainCategoriesType, chat_index: number) => void
+  sendKeywordSelection: (keywords: string[], mainCategory: MainCategoriesType, chat_index: number) => void
   restartClickHandler: (chat_index: number) => void
   isChatting: boolean
 }
@@ -37,6 +39,7 @@ const Chatroom = ({
   addChatHandler,
   mainCategoryClickHandler,
   keywordClickHandler,
+  sendKeywordSelection,
   restartClickHandler,
   isChatting,
 }: ChatroomProps): ReactNode => {
@@ -84,6 +87,12 @@ const Chatroom = ({
     }
   }
 
+  const searchHandler = (chat_index: number) => {
+    if (category.keywords !== '' && category.mainCategory) {
+      sendKeywordSelection(category.keywords, category.mainCategory, chat_index)
+    }
+  }
+
   const CHATS = chats.map((chat, chat_index) => {
     // console.log('checking chat_number:', chat_index)
     // console.log('checking chat: ', chat)
@@ -99,9 +108,11 @@ const Chatroom = ({
 
           return (
             <AIChatFrame key={key} content={chat.content}>
-              <div className='relative flex w-full flex-col items-center justify-start gap-1'>
-                <span className='font-dohyeon text-sm underline'>선호 음식 종류 선택</span>
-                <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-x-1'>
+              <div className='relative flex w-full flex-col items-center justify-start gap-1 rounded-md bg-rcChatGray py-2'>
+                <span className='font-dohyeon text-sm'>
+                  1. <span className='underline underline-offset-4'>선호 음식 종류 선택</span>
+                </span>
+                <ul className='grid w-full grid-cols-4 grid-rows-2 gap-x-1'>
                   {MainCategories.map((cat, cat_index) => (
                     <li
                       onClick={!chat.doneClicking ? () => ClickHandlers.mainCategory(cat, chat_index) : undefined}
@@ -139,15 +150,17 @@ const Chatroom = ({
 
           return (
             <AIChatFrame key={key} content={chat.content}>
-              <div className='relative flex w-full flex-col items-center justify-start gap-1'>
-                <span className='font-dohyeon text-sm underline'>선호 키워드 선택</span>
-                <ul className={cn(keywordCategories.length <= 4 ? 'grid-rows-1' : 'grid-rows-2', 'mb-2 grid w-full grid-cols-4 gap-x-1')}>
+              <div className='relative flex w-full flex-col items-center justify-start gap-1 rounded-md bg-rcChatGray px-2 py-2'>
+                <div className='font-dohyeon text-sm'>
+                  2. <span className='underline underline-offset-4'>선호 키워드 선택</span>
+                </div>
+                <ul className={cn(keywordCategories.length <= 4 ? 'grid-rows-1' : 'grid-rows-2', 'grid w-full grid-cols-4 gap-x-1')}>
                   {keywordCategories.map((kw, kw_idx) => (
                     <li
                       onClick={!chat.doneClicking ? () => ClickHandlers.keyword(kw, category.mainCategory as any, chat_index) : undefined}
                       className={cn(
                         !chat.doneClicking && 'cursor-pointer',
-                        'group flex flex-col items-center justify-between gap-1 px-1 py-2 text-[10px] font-medium',
+                        'group flex flex-col items-center justify-between gap-1 py-2 text-[10px] font-medium',
                       )}
                       key={`${chat_index}${kw_idx}`}
                     >
@@ -164,6 +177,14 @@ const Chatroom = ({
                     </li>
                   ))}
                 </ul>
+                <Button
+                  disabled={category.keywords === '' ? true : false}
+                  onClick={() => searchHandler(chat_index)}
+                  variant='rcGreen'
+                  className='w-full font-pretendard text-xs font-medium'
+                >
+                  검색하기
+                </Button>
               </div>
             </AIChatFrame>
           )

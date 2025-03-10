@@ -83,8 +83,6 @@ const PartPage = (): ReactNode => {
 
   const [userChat, setUserChat] = useState<string>('')
 
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
-
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
   // 밥팟 데이터
@@ -120,9 +118,9 @@ const PartPage = (): ReactNode => {
     )
   }, [])
 
-  useEffect(() => {
-    console.log(chats)
-  }, [chats])
+  // useEffect(() => {
+  //   console.log(chats)
+  // }, [chats])
 
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
@@ -151,7 +149,6 @@ const PartPage = (): ReactNode => {
     let newKeywords: string[] | ''
     if (!category.keywords) {
       newKeywords = [keyword]
-      console.log('newKeywords', newKeywords)
       setCategory(prev => ({
         ...prev,
         keywords: newKeywords,
@@ -172,17 +169,7 @@ const PartPage = (): ReactNode => {
       }))
     }
 
-    // 기존 타이머가 있다면 취소
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
-
-    // 새로운 타이머 설정 (1초 후 요청 실행)
-    const newTimeout = setTimeout(() => {
-      sendKeywordSelection(newKeywords, mainCategory, chat_index)
-    }, 1000)
-
-    setTimeoutId(newTimeout)
+    // sendKeywordSelection(newKeywords, mainCategory, chat_index)
   }
 
   const restartClickHandler = (chat_index: number) => {
@@ -202,10 +189,8 @@ const PartPage = (): ReactNode => {
 
   const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
 
-  const sendKeywordSelection = (newKeywords: string[], mainCategory: MainCategoriesType, chat_index: number) => {
-    console.log('send got keywords', newKeywords)
-
-    if (newKeywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
+  const sendKeywordSelection = (keywords: string[], mainCategory: MainCategoriesType, chat_index: number) => {
+    if (keywords.length === 0) return // 아무것도 선택되지 않으면 요청 안 보냄
 
     // 채팅 사용완료 표시
     const newChat = chats.map((chat, index) =>
@@ -213,7 +198,7 @@ const PartPage = (): ReactNode => {
         ? {
             ...chat,
             doneClicking: true,
-            lastKeywords: newKeywords,
+            lastKeywords: keywords,
             lastMainCategory: mainCategory,
           }
         : chat,
@@ -221,25 +206,25 @@ const PartPage = (): ReactNode => {
     setChats(newChat)
 
     // 유저 채팅 더하기
-    if (newKeywords) {
-      const keywords = newKeywords.join(', ')
-      const userChat = `${category.mainCategory}, ${keywords}`
+    if (keywords) {
+      const keywordString = keywords.join(', ')
+      const userChat = `${category.mainCategory}, ${keywordString}`
 
       addChatHandler(Chatting.UserRequest(userChat))
     }
 
     // AI 서버 유청 보내기
-    sendClickChat(newKeywords)
+    sendClickChat(keywords)
   }
   // 클릭으로 API 호출하는 경우
-  const sendClickChat = (newKeywords: string[]) => {
+  const sendClickChat = (keywords: string[]) => {
     if (chatId) {
       ChattingMutate(
         {
           chatId: chatId,
           category: {
             mainCategory: category.mainCategory,
-            keywords: newKeywords,
+            keywords: keywords,
           },
           chat: '',
         },
@@ -354,6 +339,7 @@ const PartPage = (): ReactNode => {
           addChatHandler={addChatHandler}
           mainCategoryClickHandler={mainCategoryClickHandler}
           keywordClickHandler={keywordClickHandler}
+          sendKeywordSelection={sendKeywordSelection}
           restartClickHandler={restartClickHandler}
           isChatting={isChatting}
         />
