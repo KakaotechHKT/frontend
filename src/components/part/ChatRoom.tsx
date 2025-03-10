@@ -178,7 +178,7 @@ const Chatroom = ({
                   ))}
                 </ul>
                 <Button
-                  disabled={category.keywords === '' ? true : false}
+                  disabled={category.keywords === '' || chat.doneClicking ? true : false}
                   onClick={() => searchHandler(chat_index)}
                   variant='rcGreen'
                   className='w-full font-pretendard text-xs font-medium'
