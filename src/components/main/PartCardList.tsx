@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 
-import PartCard, { BabpartDTO } from './PartCard'
+import PartCard, { BabpartDTO } from './PartCards/PartCard'
 
 interface PartCardListProps {
   className?: string
@@ -28,12 +28,12 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   if (isPending || !data) {
     contents = <Loading />
   } else {
-    contents = data.data.babpats.map((elm: BabpartDTO) => <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />)
+    contents = data.data.babpats.map((elm: BabpartDTO) => {
+      return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />
+    })
   }
 
-  return (
-    <ul className={cn(!isPending ? 'grid grid-cols-4 gap-x-8 gap-y-10' : 'flex items-center justify-center', className)}>{contents}</ul>
-  )
+  return <ul className={cn(!isPending ? 'grid gap-x-8 gap-y-10' : 'flex items-center justify-center', className)}>{contents}</ul>
 }
 
 export default PartCardList

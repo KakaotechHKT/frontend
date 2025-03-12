@@ -8,7 +8,7 @@ import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 
 import { useResponsive } from '@lib/provider/useResponsiveProvider'
-import RecommendPartCard, { RecommendBabpartDTO } from './RecommendCard'
+import RecommendPartCard, { RecommendBabpartDTO } from './PartCards/RecommendCard'
 
 interface RecommendCardListProps {
   className?: string

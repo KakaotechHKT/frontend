@@ -2,13 +2,14 @@ import Image from 'next/image'
 
 import Footer from '@components/Footer'
 import Header from '@components/Header'
+import PartCardList from '@components/main/PartCardList'
 import RecommendCardList from '@components/main/RecommendCardList'
 import { cn } from '@lib/utils/utils'
 import KTBMainImage from '@public/images/ktb_1.jpeg'
 import SpoonImage from '@public/images/spoon.svg'
 
 export default function Home() {
-  const pageSize = `w-full px-4 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
+  const pageSize = `w-full px-8 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
   return (
     <>
       <Header className={cn('z-10 h-[12dvh]', pageSize)} />
@@ -36,7 +37,7 @@ export default function Home() {
         <section className='flex flex-col items-center justify-start gap-1'>
           <span className='font-dohyeon text-xl sm:text-2xl xl:text-3xl'>밥팟 참여하기</span>
           <span className='text-xss text-rcDarkGray lg:text-sm'>* 밥팟에 참여하여 많은 사람들과 식사를 함께하세요!</span>
-          {/* <PartCardList className='my-6 w-full px-8' /> */}
+          <PartCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4' />
         </section>
       </main>
       <Footer className='z-10 h-max w-full' />
