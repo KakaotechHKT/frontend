@@ -27,7 +27,7 @@ type RegisterDTO = {
 }
 
 const RegisterPage = (): ReactNode => {
-  const { isOpen, handleOpen, Modal } = useModal()
+  const { isOpen, openModalHandler, Modal } = useModal()
 
   const [step, setStep] = useState<number>(0)
 

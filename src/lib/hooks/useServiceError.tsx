@@ -2,7 +2,7 @@
 import { useCallback } from 'react'
 import { toast } from 'sonner'
 
-const useApiError = () => {
+const useServiceError = () => {
   const defaultHandler = (httpMessage: string) => {
     toast(httpMessage)
   }
@@ -64,4 +64,4 @@ const useApiError = () => {
   return { handleError }
 }
 
-export default useApiError
+export default useServiceError

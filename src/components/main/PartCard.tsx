@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
 import { Track } from '@app/auth/register/page'
@@ -16,7 +15,7 @@ import { SpeedTransformer, TrackTransformer } from '@public/data'
  *  time 형태
  *  time: "12:30:00",
  * */
-export type babpartDTO = {
+export type BabpartDTO = {
   restaurantInfo: {
     name: string
     mainMenus: string
@@ -48,12 +47,11 @@ interface PartCardProps {
     nickname: string
     track: Track
   }
-  babpartData: babpartDTO
+  babpartData: BabpartDTO
 }
 
 const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
-  const { isOpen, handleOpen, Modal } = useModal()
-  const router = useRouter()
+  const { openModalHandler, Modal } = useModal()
 
   const { id: userID, name: userName, nickname, track } = authData
   const { restaurantInfo, babpatInfo } = babpartData
@@ -83,16 +81,14 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
 
   const applyHandler = () => {
     const details = `${name} 밥팟을 신청하시겠습니까?`
-    handleOpen({
+    openModalHandler({
       title: '밥팟 신청',
-      details: details,
+      details,
       type: 'confirm',
     })
   }
 
-  const comfirmHandler = () => {
-    console.log('entered confirm')
-
+  const confirmHandler = () => {
     PartApplyMutate(
       {
         ID: userID,
@@ -126,6 +122,7 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
             밥팟 참여하기
           </div>
         </div>
+
         <div className='relative flex w-full flex-col items-start justify-start py-3'>
           <div className='mb-2 flex w-full flex-col items-start justify-start px-2'>
             <span className='text-ellipsis text-nowrap text-lg'>{comment}</span>
@@ -134,12 +131,12 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
             </span>
 
             <div className='flex w-full items-center justify-between'>
-              <div className='my-1 flex items-center justify-start gap-1 text-xss'>
-                {categories.map(cat => (
-                  <span key={cat}># {cat}</span>
+              <ul className='my-1 flex items-center justify-start gap-1 text-xss'>
+                {categories.slice(0, 2).map(cat => (
+                  <li key={cat}># {cat}</li>
                 ))}
-                <span className='text-xss'># {SpeedTransformer[mealSpeed]}</span>
-              </div>
+                <li className='text-xss'># {SpeedTransformer[mealSpeed]}</li>
+              </ul>
 
               <div className='flex items-center justify-between gap-1 text-xss'>
                 <span>{date}</span>
@@ -156,16 +153,9 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
               {capacity.filledSlots}/{capacity.totalSlots}
             </span>
           </div>
-
-          {/* <div className='flex w-full items-end justify-between'>
-          <span className='text-xss'># {SpeedTransformer[mealSpeed]}</span>
-          <Button onClick={applyHandler} variant='rcKakaoYellow' className='h-8'>
-            신청
-          </Button>
-        </div> */}
         </div>
       </li>
-      <Modal confirmCallback={comfirmHandler} />
+      <Modal confirmCallback={confirmHandler} />
     </>
   )
 }

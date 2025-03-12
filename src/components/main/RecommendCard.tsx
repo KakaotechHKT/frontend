@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 
 import { Menu } from '@app/part/page'
 import { cn } from '@lib/utils/utils'
+import Link from 'next/link'
 
 /**
  *  mainMenus 형태
@@ -57,13 +58,14 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
 
   const kakaoLink = `https://map.kakao.com/?sName=카카오테크 부트캠프 교육장&eName=${name}`
   return (
-    <li
-      onClick={() => window.open(kakaoLink, '_blank')}
+    <Link
+      href={kakaoLink}
+      target='_blank'
       className={cn(
         'group relative flex h-full w-full cursor-pointer items-start justify-between rounded-xl border-sm border-solid border-rcBlack shadow-rc-shadow',
         className,
         `transition-opacity duration-700 ease-in-out`,
-        `${isVisible ? 'opacity-100' : 'opacity-0'}`,
+        `${isVisible ? 'visible' : 'invisible'}`,
       )}
     >
       {/* {isPromotion && <Image className='absolute right-0 top-0 z-10' src={SpoonImage} alt='spoon-image' />} */}
@@ -83,24 +85,23 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
       <div className='flex h-full flex-grow flex-col items-start justify-start px-3 py-2'>
         <span className='flex w-full items-center justify-start text-ellipsis text-nowrap font-dohyeon text-rcBlue'>{name}</span>
 
-        <div className='mt-2 flex w-full items-start justify-start gap-4'>
-          <div className='relative flex h-full grow flex-col items-start justify-start text-xs text-rcDarkGray'>
-            <div className='my-1 flex items-center justify-start gap-2 text-xss'>
-              {categories.map(cat => (
-                <span key={cat}># {cat}</span>
-              ))}
-            </div>
-            <span className='text-xss'># {averagePrice}</span>
-            <span className='my-1 mt-3 text-xs font-semibold text-rcBlack'>대표메뉴</span>
-            <ul className='flex flex-col items-start justify-start text-xss'>
-              {mainMenu.slice(0, 3).map(menu => (
-                <li key={menu.name}>-{menu.name}</li>
-              ))}
-            </ul>
-          </div>
+        <div className='text-xstext-rcDarkGray mt-2 flex w-full grow flex-col items-start justify-start'>
+          <ul className='my-1 flex items-center justify-start gap-2 text-xss'>
+            {categories.map(cat => (
+              <li key={cat}># {cat}</li>
+            ))}
+          </ul>
+
+          <span className='text-xss'># {averagePrice}</span>
+          <span className='my-1 mt-3 text-sm font-semibold text-rcBlack'>대표메뉴</span>
+          <ul className='flex flex-col items-start justify-start text-xss'>
+            {mainMenu.slice(0, 3).map(menu => (
+              <li key={menu.name}>-{menu.name}</li>
+            ))}
+          </ul>
         </div>
       </div>
-    </li>
+    </Link>
   )
 }
 

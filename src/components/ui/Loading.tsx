@@ -8,7 +8,7 @@ interface LoadingProps {
   size?: number
 }
 const Loading = ({ className, size }: LoadingProps): ReactNode => {
-  return <LucideIcon name='LoaderCircle' className={cn('animate-spin', className)} size={size || 16} />
+  return <LucideIcon name='LoaderCircle' className={cn('animate-spin', className)} size={size || 30} />
 }
 
 export default Loading
