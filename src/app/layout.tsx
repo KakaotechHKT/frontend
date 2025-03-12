@@ -4,6 +4,7 @@ import { cn } from '@lib/utils/utils'
 import { doHyeon, pretendard } from '@public/fonts/font'
 import CustomQueryClientProvider from '../lib/provider/QueryClientProvider'
 
+import { ResponsiveProvider } from '@lib/provider/useResponsiveProvider'
 import Script from 'next/script'
 import './globals.css'
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang='ko'>
       <Script type='text/javascript' src='//developers.kakao.com/dfk/js/kakao.min.js' />
       <body className={cn(pretendard.variable, doHyeon.variable, 'justify-star relative flex flex-col items-center font-pretendard')}>
-        <CustomQueryClientProvider>{children}</CustomQueryClientProvider>
+        <CustomQueryClientProvider>
+          <ResponsiveProvider>{children}</ResponsiveProvider>
+        </CustomQueryClientProvider>
       </body>
     </html>
   )

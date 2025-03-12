@@ -62,7 +62,7 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
       href={kakaoLink}
       target='_blank'
       className={cn(
-        'group relative flex h-full w-full cursor-pointer items-start justify-between rounded-xl border-sm border-solid border-rcBlack shadow-rc-shadow',
+        'group relative flex h-full w-full cursor-pointer items-start justify-between overflow-hidden rounded-xl border-sm border-solid border-rcBlack shadow-rc-shadow',
         className,
         `transition-opacity duration-700 ease-in-out`,
         `${isVisible ? 'visible' : 'invisible'}`,

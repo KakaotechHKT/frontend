@@ -20,7 +20,7 @@ interface HeaderProps {
 
 const Header = ({ className }: HeaderProps): ReactNode => {
   return (
-    <header className={cn(className, 'relative mx-auto flex items-center justify-between px-8 backdrop-blur-sm')}>
+    <header className={cn(className, 'relative mx-auto flex items-center justify-between backdrop-blur-sm')}>
       <Link href={URL.MAIN.INDEX.value} className='flex h-full w-max max-w-xs items-center justify-start gap-6 font-dohyeon text-2xl'>
         <Image alt='밥팟 로고' src={LogoImage} />
         밥팟
