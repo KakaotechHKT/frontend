@@ -4,6 +4,7 @@ import { cn } from '@lib/utils/utils'
 import { doHyeon, pretendard } from '@public/fonts/font'
 import CustomQueryClientProvider from '../lib/provider/QueryClientProvider'
 
+import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
+      <Script type='text/javascript' src='//developers.kakao.com/dfk/js/kakao.min.js' />
       <body className={cn(pretendard.variable, doHyeon.variable, 'justify-star relative flex flex-col items-center font-pretendard')}>
         <CustomQueryClientProvider>{children}</CustomQueryClientProvider>
       </body>
