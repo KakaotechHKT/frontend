@@ -4,7 +4,8 @@ import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 
 import { TrackTransformer, TrackType } from '@public/data/tracks'
-import { ReactNode, useState } from 'react'
+import { ReactNode, RefObject, useRef, useState } from 'react'
+import { useOutsideClick } from 'usehooks-jihostudy'
 import { Button } from './button'
 
 interface FilterSelectorProps {
@@ -18,6 +19,29 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
   const { status, toggleStatus } = useToggle(false)
   // 상태
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const ref = useRef<HTMLDivElement>(null)
+
+  useOutsideClick(ref as RefObject<HTMLElement>, toggleStatus)
+
+  let value
+  if (selectedOptions.length === 0) value = placeHolder
+  else if (selectedOptions.length >= 1) {
+    switch (placeHolder) {
+      case '종류':
+        value = selectedOptions[0]
+        break
+      case '과정':
+        value = TrackTransformer[selectedOptions[0] as TrackType]
+        break
+
+      case '인원':
+        value = `${selectedOptions[0]}명`
+        break
+    }
+    if (selectedOptions.length >= 2) {
+      value += ` 외 ${selectedOptions.length - 1}`
+    }
+  }
 
   const selectOptionHandler = (option: string) => {
     setSelectedOptions(
@@ -53,12 +77,17 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
   return (
     <>
       <div
-        onClick={toggleStatus}
-        className='relative flex cursor-pointer items-center justify-center gap-2 rounded-xl border-sm border-solid border-rcDarkGray px-2 py-1 text-sm'
+        className={cn(
+          'relative cursor-pointer rounded-xl border-solid px-2 py-1 text-sm',
+          selectedOptions.length !== 0 ? 'border border-rcBlack bg-rcKakaoYellow hover:bg-rcKakaoYellowHover' : 'border border-rcDarkGray',
+        )}
       >
-        {placeHolder} <LucideIcon name={!status ? 'ChevronDown' : 'ChevronUp'} />
+        <div className='flex h-full w-full items-center justify-center gap-2' onClick={toggleStatus}>
+          {value} <LucideIcon name={!status ? 'ChevronDown' : 'ChevronUp'} />
+        </div>
         {status && (
           <div
+            ref={ref}
             className={cn(
               'absolute left-0 top-[150%] z-10 flex w-56 flex-col items-center justify-start rounded-md bg-rcWhite shadow-rc-shadow',
               className,
