@@ -8,7 +8,7 @@ import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 
 import { useResponsive } from '@lib/provider/useResponsiveProvider'
-import RecommendPartCard, { RecommendBabpartDTO } from './PartCards/RecommendCard'
+import RecommendPartCard, { RecommendBabpartDTO } from './Recommend/RecommendCard'
 
 interface RecommendCardListProps {
   className?: string
@@ -39,6 +39,7 @@ const RecommendCardList = ({ className }: RecommendCardListProps): ReactNode => 
     queryFn: ({ signal }) => {
       return RecommendPartList({})
     },
+    staleTime: Infinity,
   })
 
   useEffect(() => {
@@ -53,7 +54,6 @@ const RecommendCardList = ({ className }: RecommendCardListProps): ReactNode => 
   if (isPending || !data) {
     contents = <Loading />
   } else {
-    console.log(data)
     const doubleData = [...data.data.recommendations, ...data.data.recommendations]
     const recommendations = doubleData.slice(startIndex, startIndex + DISPLAY_ITEMS_COUNT)
     contents = recommendations.map((elm: RecommendBabpartDTO) => {

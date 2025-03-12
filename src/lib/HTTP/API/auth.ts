@@ -1,6 +1,6 @@
-import { Track } from '@app/auth/register/page'
 import { API_ROUTES } from '@lib/constants/endpoint'
 import { customFetch, SuccessResponse } from '@lib/HTTP/Fetch'
+import { TrackType } from '@public/data/tracks'
 
 export interface LoginType {
   id: string
@@ -73,7 +73,7 @@ export interface RegisterType {
   password: string
   nickname: string // 카테부 영어이름
   name: string // 실명
-  track: Track
+  track: TrackType
 }
 
 export const Register = async ({ id, password, nickname, name, track }: RegisterType) => {
