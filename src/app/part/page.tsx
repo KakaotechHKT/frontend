@@ -326,7 +326,9 @@ const PartPage = (): ReactNode => {
 
       {/* 채팅 */}
       <div className='relative flex h-screen w-1/4 flex-col items-center justify-between pb-3 pt-5'>
-        <span className='flex w-full items-center justify-center font-dohyeon text-2xl'>밥봇</span>
+        <span className='flex w-full items-center justify-center gap-2 font-dohyeon text-2xl'>
+          밥팟 AI 챗봇 <span className='inline-block text-rcBlue'>밥봇</span>
+        </span>
 
         {/* 채팅내용 */}
         <Chatroom
