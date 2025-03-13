@@ -1,6 +1,7 @@
 'use client'
-import { useResponsiveStore } from '@lib/context/useResponsive'
 import { ReactNode, useCallback, useEffect } from 'react'
+
+import { useResponsiveStore } from '@lib/context/useResponsive'
 
 export const ResponsiveProvider = ({ children }: { children: ReactNode }) => {
   const { updateWidth } = useResponsiveStore()

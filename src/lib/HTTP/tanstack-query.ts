@@ -3,8 +3,8 @@ import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
 import { useMutation } from '@tanstack/react-query'
-import { queryClient } from '../provider/QueryClientProvider'
 
+import { queryClient } from '../provider/QueryClientProvider'
 import { Chatting, CreateChat } from './API/chat'
 
 /**

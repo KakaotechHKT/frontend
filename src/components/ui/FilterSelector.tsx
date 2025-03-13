@@ -1,11 +1,12 @@
 'use client'
+import { ReactNode, RefObject, useRef, useState } from 'react'
+import { useOutsideClick } from 'usehooks-jihostudy'
+
 import useToggle from '@lib/hooks/useToggle'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-
 import { TrackTransformer, TrackType } from '@public/data/tracks'
-import { ReactNode, RefObject, useRef, useState } from 'react'
-import { useOutsideClick } from 'usehooks-jihostudy'
+
 import { Button } from './button'
 
 interface FilterSelectorProps {

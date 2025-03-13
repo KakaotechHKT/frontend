@@ -1,10 +1,10 @@
 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 
 import { Menu } from '@app/part/page'
 import { cn } from '@lib/utils/utils'
-import Link from 'next/link'
 
 /**
  *  mainMenus 형태
