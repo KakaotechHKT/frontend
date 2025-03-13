@@ -31,7 +31,8 @@
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
-    "usehooks-jihostudy": "^0.0.9"
+    "usehooks-jihostudy": "^0.0.9",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

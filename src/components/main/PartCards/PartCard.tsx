@@ -2,12 +2,12 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import { Track } from '@app/auth/register/page'
 import { Menu, Speed } from '@app/part/page'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
-import { SpeedTransformer, TrackTransformer } from '@public/data'
+import { SpeedTransformer } from '@public/data'
+import { TrackTransformer, TrackType } from '@public/data/tracks'
 
 /**
  *  mainMenus 형태
@@ -35,7 +35,7 @@ export type BabpartDTO = {
     leaderProfile: {
       name: string
       nickname: string
-      track: Track
+      track: TrackType
     }
   }
 }
@@ -45,7 +45,7 @@ interface PartCardProps {
     id: number
     name: string
     nickname: string
-    track: Track
+    track: TrackType
   }
   babpartData: BabpartDTO
 }
@@ -116,7 +116,7 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
             src={thumbnailUrl}
             width={100}
             height={100}
-            alt='식당 이미지 '
+            alt='식당 이미지'
           />
           <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-dohyeon text-lg text-transparent underline underline-offset-4 group-hover:text-rcBlack'>
             밥팟 참여하기
