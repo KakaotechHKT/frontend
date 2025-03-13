@@ -27,11 +27,11 @@ else
 fi
 
 # S3에 정적 파일 업로드 (.DS_Store 파일 제외)
-echo "📤 Uploading files from $BUILD_DIR to S3 bucket: ${AWS_S3_BUCKET}"
-aws s3 sync "$BUILD_DIR" "s3://${AWS_S3_BUCKET}" --exclude ".DS_Store"
+echo "📤 Uploading files from $BUILD_DIR to S3 bucket: $TARGET_S3_BUCKET"
+aws s3 sync "$BUILD_DIR" "s3://${TARGET_S3_BUCKET}" --exclude ".DS_Store"
 
 # CloudFront 캐시 무효화
-echo "🌀 Invalidating CloudFront distribution: ${AWS_CLOUDFRONT_DISTRIBUTION_ID}"
-aws cloudfront create-invalidation --distribution-id "${AWS_CLOUDFRONT_DISTRIBUTION_ID}" --paths "/*"
+echo "🌀 Invalidating CloudFront distribution: $TARGET_CLOUDFRONT_ID"
+aws cloudfront create-invalidation --distribution-id "$TARGET_CLOUDFRONT_ID" --paths "/*"
 
 echo "✅ Deployment finished!"
