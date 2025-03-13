@@ -12,7 +12,6 @@ jobs:
     environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
 
     env:
-      # Dev-Prod 공용
       NEXT_PUBLIC_KAKAO_NATIVE: ${{ secrets.NEXT_PUBLIC_KAKAO_NATIVE }}
       NEXT_PUBLIC_KAKAO_REST_API: ${{ secrets.NEXT_PUBLIC_KAKAO_REST_API }}
       NEXT_PUBLIC_KAKAO_JAVASCRIPT_API: ${{ secrets.NEXT_PUBLIC_KAKAO_JAVASCRIPT_API }}
