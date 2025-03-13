@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
@@ -37,10 +37,6 @@ const RegisterPage = (): ReactNode => {
     name: '',
     track: null, // 기본값
   })
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   // formData 일부를 업데이트하는 헬퍼 함수
   const updateData = (partial: Partial<RegisterDTO>) => {
