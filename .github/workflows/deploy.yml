@@ -20,8 +20,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       # Dev용
-      AWS_S3_BUCKET: ${{ secrets.AWS_DEV_S3_BUCKET }}
-      AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}
+      AWS_DEV_S3_BUCKET: ${{ secrets.AWS_DEV_S3_BUCKET }}
+      AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}
 
     steps:
       - name: Checkout Repository
