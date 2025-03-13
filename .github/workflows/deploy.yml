@@ -9,16 +9,20 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+
     env:
       # Dev-Prod 공용
       NEXT_PUBLIC_KAKAO_NATIVE: ${{ secrets.NEXT_PUBLIC_KAKAO_NATIVE }}
       NEXT_PUBLIC_KAKAO_REST_API: ${{ secrets.NEXT_PUBLIC_KAKAO_REST_API }}
       NEXT_PUBLIC_KAKAO_JAVASCRIPT_API: ${{ secrets.NEXT_PUBLIC_KAKAO_JAVASCRIPT_API }}
       NEXT_PUBLIC_KAKAO_ADMIN_API: ${{ secrets.NEXT_PUBLIC_KAKAO_ADMIN_API }}
-      NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }} # Dev서버 배포 후 수정 필요
-      NEXT_PUBLIC_AI_SERVER: ${{ secrets.NEXT_PUBLIC_AI_SERVER }} # Dev서버 배포 후 수정 필요
+      NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }}
+      NEXT_PUBLIC_AI_SERVER: ${{ secrets.NEXT_PUBLIC_AI_SERVER }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+      AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
 
     steps:
       - name: Checkout Repository
@@ -48,15 +52,9 @@ jobs:
 
       - name: Set Environment Variables for Deployment
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "DEPLOY_ENV=prod" >> $GITHUB_ENV
-            echo "AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}" >> $GITHUB_ENV
-            echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
-          else
-            echo "DEPLOY_ENV=dev" >> $GITHUB_ENV
-            echo "AWS_S3_BUCKET=${{ secrets.AWS_DEV_S3_BUCKET }}" >> $GITHUB_ENV
-            echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
-          fi
+          echo "DEPLOY_ENV=${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}" >> $GITHUB_ENV
+          echo "AWS_S3_BUCKET=${{ github.ref == 'refs/heads/main' && secrets.AWS_S3_BUCKET || secrets.AWS_DEV_S3_BUCKET }}" >> $GITHUB_ENV
+          echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ github.ref == 'refs/heads/main' && secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID || secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
 
       - name: Run Deploy Script
         run: ./scripts/deploy.sh
