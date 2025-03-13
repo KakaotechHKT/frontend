@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 
 import { ResponsiveProvider } from '@lib/provider/useResponsiveProvider'
 import { cn } from '@lib/utils/utils'
 import { doHyeon, pretendard } from '@public/fonts/font'
-import Script from 'next/script'
+
 import CustomQueryClientProvider from '../lib/provider/QueryClientProvider'
+
 import './globals.css'
 
 export const metadata: Metadata = {
