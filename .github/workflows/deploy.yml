@@ -9,13 +9,19 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
+      # Dev-Prod 공용
       NEXT_PUBLIC_KAKAO_NATIVE: ${{ secrets.NEXT_PUBLIC_KAKAO_NATIVE }}
       NEXT_PUBLIC_KAKAO_REST_API: ${{ secrets.NEXT_PUBLIC_KAKAO_REST_API }}
       NEXT_PUBLIC_KAKAO_JAVASCRIPT_API: ${{ secrets.NEXT_PUBLIC_KAKAO_JAVASCRIPT_API }}
       NEXT_PUBLIC_KAKAO_ADMIN_API: ${{ secrets.NEXT_PUBLIC_KAKAO_ADMIN_API }}
       NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }} # Dev서버 배포 후 수정 필요
       NEXT_PUBLIC_AI_SERVER: ${{ secrets.NEXT_PUBLIC_AI_SERVER }} # Dev서버 배포 후 수정 필요
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      # Dev용
+      AWS_S3_BUCKET: ${{ secrets.AWS_DEV_S3_BUCKET }}
+      AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}
 
     steps:
       - name: Checkout Repository
@@ -46,9 +52,4 @@ jobs:
         run: chmod +x scripts/deploy.sh
 
       - name: Run Deploy Script
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_DEV_S3_BUCKET }}
-          AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: ./scripts/deploy.sh

@@ -11,6 +11,21 @@ if [ ! -d "$BUILD_DIR" ]; then
   exit 1
 fi
 
+# 현재 브랜치 확인
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo "🔎 Current branch: $BRANCH"
+
+# 환경 변수 설정
+if [ "$BRANCH" == "dev-test" ]; then
+  TARGET_S3_BUCKET="${AWS_DEV_S3_BUCKET}"
+  TARGET_CLOUDFRONT_ID="${AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID}"
+  echo "🌱 Deploying to Dev environment..."
+else
+  TARGET_S3_BUCKET="${AWS_S3_BUCKET}"
+  TARGET_CLOUDFRONT_ID="${AWS_CLOUDFRONT_DISTRIBUTION_ID}"
+  echo "🚀 Deploying to Prod environment..."
+fi
+
 # S3에 정적 파일 업로드 (.DS_Store 파일 제외)
 echo "📤 Uploading files from $BUILD_DIR to S3 bucket: ${AWS_S3_BUCKET}"
 aws s3 sync "$BUILD_DIR" "s3://${AWS_S3_BUCKET}" --exclude ".DS_Store"
