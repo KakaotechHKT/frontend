@@ -17,10 +17,8 @@ jobs:
       NEXT_PUBLIC_KAKAO_ADMIN_API: ${{ secrets.NEXT_PUBLIC_KAKAO_ADMIN_API }}
       NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }} # Dev서버 배포 후 수정 필요
       NEXT_PUBLIC_AI_SERVER: ${{ secrets.NEXT_PUBLIC_AI_SERVER }} # Dev서버 배포 후 수정 필요
-
-      # Dev용
-      AWS_DEV_S3_BUCKET: ${{ secrets.AWS_DEV_S3_BUCKET }}
-      AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Checkout Repository
@@ -43,8 +41,6 @@ jobs:
         run: pnpm install
 
       - name: Build Project
-        # env:
-          # NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }}
         run: pnpm run build
 
       - name: Set Execute Permission for Deploy Script
@@ -53,9 +49,11 @@ jobs:
       - name: Set Environment Variables for Deployment
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "DEPLOY_ENV=prod" >> $GITHUB_ENV
             echo "AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}" >> $GITHUB_ENV
             echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
           else
+            echo "DEPLOY_ENV=dev" >> $GITHUB_ENV
             echo "AWS_S3_BUCKET=${{ secrets.AWS_DEV_S3_BUCKET }}" >> $GITHUB_ENV
             echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
           fi
