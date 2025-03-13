@@ -12,7 +12,6 @@ if [ ! -d "$BUILD_DIR" ]; then
 fi
 
 # S3에 정적 파일 업로드 (.DS_Store 파일 제외)
-echo "🔎 Deploying to environment: $DEPLOY_ENV"
 echo "📤 Uploading files from $BUILD_DIR to S3 bucket: ${AWS_S3_BUCKET}"
 aws s3 sync "$BUILD_DIR" "s3://${AWS_S3_BUCKET}" --exclude ".DS_Store"
 

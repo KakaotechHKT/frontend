@@ -50,11 +50,11 @@ jobs:
       - name: Set Execute Permission for Deploy Script
         run: chmod +x scripts/deploy.sh
 
-      - name: Set Environment Variables for Deployment
+      - name: Debug Environment Variables
         run: |
-          echo "DEPLOY_ENV=${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}" >> $GITHUB_ENV
-          echo "AWS_S3_BUCKET=${{ github.ref == 'refs/heads/main' && secrets.AWS_S3_BUCKET || secrets.AWS_DEV_S3_BUCKET }}" >> $GITHUB_ENV
-          echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ github.ref == 'refs/heads/main' && secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID || secrets.AWS_DEV_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
+          echo "Deploying to environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}"
+          echo "Using S3 Bucket: $AWS_S3_BUCKET"
+          echo "Using CloudFront Distribution ID: $AWS_CLOUDFRONT_DISTRIBUTION_ID"
 
       - name: Run Deploy Script
         run: ./scripts/deploy.sh
