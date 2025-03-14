@@ -9,18 +9,12 @@ import { useAuthData } from '@lib/hooks/useAuthData'
 import useToggle from '@lib/hooks/useToggle'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-import { TrackTransformer } from '@public/data/tracks'
+import { TrackTransformer, TrackType } from '@public/data/tracks'
 import BabPulImage from '@public/images/babpul.svg'
 import LogoImage from '@public/images/logo.svg'
-import { useOutsideClick } from 'usehooks-jihostudy'
+import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 import { KAKAO_CHANNEL_LINK } from './Footer'
 import { Button } from './ui/button'
-
-export const LINKS = {
-  NotAuthenticated: [URL.PART.INDEX, URL.AUTH.LOGIN, URL.AUTH.REGISTER],
-  // Authenticated: [URL.PART.INDEX, URL.AUTH.MYPAGE],
-  Authenticated: [URL.PART.INDEX],
-}
 
 interface HeaderProps {
   className?: string
@@ -28,15 +22,16 @@ interface HeaderProps {
 
 const Header = ({ className }: HeaderProps): ReactNode => {
   const { tn, sm, md, lg, xl, xll } = useResponsiveStore()
-  const { id, name, nickname, track } = useAuthData()
+  const authData = useAuthData()
+  const { status, toggleStatus } = useToggle()
 
-  const isAuthenticated = name !== ''
+  const isAuthenticated = authData.name !== ''
 
   let navContent
-  if (tn || sm || md) {
-    navContent = <MobileNavBar isAuthenticated={isAuthenticated} />
+  if (tn || sm) {
+    navContent = <MobileNavBar status={status} toggleStatus={toggleStatus} isAuthenticated={isAuthenticated} />
   } else {
-    navContent = <DesktopNavBar isAuthenticated={isAuthenticated} />
+    navContent = <DesktopNavBar status={status} toggleStatus={toggleStatus} isAuthenticated={isAuthenticated} authData={authData} />
   }
 
   return (
@@ -54,13 +49,13 @@ const Header = ({ className }: HeaderProps): ReactNode => {
 export default Header
 
 interface MobileNavBarProps {
+  status: boolean
+  toggleStatus: () => void
   isAuthenticated: boolean
   className?: string
 }
 
-const MobileNavBar = ({ isAuthenticated, className }: MobileNavBarProps): ReactNode => {
-  const { status, toggleStatus } = useToggle(true)
-
+const MobileNavBar = ({ status, toggleStatus, isAuthenticated, className }: MobileNavBarProps): ReactNode => {
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
@@ -69,7 +64,7 @@ const MobileNavBar = ({ isAuthenticated, className }: MobileNavBarProps): ReactN
         </li>
         <li className='relative'>
           <LucideIcon name='AlignJustify' size={20} onClick={toggleStatus} />
-          {status && <MenuBar isAuthenticated={isAuthenticated} toggleStatus={toggleStatus} />}
+          {status && <MenuBar isAuthenticated={isAuthenticated} status={status} toggleStatus={toggleStatus} isDesktop={true} />}
         </li>
       </ul>
     </nav>
@@ -78,28 +73,33 @@ const MobileNavBar = ({ isAuthenticated, className }: MobileNavBarProps): ReactN
 
 interface MenuBarProps {
   isAuthenticated: boolean
+  status: boolean
   toggleStatus: () => void
+  isDesktop: boolean
 }
 
-const MenuBar = ({ isAuthenticated, toggleStatus }: MenuBarProps): ReactNode => {
+const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarProps): ReactNode => {
   const { id, name, nickname, track } = useAuthData()
   const ref = useRef<HTMLDivElement>(null)
 
   useOutsideClick(ref as RefObject<HTMLElement>, toggleStatus)
+  useEscClose(status, toggleStatus)
 
   return (
     <div
       ref={ref}
-      className='absolute right-0 top-[120%] z-10 flex w-max flex-col items-center justify-start rounded-xl border border-solid border-rcDarkGray bg-rcWhite'
+      className='absolute right-0 top-[120%] z-10 flex w-max flex-col items-center justify-start rounded-xl bg-rcWhite shadow-rc-shadow'
     >
       <LucideIcon onClick={toggleStatus} name='X' className='absolute right-3 top-3' />
       <div className='relative my-8 flex w-full flex-col items-center justify-start gap-4 px-8'>
-        <div className={cn('flex w-full flex-col items-center justify-start gap-3')}>
-          <Image src={BabPulImage} alt='character-image' width={30} height={50} />
-          <span className='font-semibold'>
-            {!isAuthenticated ? `만능개발자 밥풀` : `${nickname} (${name}) / ${TrackTransformer[track]}`}
-          </span>
-        </div>
+        {!isDesktop && (
+          <div className={cn('flex w-full flex-col items-center justify-start gap-3')}>
+            <Image src={BabPulImage} alt='character-image' width={30} height={50} />
+            <span className='font-semibold'>
+              {!isAuthenticated ? `만능개발자 밥풀` : `${nickname} (${name}) / ${TrackTransformer[track]}`}
+            </span>
+          </div>
+        )}
 
         <Link href={!isAuthenticated ? URL.AUTH.LOGIN.value : URL.PART.INDEX.value} className='relative w-full'>
           <Button className={cn('w-full rounded-lg')} variant='rcKakaoYellow'>
@@ -185,29 +185,46 @@ const NavLink = ({ isAuthenticated, text, route, className }: NavLinkProps) => {
 }
 
 interface DesktopNavBarProps {
+  status: boolean
+  toggleStatus: () => void
   isAuthenticated: boolean
+  authData: {
+    id: number
+    name: string
+    nickname: string
+    track: TrackType
+  }
   className?: string
 }
 
-const DesktopNavBar = ({ isAuthenticated, className }: DesktopNavBarProps): ReactNode => {
-  const links = !isAuthenticated ? LINKS.NotAuthenticated : LINKS.Authenticated
+const DesktopNavBar = ({ status, toggleStatus, isAuthenticated, authData, className }: DesktopNavBarProps): ReactNode => {
+  const { name, nickname, track } = authData
 
+  console.log(status)
+
+  const fullName = `${nickname} (${name}) / ${TrackTransformer[track]}`
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
-        {links.map((link, index) => (
-          <li
-            key={link.value}
-            className={cn(
-              'cursor-pointer',
-              link.value === URL.PART.INDEX.value
-                ? 'rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold hover:bg-rcKakaoYellowHover'
-                : 'hover:font-semibold',
-            )}
-          >
-            <Link href={link.value}>{link.name}</Link>
+        <li className={cn('cursor-pointer rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold hover:bg-rcKakaoYellowHover')}>
+          <Link href={URL.PART.INDEX.value}>밥팟 만들기</Link>
+        </li>
+        {isAuthenticated ? (
+          <li>
+            <LucideIcon name='Bell' size={20} />
           </li>
-        ))}
+        ) : (
+          <Link href={URL.AUTH.LOGIN.value}>로그인</Link>
+        )}
+        {isAuthenticated ? (
+          <li onClick={toggleStatus} className='relative flex cursor-pointer flex-col items-center gap-1'>
+            <Image src={BabPulImage} alt='character-image' width={30} height={50} />
+            <span className='text-xs'>{fullName}</span>
+          </li>
+        ) : (
+          <Link href={URL.AUTH.REGISTER.value}>회원가입</Link>
+        )}
+        {status && <MenuBar isAuthenticated={isAuthenticated} status={status} toggleStatus={toggleStatus} isDesktop={true} />}
       </ul>
     </nav>
   )
