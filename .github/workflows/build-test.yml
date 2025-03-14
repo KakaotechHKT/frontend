@@ -1,15 +1,14 @@
-name: Build and Deploy to S3
+name: Build and Test
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - dev
 
 jobs:
-  deploy:
+  build-test:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
 
     env:
       NEXT_PUBLIC_KAKAO_NATIVE: ${{ secrets.NEXT_PUBLIC_KAKAO_NATIVE }}
@@ -18,10 +17,6 @@ jobs:
       NEXT_PUBLIC_KAKAO_ADMIN_API: ${{ secrets.NEXT_PUBLIC_KAKAO_ADMIN_API }}
       NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }}
       NEXT_PUBLIC_AI_SERVER: ${{ secrets.NEXT_PUBLIC_AI_SERVER }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
 
     steps:
       - name: Checkout Repository
@@ -37,17 +32,9 @@ jobs:
           corepack enable
           corepack prepare pnpm@latest --activate
 
-      - name: Check pnpm version
-        run: pnpm -v
-
       - name: Install Dependencies
         run: pnpm install
 
       - name: Build Project
         run: pnpm run build
 
-      - name: Set Execute Permission for Deploy Script
-        run: chmod +x scripts/deploy.sh
-
-      - name: Run Deploy Script
-        run: ./scripts/deploy.sh
