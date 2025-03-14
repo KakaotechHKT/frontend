@@ -2,10 +2,11 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import { Menu, Speed } from '@app/part/page'
+import { Menu } from '@app/part/page'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
+import { SpeedType } from '@lib/types/part/part'
 import { SpeedTransformer } from '@public/data'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
 
@@ -29,7 +30,7 @@ export type BabpartDTO = {
       totalSlots: number // 총 자리
       filledSlots: number // 남은 자리
     }
-    mealSpeed: Speed
+    mealSpeed: SpeedType
     date: string
     time: string
     leaderProfile: {

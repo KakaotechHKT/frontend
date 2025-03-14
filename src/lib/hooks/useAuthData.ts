@@ -18,7 +18,7 @@ export const useAuthData = (): {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedData = sessionStorage.getItem('auth')
+      const storedData = sessionStorage.getItem('authData')
       if (storedData) {
         setAuthData(JSON.parse(storedData))
       }

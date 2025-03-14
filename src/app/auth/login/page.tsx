@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
@@ -19,16 +19,10 @@ const LoginPage = (): ReactNode => {
   // States for storing user input
   const [id, setId] = useState('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [saveAuthData, setSaveAuthData] = useState<boolean>(true)
   const [password, setPassword] = useState('')
 
   // Mutations
   const { mutate: LoginMutate, isPending } = useMutationStore<LoginType>(['login'])
-
-  useEffect(() => {
-    console.log(saveAuthData)
-  }, [saveAuthData])
-
   // Functions
   const loginHandler = () => {
     if (id.length === 0 || password.length === 0) {
@@ -42,10 +36,12 @@ const LoginPage = (): ReactNode => {
         onSuccess(data, variables, context) {
           router.push(URL.MAIN.INDEX.value)
           // 로그인 정보를 SessionStorage에 저장
-          sessionStorage.setItem('auth', JSON.stringify(data.data))
+          const { authTokens, ...authData } = data.data
+          sessionStorage.setItem('authData', JSON.stringify(authData))
+          sessionStorage.setItem('accessToken', authTokens.accessToken)
         },
         onError(error, variables, context) {
-          alert(error.message)
+          console.log(error)
         },
       },
     )

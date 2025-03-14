@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 
-import { Speed } from '@app/part/page'
 import { API_ROUTES } from '@lib/constants/endpoint'
+import { SpeedType } from '@lib/types/part/part'
 
 import { customFetch, SuccessResponse } from '../Fetch'
 
@@ -12,12 +12,10 @@ export interface PartCreateType {
   time: string
   headCount: number
   comment: string
-  mealSpeed: Speed | null
+  mealSpeed: SpeedType | null
 }
 
 export const PartCreate = async ({ leaderID, placeID, date, time, headCount, comment, mealSpeed }: PartCreateType) => {
-  console.log('entered part create12312312')
-
   const ROUTE = API_ROUTES.PART.CREATE
 
   const body = {
@@ -29,9 +27,6 @@ export const PartCreate = async ({ leaderID, placeID, date, time, headCount, com
     comment,
     mealSpeed,
   }
-
-  console.log('body')
-  console.log(body)
 
   const res = await customFetch(
     ROUTE.url,

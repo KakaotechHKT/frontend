@@ -14,8 +14,8 @@ import useModal from '@lib/hooks/useModal'
 import { DuplicateCheckType, RegisterType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { TrackType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
-import { TrackType } from '@public/data/tracks'
 
 type RegisterDTO = {
   id: string

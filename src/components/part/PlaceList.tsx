@@ -1,14 +1,15 @@
 import Image from 'next/image'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 
-import { Geo, PartDTO, placeDTO } from '@app/part/page'
+import { PartDTO, placeDTO } from '@app/part/page'
 import { Button } from '@components/ui/button'
+import { GeoType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
 
 interface PlaceListProps {
   placeList: placeDTO[]
 
-  centerHandler: (center: Geo) => void
+  centerHandler: (center: GeoType) => void
   focusedPlaceId: number | undefined
   focusedPlaceIdHandler: (id: number) => void
 

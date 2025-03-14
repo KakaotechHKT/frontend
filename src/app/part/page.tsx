@@ -11,6 +11,7 @@ import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { ChattingType, CreateChatType } from '@lib/HTTP/API/chat'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
+import { GeoType, SpeedType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
@@ -23,12 +24,6 @@ export type CategoryType = {
   keywords: string[] | ''
 }
 
-export type Geo = {
-  latitude: number
-  longitude: number
-}
-
-export type Speed = 'FAST' | 'MIDDLE' | 'SLOW'
 export type PartDTO = {
   // leader: {
   //   id: number
@@ -42,7 +37,7 @@ export type PartDTO = {
   time: string | undefined
   headCount: number | undefined
   comment: string | undefined
-  mealSpeed: Speed | null
+  mealSpeed: SpeedType | null
 }
 
 export type Menu = {
@@ -69,7 +64,7 @@ const PartPage = (): ReactNode => {
   const [placeList, setPlaceList] = useState<placeDTO[]>(placeListDummyData)
 
   // 지도 관련 상태
-  const [center, setCenter] = useState<Geo>(KTB_Position)
+  const [center, setCenter] = useState<GeoType>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
   // 채팅 관련 상태
   const [chatId, setChatId] = useState<number>()
@@ -276,7 +271,7 @@ const PartPage = (): ReactNode => {
   }
 
   // 지도 관련 함수
-  const centerHandler = (center: Geo) => {
+  const centerHandler = (center: GeoType) => {
     setCenter(center)
   }
   const focusedPlaceIdHandler = (id: number) => {
