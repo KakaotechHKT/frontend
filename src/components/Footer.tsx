@@ -9,6 +9,8 @@ interface FooterProps {
   className?: string
 }
 
+const KAKAO_CHANNEL_LINK = 'http://pf.kakao.com/_xoxcSnn'
+
 const Footer = ({ className }: FooterProps): ReactNode => {
   return (
     <footer className={cn('relative flex w-screen flex-col items-start justify-start gap-3 bg-rcChatGray px-8 py-6', className)}>
@@ -28,7 +30,7 @@ const Footer = ({ className }: FooterProps): ReactNode => {
         <Link className='cursor-pointer font-medium hover:text-rcBlack' target='_blank' href={''}>
           개인정보 처리방침
         </Link>
-        <Link href={''} target='_blank' className='cursor-pointer font-medium hover:text-rcBlack'>
+        <Link href={KAKAO_CHANNEL_LINK} target='_blank' className='cursor-pointer font-medium hover:text-rcBlack'>
           문의하기
         </Link>
         {/* 

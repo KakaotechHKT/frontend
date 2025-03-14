@@ -5,7 +5,6 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
-import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
 import { URL } from '@lib/constants/routes'
@@ -16,7 +15,7 @@ import LucideIcon from '@lib/provider/LucideIcon'
 
 const LoginPage = (): ReactNode => {
   const router = useRouter()
-  const { isOpen, handleOpen, Modal } = useModal()
+  const { isOpen, openModalHandler, Modal } = useModal()
   // States for storing user input
   const [id, setId] = useState('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -82,12 +81,7 @@ const LoginPage = (): ReactNode => {
             <Loading className='my-1 flex h-9 w-full items-center justify-center' />
           )}
 
-          <div className='mb-3 mt-3 flex w-full items-center justify-between text-xs font-normal text-rcDarkGray'>
-            <div className='flex cursor-pointer items-center justify-start gap-2'>
-              <Checkbox id='login-state' defaultChecked={true} onClick={() => setSaveAuthData(prev => !prev)} />
-              <label htmlFor='login-state'>로그인 상태 유지</label>
-            </div>
-
+          <div className='mb-3 mt-3 flex w-full items-center justify-end text-xs font-normal text-rcDarkGray'>
             <Link href={URL.AUTH.FIND_PASSWORD.value} className='cursor-pointer'>
               비밀번호 찾기
             </Link>

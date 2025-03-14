@@ -42,7 +42,9 @@ export class Chatting {
   static MainCategoryResponse(mainCategory: MainCategoriesType): ChatType {
     return {
       speaker: 'ai',
-      content: `${mainCategory}을 선택하셨네요.\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
+      content: `카테고리 선택을 완료하셨군요!\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
+      // Todo: 메인 카테고리 선택에 따른 이름 변동이 되도록 처리
+      // content: `${mainCategory}을 선택하셨네요.\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
       type: ResponseType.MAIN_CATEGORY,
       doneClicking: false,
       lastMainCategory: undefined,

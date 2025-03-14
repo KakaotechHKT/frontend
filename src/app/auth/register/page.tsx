@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
@@ -15,19 +15,18 @@ import { DuplicateCheckType, RegisterType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-
-export type Track = 'FULLSTACK' | 'AI' | 'CLOUD'
+import { TrackType } from '@public/data/tracks'
 
 type RegisterDTO = {
   id: string
   password: string
   nickname: string // 카테부 영어이름
   name: string // 실명
-  track: Track | null
+  track: TrackType | null
 }
 
 const RegisterPage = (): ReactNode => {
-  const { isOpen, handleOpen, Modal } = useModal()
+  const { isOpen, openModalHandler, Modal } = useModal()
 
   const [step, setStep] = useState<number>(0)
 
@@ -38,10 +37,6 @@ const RegisterPage = (): ReactNode => {
     name: '',
     track: null, // 기본값
   })
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   // formData 일부를 업데이트하는 헬퍼 함수
   const updateData = (partial: Partial<RegisterDTO>) => {
@@ -154,7 +149,7 @@ interface KTBInfoStepProps {
 const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
   const router = useRouter()
 
-  const selectHandler = (track: Track) => {
+  const selectHandler = (track: TrackType) => {
     updateData({ track: track })
   }
 

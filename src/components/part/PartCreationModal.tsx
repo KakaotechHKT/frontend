@@ -3,7 +3,6 @@ import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
-import { Track } from '@app/auth/register/page'
 import { PartDTO, Speed } from '@app/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { Button } from '@components/ui/button'
@@ -15,14 +14,14 @@ import { URL } from '@lib/constants/routes'
 import { PartCreateType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
-import { TrackTransformer } from '@public/data'
+import { TrackTransformer, TrackType } from '@public/data/tracks'
 
 interface PartCreationModalProps {
   authData: {
     id: number
     name: string
     nickname: string
-    track: Track
+    track: TrackType
   }
 
   partData: PartDTO
@@ -46,7 +45,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
 
   // headCount
   const MAX_HEADCOUNT = 10
-  const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => i + 2) // 2~8 생성
+  const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => i + 2)
   const headCountHandler = (head: string) => {
     updatePartData({ headCount: Number(head) })
   }
