@@ -14,16 +14,15 @@ import useModal from '@lib/hooks/useModal'
 import { DuplicateCheckType, RegisterType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { TrackType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
-
-export type Track = 'FULLSTACK' | 'AI' | 'CLOUD'
 
 type RegisterDTO = {
   id: string
   password: string
   nickname: string // 카테부 영어이름
   name: string // 실명
-  track: Track | null
+  track: TrackType | null
 }
 
 const RegisterPage = (): ReactNode => {
@@ -154,7 +153,7 @@ interface KTBInfoStepProps {
 const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
   const router = useRouter()
 
-  const selectHandler = (track: Track) => {
+  const selectHandler = (track: TrackType) => {
     updateData({ track: track })
   }
 

@@ -1,6 +1,6 @@
-import { Geo } from '@app/part/page'
+import { GeoType } from '@lib/types/part/part'
 
-export const KTB_Position: Geo = {
+export const KTB_Position: GeoType = {
   latitude: 37.40031,
   longitude: 127.1067144,
 }

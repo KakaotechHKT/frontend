@@ -3,8 +3,7 @@ import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
-import { Track } from '@app/auth/register/page'
-import { PartDTO, Speed } from '@app/part/page'
+import { PartDTO } from '@app/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { Button } from '@components/ui/button'
 import { DatePicker } from '@components/ui/DatePicker'
@@ -15,6 +14,7 @@ import { URL } from '@lib/constants/routes'
 import { PartCreateType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { SpeedType, TrackType } from '@lib/types/part/part'
 import { TrackTransformer } from '@public/data'
 
 interface PartCreationModalProps {
@@ -22,7 +22,7 @@ interface PartCreationModalProps {
     id: number
     name: string
     nickname: string
-    track: Track
+    track: TrackType
   }
 
   partData: PartDTO
@@ -56,7 +56,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
     updatePartData({ comment: comment })
   }
   // speed
-  const speedHandler = (speed: Speed) => {
+  const speedHandler = (speed: SpeedType) => {
     updatePartData({ mealSpeed: speed })
   }
 

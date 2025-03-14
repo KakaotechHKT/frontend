@@ -1,15 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { Track } from '@app/auth/register/page'
+import { TrackType } from '@lib/types/part/part'
 
 export const useAuthData = (): {
   id: number
   name: string
   nickname: string
-  track: Track
+  track: TrackType
 } => {
-  const [authData, setAuthData] = useState<{ id: number; name: string; nickname: string; track: Track }>({
+  const [authData, setAuthData] = useState<{ id: number; name: string; nickname: string; track: TrackType }>({
     id: 0,
     name: '',
     nickname: '',

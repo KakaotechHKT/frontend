@@ -2,8 +2,6 @@ import Image from 'next/image'
 
 import Footer from '@components/Footer'
 import Header from '@components/Header'
-import PartCardList from '@components/main/PartCardList'
-import RecommendCardList from '@components/main/RecommendCardList'
 import SpoonImage from '@public/images/spoon.svg'
 export default function Home() {
   return (
@@ -32,12 +30,12 @@ export default function Home() {
             밥팟의 추천 장소 <Image src={SpoonImage} alt='spoon-image' />
           </span>
           <span className='text-xss text-rcDarkGray'>* 밥팟팀의 선호도를 기반으로 추천드려요!</span>
-          <RecommendCardList className='my-6' />
+          {/* <RecommendCardList className='my-6' /> */}
         </div>
         <div className='flex flex-col items-center justify-start gap-1'>
           <span className='font-dohyeon text-2xl'>밥팟 참여하기</span>
           <span className='text-xss text-rcDarkGray'>* 밥팟에 참여하여 많은 사람들과 식사를 함께하세요!</span>
-          <PartCardList className='my-6' />
+          {/* <PartCardList className='my-6' /> */}
         </div>
       </main>
       <Footer className='z-10 h-max w-full' />

@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 
-import { Track } from '@app/auth/register/page'
-import { Menu, Speed } from '@app/part/page'
+import { Menu } from '@app/part/page'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
+import { SpeedType, TrackType } from '@lib/types/part/part'
 import { SpeedTransformer, TrackTransformer } from '@public/data'
 
 /**
@@ -30,13 +30,13 @@ export type babpartDTO = {
       totalSlots: number // 총 자리
       filledSlots: number // 남은 자리
     }
-    mealSpeed: Speed
+    mealSpeed: SpeedType
     date: string
     time: string
     leaderProfile: {
       name: string
       nickname: string
-      track: Track
+      track: TrackType
     }
   }
 }
@@ -46,7 +46,7 @@ interface PartCardProps {
     id: number
     name: string
     nickname: string
-    track: Track
+    track: TrackType
   }
   babpartData: babpartDTO
 }

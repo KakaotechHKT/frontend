@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
 import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk'
 
-import { Geo, placeDTO } from '@app/part/page'
+import { placeDTO } from '@app/part/page'
 import useKakaoLoader from '@lib/hooks/useKakaoLoader'
+import { GeoType } from '@lib/types/part/part'
 import { KTB_Position } from '@public/data'
 
 import { PlaceMapMarker } from './MapPin'
@@ -15,7 +16,7 @@ import { PlaceMapMarker } from './MapPin'
 // import { MAP_MARKER_COLORS, SpriteMapMarker } from './MapPin'
 
 type KakaoMapProps = {
-  center: Geo
+  center: GeoType
   placeList: placeDTO[]
 }
 
