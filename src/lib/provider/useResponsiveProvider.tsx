@@ -1,7 +1,7 @@
 'use client'
 import { ReactNode, useCallback, useEffect } from 'react'
 
-import { useResponsiveStore } from '@lib/context/useResponsive'
+import { useResponsiveStore } from '@lib/context/responsiveStore'
 
 export const ResponsiveProvider = ({ children }: { children: ReactNode }) => {
   const { updateWidth } = useResponsiveStore()
@@ -20,9 +20,4 @@ export const ResponsiveProvider = ({ children }: { children: ReactNode }) => {
   }, [handleResize])
 
   return <>{children}</>
-}
-
-// ✅ useResponsive() → Zustand의 상태를 가져오는 Hook
-export const useResponsive = () => {
-  return useResponsiveStore()
 }

@@ -4,10 +4,10 @@ import { ReactNode, useEffect, useState } from 'react'
 import Loading from '@components/ui/Loading'
 import { RecommendPartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
-import { useResponsive } from '@lib/provider/useResponsiveProvider'
 import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 
+import { useResponsiveStore } from '@lib/context/responsiveStore'
 import RecommendPartCard, { RecommendBabpartDTO } from './Recommend/RecommendCard'
 
 interface RecommendCardListProps {
@@ -19,7 +19,7 @@ interface RecommendCardListProps {
 const TOTAL_FETCH_ITEMS = 4
 
 const RecommendCardList = ({ className }: RecommendCardListProps): ReactNode => {
-  const { sm, md, lg, xl, xll } = useResponsive()
+  const { sm, md, lg, xl, xll } = useResponsiveStore()
 
   let DISPLAY_ITEMS_COUNT // 한 번에 보여줄 개수
 

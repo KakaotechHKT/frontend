@@ -26,7 +26,6 @@ const LoginPage = (): ReactNode => {
   // Functions
   const loginHandler = () => {
     if (id.length === 0 || password.length === 0) {
-      console.log('데이터가 충분하지 않습니다.')
       return
     }
 

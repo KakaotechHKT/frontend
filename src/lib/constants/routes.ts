@@ -28,13 +28,20 @@ export const URL = {
       name: '회원탈퇴',
       value: '/auth/unregister',
     },
-    MYPAGE: {
-      name: '마이페이지',
-      value: '/auth/mypage',
-    },
+
     FIND_PASSWORD: {
       name: '비밀번호 찾기',
       value: '/auth/find_password',
+    },
+  },
+  MYPAGE: {
+    INDEX: {
+      name: '마이페이지',
+      value: '/mypage',
+    },
+    SETTLEMENT: {
+      name: '정산하기',
+      value: '/mypage/settlement',
     },
   },
   PART: {
@@ -43,11 +50,6 @@ export const URL = {
       value: '/part',
     },
   },
-  // SEAT: {
-  //   RESERVE: (n: number) => {
-  //     return { name: '좌석 배정', value: `/seat/reserve?n=${n}` }
-  //   },
 } as const
 
-// 자동으로 갱신되는 Url 타입
-export type RouteType = ExtractValueByKey<typeof URL, 'url'>
+export type RouteType = ExtractValueByKey<typeof URL, 'value'>

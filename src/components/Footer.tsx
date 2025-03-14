@@ -9,7 +9,7 @@ interface FooterProps {
   className?: string
 }
 
-const KAKAO_CHANNEL_LINK = 'http://pf.kakao.com/_xoxcSnn'
+export const KAKAO_CHANNEL_LINK = 'http://pf.kakao.com/_xoxcSnn'
 
 const Footer = ({ className }: FooterProps): ReactNode => {
   return (
