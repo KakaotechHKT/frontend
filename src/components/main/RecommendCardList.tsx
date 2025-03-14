@@ -2,12 +2,12 @@
 import { ReactNode, useEffect, useState } from 'react'
 
 import Loading from '@components/ui/Loading'
+import { useResponsiveStore } from '@lib/context/responsiveStore'
 import { RecommendPartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 
-import { useResponsiveStore } from '@lib/context/responsiveStore'
 import RecommendPartCard, { RecommendBabpartDTO } from './Recommend/RecommendCard'
 
 interface RecommendCardListProps {

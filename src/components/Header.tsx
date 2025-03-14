@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode, RefObject, useRef } from 'react'
+import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 
 import { RouteType, URL } from '@lib/constants/routes'
 import { useResponsiveStore } from '@lib/context/responsiveStore'
@@ -12,7 +13,7 @@ import { cn } from '@lib/utils/utils'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
 import BabPulImage from '@public/images/babpul.svg'
 import LogoImage from '@public/images/logo.svg'
-import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
+
 import { KAKAO_CHANNEL_LINK } from './Footer'
 import { Button } from './ui/button'
 
