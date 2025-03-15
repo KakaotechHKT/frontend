@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ReactNode, RefObject, useRef } from 'react'
 import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 
@@ -8,6 +9,8 @@ import { RouteType, URL } from '@lib/constants/routes'
 import { useResponsiveStore } from '@lib/context/responsiveStore'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import useToggle from '@lib/hooks/useToggle'
+import { LogoutType } from '@lib/HTTP/API/auth'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
@@ -26,7 +29,11 @@ const Header = ({ className }: HeaderProps): ReactNode => {
   const authData = useAuthData()
   const { status, toggleStatus } = useToggle()
 
-  const isAuthenticated = authData.name !== ''
+  console.log('authData: ', authData)
+
+  const isAuthenticated = authData.id !== 0
+
+  console.log(isAuthenticated)
 
   let navContent
   if (tn || sm) {
@@ -80,12 +87,35 @@ interface MenuBarProps {
 }
 
 const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarProps): ReactNode => {
-  const { id, name, nickname, track } = useAuthData()
+  const router = useRouter()
+  const { id, name, nickname, track, accessToken } = useAuthData()
   const ref = useRef<HTMLDivElement>(null)
 
   useOutsideClick(ref as RefObject<HTMLElement>, toggleStatus)
   useEscClose(status, toggleStatus)
 
+  const { mutate: LogoutMutate, isPending } = useMutationStore<LogoutType>(['logout'])
+
+  const logoutHandler = () => {
+    LogoutMutate(
+      {
+        accessToken,
+      },
+      {
+        /** TODO: 로그아웃시 메인페이지로 이동하는 로직 (메인페이지에서 로그아웃 시 제대로 안됨) */
+        onSuccess(data, variables, context) {
+          router.replace(URL.MAIN.INDEX.value)
+          window.location.reload()
+
+          sessionStorage.removeItem('authData')
+          sessionStorage.removeItem('accessToken')
+        },
+        onError(error, variables, context) {
+          console.log(error)
+        },
+      },
+    )
+  }
   return (
     <div
       ref={ref}
@@ -108,9 +138,9 @@ const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarPr
           </Button>
         </Link>
 
-        <Link href={URL.MAIN.INDEX.value} className='group mt-3 flex w-full cursor-pointer items-center justify-between'>
-          <span className='group-hover:text-rcBlue'>밥팟 찾기</span>
-          <LucideIcon name='ChevronRight' className='group-hover:text-rcBlue' />
+        <Link href={URL.MAIN.INDEX.value} className='mt-3 flex w-full cursor-pointer items-center justify-between hover:text-rcBlue'>
+          <span>밥팟 찾기</span>
+          <LucideIcon name='ChevronRight' />
         </Link>
       </div>
 
@@ -147,14 +177,21 @@ const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarPr
       <div className='h-1 w-full bg-[#EBEBEB]' />
 
       <div className='relative my-8 flex w-full flex-col items-center justify-between gap-6 px-8'>
-        <div className='group flex w-full cursor-pointer items-center justify-between gap-2'>
-          <span className='group-hover:text-rcBlue'>개인정보 처리방침</span>
-          <LucideIcon name='ChevronRight' className='group-hover:text-rcBlue' />
+        <div className='flex w-full cursor-pointer items-center justify-between gap-2 hover:text-rcBlue'>
+          <span>개인정보 처리방침</span>
+          <LucideIcon name='ChevronRight' />
         </div>
-        <Link href={KAKAO_CHANNEL_LINK} className='group flex w-full cursor-pointer items-center justify-between gap-2'>
-          <span className='group-hover:text-rcBlue'>문의하기</span>
-          <LucideIcon name='ChevronRight' className='group-hover:text-rcBlue' />
+        <Link href={KAKAO_CHANNEL_LINK} className='flex w-full cursor-pointer items-center justify-between gap-2 hover:text-rcBlue'>
+          <span>문의하기</span>
+          <LucideIcon name='ChevronRight' />
         </Link>
+
+        {isAuthenticated && (
+          <div onClick={logoutHandler} className='flex w-full cursor-pointer items-center justify-between gap-2 hover:text-rcRed'>
+            <span>로그아웃</span>
+            <LucideIcon name='ChevronRight' />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -177,10 +214,10 @@ const NavLink = ({ isAuthenticated, text, route, className }: NavLinkProps) => {
   return (
     <Link
       href={!isAuthenticated ? route.unAuthenticated : route.authenticated}
-      className={cn('group flex cursor-pointer items-center justify-between', className)}
+      className={cn('flex cursor-pointer items-center justify-between hover:text-rcBlue', className)}
     >
-      <span className='group-hover:text-rcBlue'>{!isAuthenticated ? text.unAuthenticated : text.authenticated}</span>
-      <LucideIcon name='ChevronRight' className='group-hover:text-rcBlue' />
+      <span>{!isAuthenticated ? text.unAuthenticated : text.authenticated}</span>
+      <LucideIcon name='ChevronRight' />
     </Link>
   )
 }
@@ -200,8 +237,6 @@ interface DesktopNavBarProps {
 
 const DesktopNavBar = ({ status, toggleStatus, isAuthenticated, authData, className }: DesktopNavBarProps): ReactNode => {
   const { name, nickname, track } = authData
-
-  console.log(status)
 
   const fullName = `${nickname} (${name}) / ${TrackTransformer[track]}`
   return (

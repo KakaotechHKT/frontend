@@ -35,9 +35,9 @@ const LoginPage = (): ReactNode => {
         onSuccess(data, variables, context) {
           router.push(URL.MAIN.INDEX.value)
           // 로그인 정보를 SessionStorage에 저장
-          const { authTokens, ...authData } = data.data
+          const { authToken, ...authData } = data.data
           sessionStorage.setItem('authData', JSON.stringify(authData))
-          sessionStorage.setItem('accessToken', authTokens.accessToken)
+          sessionStorage.setItem('accessToken', authToken.accessToken)
         },
         onError(error, variables, context) {
           console.log(error)
