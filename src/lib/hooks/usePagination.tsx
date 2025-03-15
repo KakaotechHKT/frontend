@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from '@components/ui/pagination'
 import LucideIcon from '@lib/provider/LucideIcon'
@@ -12,39 +12,31 @@ export interface PaginationInfo {
   totalElements: number
 }
 
+const MAX_VISIBLE_PAGES = 5 // 표시할 최대 페이지 수
+
 interface UsePaginationProps {
+  currentPage: number
   totalPages: number // 전체 페이지 수
 }
-
-const MAX_VISIBLE_PAGES = 5 // 표시할 최대 페이지 수
 
 /**
  * URLParams를 기반으로 페이지네이션을 구현하는 컴포넌트
  * @totalPages 전체 페이지 개수
  * @returns
  */
-export function usePagination({ totalPages }: UsePaginationProps) {
+export function usePagination({ currentPage, totalPages }: UsePaginationProps) {
   const router = useRouter()
-  const params = useSearchParams()
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
-
+  // 잘못된 페이지이면 첫 페이지로 이동
   useEffect(() => {
-    const pageParam = parseInt(params.get('page') ?? '1', 10)
-    if (pageParam <= 0 || pageParam > totalPages) {
-      // 잘못된 페이지이면 첫 페이지로 이동
+    if (currentPage <= 0 || currentPage > totalPages) {
       router.replace(`?page=1`)
-    } else {
-      setCurrentPage(pageParam)
     }
-  }, [params, totalPages, router])
+  }, [])
 
   const changePage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      console.log('clicked')
-
       router.push(`?page=${page}`)
-      setCurrentPage(page)
     }
   }
 

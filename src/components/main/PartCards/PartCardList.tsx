@@ -89,7 +89,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     })
   }
 
-  const { PaginationComponent } = usePagination({ totalPages: totalPageNumber })
+  const { PaginationComponent } = usePagination({ currentPage: pageNumber, totalPages: totalPageNumber })
 
   return (
     <section className='flex w-full flex-col items-center justify-start gap-1'>
