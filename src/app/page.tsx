@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Header className={cn('z-10 h-[12dvh]', pageSize)} />
-      <main className={cn('mx-auto flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
+      <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
         <Image src={KTBMainImage} alt='main-image' width={650} height={400} className='aspect-video w-full max-w-2xl rounded-lg' />
         <section className='flex flex-col items-center justify-start gap-4 font-dohyeon text-xl sm:text-2xl xl:text-4xl'>
           <h1>카카오테크 부트캠프 예비 개발자</h1>

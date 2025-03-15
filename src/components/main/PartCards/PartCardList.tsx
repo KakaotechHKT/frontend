@@ -1,11 +1,15 @@
 'use client'
-import { ReactNode, useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { ReactNode, useState } from 'react'
 
+import { PaginationComponent } from '@components/common/Pagination'
 import FilterSelector from '@components/ui/FilterSelector'
 import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
+import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import useModal from '@lib/hooks/useModal'
+import { attachQuery } from '@lib/HTTP'
 import { PartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
@@ -33,6 +37,9 @@ const MAX_HEADCOUNT = 10
 const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => String(i + 2))
 
 const PartCardList = ({ className }: PartCardListProps): ReactNode => {
+  const router = useRouter()
+  const params = useSearchParams()
+
   const authData = useAuthData()
   const { openModalHandler, Modal } = useModal()
 
@@ -44,12 +51,9 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     capacity: undefined,
   })
   const [searchInput, setSearchInput] = useState<string>('')
-  const [pageNumber, setPageNumber] = useState<number>(0)
-  let totalPageNumber: number
 
-  useEffect(() => {
-    console.log(searchInput)
-  }, [searchInput])
+  const pageNumber = parseInt(params.get('page') ?? '1')
+  let totalPageNumber: number = 0
 
   const updateFilter = (type: 'mainCategory' | 'track' | 'capacity', selectedFilters: string[]) => {
     setFilters(prev => ({ ...prev, [type]: selectedFilters }))
@@ -84,8 +88,18 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
 
     /** 페이지네이션 관리 */
     const { size, number, totalElements, totalPages } = page
-
     totalPageNumber = totalPages
+  }
+
+  /** 페이지네이션 함수 */
+  const paginate = (selectedPageNumber: number) => {
+    const nextRoute = attachQuery(URL.MAIN.INDEX.value, [
+      {
+        key: 'page',
+        value: selectedPageNumber,
+      },
+    ])
+    router.push(nextRoute)
   }
 
   return (
@@ -128,6 +142,8 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       </div>
 
       <ul className={cn(!isPending ? 'grid gap-x-8 gap-y-10' : 'flex items-center justify-center', className)}>{contents}</ul>
+      <PaginationComponent currentPage={pageNumber} totalPages={totalPageNumber} setPage={paginate} />
+
       <Modal />
     </section>
   )

@@ -93,7 +93,7 @@ export const PartList = async ({ filters, searchInput, pageNumber }: PartListTyp
   const URL = attachQuery(ROUTE.url, Queries)
 
   const res = await customFetch(
-    ROUTE.url,
+    URL,
     {
       method: ROUTE.method,
     },

@@ -1,5 +1,6 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from '@components/ui/pagination'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { cn } from '@lib/utils/utils'
 
 export type PaginationInfo = {
   elementPerSize: number
@@ -59,7 +60,11 @@ export function PaginationComponent({ currentPage, totalPages, setPage }: Pagina
             {page === '...' ? (
               <PaginationEllipsis />
             ) : (
-              <PaginationLink href='#' isActive={page === currentPage} onClick={() => setPage(Number(page))}>
+              <PaginationLink
+                isActive={page === currentPage}
+                onClick={() => setPage(Number(page))}
+                className={cn(page === currentPage && 'bg-rcKakaoYellow hover:bg-rcKakaoYellowHover', 'rounded-full')}
+              >
                 {page}
               </PaginationLink>
             )}
