@@ -34,9 +34,9 @@ type Query = {
   value: any
 }
 
-export type Queries = Array<Query>
+export type QueriesType = Array<Query>
 
-export const attachQuery = (API: string, query: Queries): string => {
+export const attachQuery = (API: string, query: QueriesType): string => {
   if (!query || query.length === 0) return API
 
   const queryString = query.map(({ key, value }) => `${key}=${value}`).join('&')

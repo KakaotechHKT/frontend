@@ -1,5 +1,5 @@
 'use client'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import FilterSelector from '@components/ui/FilterSelector'
 import { Input } from '@components/ui/input'
@@ -10,7 +10,7 @@ import { PartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
-import { TRACKS, TrackType } from '@public/data/tracks'
+import { TrackType } from '@public/data/tracks'
 import { useQuery } from '@tanstack/react-query'
 
 import PartCard, { BabpartDTO } from './PartCard'
@@ -22,7 +22,7 @@ interface PartCardListProps {
 const TABS = ['전체', '밥팟', '도시락팟'] as const
 type TabType = (typeof TABS)[number]
 
-type FilterType = {
+export type FilterType = {
   mainCategory: MainCategoriesType[]
   track: TrackType[]
   capacity: string[] // 보낼때 다시 숫자로 전처리후 보내기
@@ -44,6 +44,12 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     capacity: undefined,
   })
   const [searchInput, setSearchInput] = useState<string>('')
+  const [pageNumber, setPageNumber] = useState<number>(0)
+  let totalPageNumber: number
+
+  useEffect(() => {
+    console.log(searchInput)
+  }, [searchInput])
 
   const updateFilter = (type: 'mainCategory' | 'track' | 'capacity', selectedFilters: string[]) => {
     setFilters(prev => ({ ...prev, [type]: selectedFilters }))
@@ -62,7 +68,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   const { data, isPending } = useQuery({
     queryKey: QUERY_KEYS.PART.LIST,
     queryFn: ({ signal }) => {
-      return PartList({})
+      return PartList({ filters, searchInput, pageNumber })
     },
   })
 
@@ -70,13 +76,20 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   if (isPending || !data) {
     contents = <Loading />
   } else {
-    contents = data.data.babpats.map((elm: BabpartDTO) => {
+    /** 요소 표시 */
+    const { content, page } = data.data
+    contents = content.map((elm: BabpartDTO) => {
       return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />
     })
+
+    /** 페이지네이션 관리 */
+    const { size, number, totalElements, totalPages } = page
+
+    totalPageNumber = totalPages
   }
 
   return (
-    <section className='flex flex-col items-center justify-start gap-1'>
+    <section className='flex w-full flex-col items-center justify-start gap-1'>
       <span className='font-dohyeon text-xl sm:text-2xl xl:text-3xl'>밥팟 참여하기</span>
       <span className='text-xss text-rcDarkGray lg:text-sm'>* 밥팟에 참여하여 많은 사람들과 식사를 함께하세요!</span>
       <ul className='flex items-center justify-start gap-4 self-start text-xl'>
@@ -94,7 +107,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       {/* 필터 */}
       <div className='relative mt-4 flex w-full items-center justify-start gap-4 self-start'>
         <FilterSelector placeHolder={'종류'} options={MainCategories} updateFilter={updateFilter} />
-        <FilterSelector placeHolder={'과정'} options={TRACKS} updateFilter={updateFilter} />
+        {/* <FilterSelector placeHolder={'과정'} options={TRACKS} updateFilter={updateFilter} /> */}
         <FilterSelector placeHolder={'인원'} options={numbers} updateFilter={updateFilter} />
 
         <Input
