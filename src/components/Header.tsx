@@ -29,11 +29,7 @@ const Header = ({ className }: HeaderProps): ReactNode => {
   const authData = useAuthData()
   const { status, toggleStatus } = useToggle()
 
-  console.log('authData: ', authData)
-
   const isAuthenticated = authData.id !== 0
-
-  console.log(isAuthenticated)
 
   let navContent
   if (tn || sm) {
@@ -109,9 +105,6 @@ const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarPr
 
           sessionStorage.removeItem('authData')
           sessionStorage.removeItem('accessToken')
-        },
-        onError(error, variables, context) {
-          console.log(error)
         },
       },
     )
