@@ -79,11 +79,12 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
       comment: comment,
       mealSpeed: mealSpeed ? mealSpeed : null,
     })
+    if (!id) {
+      toast.error('밥팟을 만들기 위해서는 로그인이 필요합니다.')
+      return
+    }
 
     if (placeId !== undefined && date && time && headCount && comment) {
-      console.log('entered part create')
-      console.log(12312321)
-
       PartCreateMutate(
         {
           leaderID: id,
