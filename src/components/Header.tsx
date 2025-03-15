@@ -132,9 +132,9 @@ const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarPr
           </div>
         )}
 
-        <Link href={!isAuthenticated ? URL.AUTH.LOGIN.value : URL.PART.INDEX.value} className='relative w-full'>
+        <Link href={URL.PART.INDEX.value} className='relative w-full'>
           <Button className={cn('w-full rounded-lg')} variant='rcKakaoYellow'>
-            {!isAuthenticated ? '로그인하기' : '밥팟 만들기'}
+            밥팟 만들기
           </Button>
         </Link>
 

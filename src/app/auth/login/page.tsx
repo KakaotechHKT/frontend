@@ -2,20 +2,19 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
+import { toast } from 'sonner'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
 import { URL } from '@lib/constants/routes'
-import useModal from '@lib/hooks/useModal'
 import { LoginType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 
 const LoginPage = (): ReactNode => {
   const router = useRouter()
-  const { isOpen, openModalHandler, Modal } = useModal()
   // States for storing user input
   const [id, setId] = useState('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -26,6 +25,8 @@ const LoginPage = (): ReactNode => {
   // Functions
   const loginHandler = () => {
     if (id.length === 0 || password.length === 0) {
+      toast.error('아이디와 비밀번호를 입력해주세요.')
+
       return
     }
 
@@ -38,9 +39,6 @@ const LoginPage = (): ReactNode => {
           const { authToken, ...authData } = data.data
           sessionStorage.setItem('authData', JSON.stringify(authData))
           sessionStorage.setItem('accessToken', authToken.accessToken)
-        },
-        onError(error, variables, context) {
-          console.log(error)
         },
       },
     )
@@ -92,7 +90,6 @@ const LoginPage = (): ReactNode => {
           </Link>
         </div>
       </div>
-      <Modal />
     </>
   )
 }
