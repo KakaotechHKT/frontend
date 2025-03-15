@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 
+import { Toaster } from '@components/ui/sonner'
 import { ResponsiveProvider } from '@lib/provider/useResponsiveProvider'
 import { cn } from '@lib/utils/utils'
 import { doHyeon, pretendard } from '@public/fonts/font'
@@ -26,6 +27,7 @@ export default function RootLayout({
         <CustomQueryClientProvider>
           <ResponsiveProvider>{children}</ResponsiveProvider>
         </CustomQueryClientProvider>
+        <Toaster />
       </body>
     </html>
   )

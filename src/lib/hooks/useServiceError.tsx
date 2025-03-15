@@ -4,19 +4,19 @@ import { toast } from 'sonner'
 
 const useServiceError = () => {
   const defaultHandler = (httpMessage: string) => {
-    toast(httpMessage)
+    toast.error(httpMessage)
   }
 
   const handler409 = () => {
-    toast('409 Error')
+    toast.error('409 Error')
   }
 
   const handler40010001 = () => {
-    toast('409 10001 Error')
+    toast.error('409 10001 Error')
   }
 
   const handler500 = () => {
-    toast('서버에서 알 수 없는 문제가 발생하였습니다.')
+    toast.error('서버에서 알 수 없는 문제가 발생하였습니다.')
   }
 
   const handlers: Record<string | number, any> = {
@@ -55,8 +55,6 @@ const useServiceError = () => {
       }
     } else {
       // Error 객체인 경우
-      console.log(error.message)
-
       handlers.default(error.message || '알 수 없는 오류가 발생했습니다.')
     }
   }, [])

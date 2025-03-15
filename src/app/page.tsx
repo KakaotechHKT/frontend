@@ -1,7 +1,11 @@
 import Image from 'next/image'
+import { Suspense } from 'react'
 
 import Footer from '@components/Footer'
 import Header from '@components/Header'
+import PartCardList from '@components/main/PartCards/PartCardList'
+import RecommendCardList from '@components/main/RecommendCardList'
+import Loading from '@components/ui/Loading'
 import { cn } from '@lib/utils/utils'
 import KTBMainImage from '@public/images/ktb_1.jpeg'
 import SpoonImage from '@public/images/spoon.svg'
@@ -11,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Header className={cn('z-10 h-[12dvh]', pageSize)} />
-      <main className={cn('mx-auto flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
+      <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
         <Image src={KTBMainImage} alt='main-image' width={650} height={400} className='aspect-video w-full max-w-2xl rounded-lg' />
         <section className='flex flex-col items-center justify-start gap-4 font-dohyeon text-xl sm:text-2xl xl:text-4xl'>
           <h1>카카오테크 부트캠프 예비 개발자</h1>
@@ -30,9 +34,11 @@ export default function Home() {
           </div>
 
           <span className='text-xss text-rcDarkGray lg:text-sm'>* 밥팟팀의 선호도를 기반으로 추천드려요!</span>
-          {/* <RecommendCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3' /> */}
+          <RecommendCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3' />
         </section>
-        {/* <PartCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4' /> */}
+        <Suspense fallback={<Loading className='w-full' />}>
+          <PartCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4' />
+        </Suspense>
       </main>
       <Footer className='z-10 h-max w-full' />
     </>
