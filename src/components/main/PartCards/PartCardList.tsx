@@ -1,15 +1,13 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
 
-import { PaginationComponent } from '@components/common/Pagination'
 import FilterSelector from '@components/ui/FilterSelector'
 import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
-import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import useModal from '@lib/hooks/useModal'
-import { attachQuery } from '@lib/HTTP'
+import { usePagination } from '@lib/hooks/usePagination'
 import { PartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
@@ -91,24 +89,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     })
   }
 
-  /** 페이지네이션 함수 */
-  const paginate = (selectedPageNumber: number) => {
-    const nextRoute = attachQuery(URL.MAIN.INDEX.value, [
-      {
-        key: 'page',
-        value: selectedPageNumber,
-      },
-    ])
-    router.push(nextRoute)
-  }
-
-  useEffect(() => {
-    /**  예외 처리 (현재 페이지가 없는 페이지인 경우) */
-    if (pageNumber <= 0 || pageNumber > totalPageNumber) {
-      router.replace(URL.MAIN.INDEX.value)
-      refetch()
-    }
-  }, [])
+  const { PaginationComponent } = usePagination({ totalPages: totalPageNumber })
 
   return (
     <section className='flex w-full flex-col items-center justify-start gap-1'>
@@ -150,8 +131,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       </div>
 
       <ul className={cn(!isPending ? 'grid gap-x-8 gap-y-10' : 'flex items-center justify-center', className)}>{contents}</ul>
-      <PaginationComponent currentPage={pageNumber} totalPages={totalPageNumber} setPage={paginate} />
-
+      <PaginationComponent />
       <Modal />
     </section>
   )
