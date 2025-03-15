@@ -1,6 +1,6 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import { PaginationComponent } from '@components/common/Pagination'
 import FilterSelector from '@components/ui/FilterSelector'
@@ -69,7 +69,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     }
   }
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: QUERY_KEYS.PART.LIST,
     queryFn: ({ signal }) => {
       return PartList({ filters, searchInput, pageNumber })
@@ -80,15 +80,15 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   if (isPending || !data) {
     contents = <Loading />
   } else {
-    /** 요소 표시 */
     const { content, page } = data.data
-    contents = content.map((elm: BabpartDTO) => {
-      return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />
-    })
-
     /** 페이지네이션 관리 */
     const { size, number, totalElements, totalPages } = page
     totalPageNumber = totalPages
+
+    /** 요소 표시 */
+    contents = content.map((elm: BabpartDTO) => {
+      return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />
+    })
   }
 
   /** 페이지네이션 함수 */
@@ -101,6 +101,14 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     ])
     router.push(nextRoute)
   }
+
+  useEffect(() => {
+    /**  예외 처리 (현재 페이지가 없는 페이지인 경우) */
+    if (pageNumber <= 0 || pageNumber > totalPageNumber) {
+      router.replace(URL.MAIN.INDEX.value)
+      refetch()
+    }
+  }, [])
 
   return (
     <section className='flex w-full flex-col items-center justify-start gap-1'>

@@ -85,7 +85,7 @@ export const PartList = async ({ filters, searchInput, pageNumber }: PartListTyp
 
   Queries.push({
     key: 'page',
-    value: pageNumber,
+    value: pageNumber - 1 /** 0이 첫번쨰 페이지임을 감안 */,
   })
 
   const ROUTE = API_ROUTES.PART.LIST
