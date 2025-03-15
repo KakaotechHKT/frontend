@@ -2,6 +2,7 @@
 import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import { PartDTO } from '@app/part/page'
 import Backdrop from '@components/common/Backdrop'
@@ -93,16 +94,12 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
         },
         {
           onSuccess(data, variables, context) {
-            alert('밥팟 생성 완료')
             router.push(URL.MAIN.INDEX.value)
-          },
-          onError(error, variables, context) {
-            alert(error.message)
           },
         },
       )
     } else {
-      alert('필수 정보를 전부 입력해주세요!')
+      toast('필수 정보를 전부 입력해주세요!')
     }
   }
   return (

@@ -53,7 +53,7 @@ const LoginPage = (): ReactNode => {
           <Input type='text' placeholder='아이디' className='rounded-md' value={id} onChange={e => setId(e.target.value)} />
           <div className='relative h-11 w-full rounded-md'>
             <Input
-              type={!showPassword ? 'password' : 'text'}
+              type={showPassword ? 'text' : 'password'}
               placeholder='비밀번호'
               className='h-full w-full'
               value={password}
@@ -61,7 +61,7 @@ const LoginPage = (): ReactNode => {
             />
             <LucideIcon
               onClick={() => setShowPassword(prev => !prev)}
-              name={!showPassword ? 'EyeOff' : 'Eye'}
+              name={showPassword ? 'Eye' : 'EyeOff'}
               className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray'
             />
           </div>

@@ -19,8 +19,8 @@ const Introduce = ({ className }: IntroduceProps): ReactNode => {
       </Link>
 
       <section className='flex flex-col items-center justify-start gap-2 font-dohyeon text-2xl'>
-        <h1>카카오테크 부트캠프 예비 개발자</h1>
-        <h1>여러분 환영합니다!</h1>
+        <h1>밥팟을 만들거나 참여하여</h1>
+        <h1>소중한 인연을 만들어보세요!</h1>
       </section>
     </div>
   )

@@ -99,9 +99,6 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
         onSuccess(data, variables, context) {
           window.location.reload()
         },
-        onError(error, variables, context) {
-          alert(error.message)
-        },
       },
     )
   }
