@@ -67,10 +67,14 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   }
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: QUERY_KEYS.PART.LIST,
+    queryKey: [QUERY_KEYS.PART.LIST, pageNumber],
     queryFn: ({ signal }) => {
       return PartList({ filters, searchInput, pageNumber })
     },
+    staleTime: 0, // 항상 최신 데이터 유지
+    refetchOnMount: true, // 라우팅 후 항상 최신 데이터 가져오기
+    refetchOnWindowFocus: true, // 창 포커스 변경 시 최신 데이터 가져오기
+    refetchOnReconnect: true, // 네트워크 연결 복구 시 최신 데이터 가져오기
   })
 
   let contents

@@ -65,6 +65,8 @@ export interface PartListType {
 export const PartList = async ({ filters, searchInput, pageNumber }: PartListType) => {
   const { mainCategory, track, capacity } = filters
 
+  console.log('partList pageNumber: ', pageNumber)
+
   const Queries: QueriesType = []
   /** 쿼리 붙이기 */
   mainCategory?.forEach(category =>
@@ -95,6 +97,9 @@ export const PartList = async ({ filters, searchInput, pageNumber }: PartListTyp
   const ROUTE = API_ROUTES.PART.LIST
 
   const URL = attachQuery(ROUTE.url, Queries)
+  console.log('요청 URL')
+
+  console.log(URL)
 
   const res = await customFetch(
     URL,

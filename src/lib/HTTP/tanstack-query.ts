@@ -15,7 +15,7 @@ import { Chatting, CreateChat } from './API/chat'
 
 export const QUERY_KEYS = {
   PART: {
-    LIST: ['part'],
+    LIST: (pageNumber: number) => ['part', pageNumber],
     RECOMMEND_LIST: ['part', 'recommend'],
   },
   MYPAGE: {
