@@ -88,7 +88,7 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
 
     DuplicateCheckMutate(
       {
-        id: data.id,
+        username: data.id,
       },
       {
         onSuccess(data, variables, context) {

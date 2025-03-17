@@ -109,14 +109,14 @@ export const Logout = async ({ accessToken }: LogoutType) => {
 }
 
 export interface DuplicateCheckType {
-  id: string
+  username: string
 }
 
-export const DuplicateCheck = async ({ id }: DuplicateCheckType) => {
+export const DuplicateCheck = async ({ username }: DuplicateCheckType) => {
   const ROUTE = API_ROUTES.AUTH.DUPLICATE_CHECK
 
   const body = {
-    id,
+    username,
   }
 
   const res = await customFetch(
