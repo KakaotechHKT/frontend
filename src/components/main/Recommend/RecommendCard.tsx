@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
-import { Menu } from '@app/part/page'
+import { Menu } from '@app/(headerless)/part/page'
 import { cn } from '@lib/utils/utils'
 
 /**

@@ -1,4 +1,4 @@
-import { CategoryType } from '@app/part/page'
+import { CategoryType } from '@app/(headerless)/part/page'
 import { API_ROUTES } from '@lib/constants/endpoint'
 
 import { customFetch, SuccessResponse } from '../Fetch'

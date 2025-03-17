@@ -4,29 +4,25 @@ import { useRouter } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { PartDTO } from '@app/part/page'
+import { PartDTO } from '@app/(headerless)/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { Button } from '@components/ui/button'
 import { DatePicker } from '@components/ui/DatePicker'
 import { Input } from '@components/ui/input'
+import Loading from '@components/ui/Loading'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { TimePicker } from '@components/ui/timepicker/timepicker'
 import { URL } from '@lib/constants/routes'
+import { AuthDataType } from '@lib/hooks/useAuthData'
 import { PartCreateType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
-import { SpeedType, TrackType } from '@lib/types/part/part'
+import { SpeedType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
 import { TrackTransformer } from '@public/data/tracks'
 
 interface PartCreationModalProps {
-  authData: {
-    id: number
-    name: string
-    nickname: string
-    track: TrackType
-  }
-
+  authData: AuthDataType
   partData: PartDTO
   updatePartData: (partial: Partial<PartDTO>) => void
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
@@ -35,7 +31,7 @@ interface PartCreationModalProps {
 const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen }: PartCreationModalProps): ReactNode => {
   const router = useRouter()
 
-  const { id, name, nickname, track } = authData
+  const { id, name, nickname, track, accessToken } = authData
   const isAuthenticated: boolean = id === 0 ? false : true
   const { placeName, placeId, date, time, headCount, comment, mealSpeed } = partData
   const [tmpTime, setTmpTime] = useState<Date>()
@@ -68,23 +64,14 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
     setIsModalOpen(false)
   }
 
-  const { mutate: PartCreateMutate, isPending } = useMutationStore<PartCreateType>(['part'])
+  const { mutate: PartCreateMutate, isPending: isCreating } = useMutationStore<PartCreateType>(['part'])
   const submitHandler = () => {
-    console.log({
-      leaderID: id,
-      placeID: placeId,
-      date: date,
-      time: time,
-      headCount: headCount,
-      comment: comment,
-      mealSpeed: mealSpeed ? mealSpeed : null,
-    })
     if (!id) {
       toast.error('밥팟을 만들기 위해서는 로그인이 필요합니다.')
       return
     }
 
-    if (placeId !== undefined && date && time && headCount && comment) {
+    if (placeId !== undefined && date && time && headCount && comment && accessToken) {
       PartCreateMutate(
         {
           leaderID: id,
@@ -94,6 +81,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
           headCount: headCount,
           comment: comment,
           mealSpeed: mealSpeed ? mealSpeed : null,
+          accessToken,
         },
         {
           onSuccess(data, variables, context) {
@@ -168,7 +156,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
         </div>
 
         <Button onClick={submitHandler} variant='rcKakaoYellow' className='mt-4 w-full'>
-          밥팟 생성하기
+          {!isCreating ? '밥팟 생성하기' : <Loading />}
         </Button>
       </div>
     </>

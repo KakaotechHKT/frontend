@@ -16,9 +16,10 @@ export interface PartCreateType {
   headCount: number
   comment: string
   mealSpeed: SpeedType | null
+  accessToken: string
 }
 
-export const PartCreate = async ({ leaderID, placeID, date, time, headCount, comment, mealSpeed }: PartCreateType) => {
+export const PartCreate = async ({ leaderID, placeID, date, time, headCount, comment, mealSpeed, accessToken }: PartCreateType) => {
   const ROUTE = API_ROUTES.PART.CREATE
 
   const body = {
@@ -36,6 +37,9 @@ export const PartCreate = async ({ leaderID, placeID, date, time, headCount, com
     {
       method: ROUTE.method,
       body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
     'WebServer',
   )
@@ -138,23 +142,25 @@ export const RecommendPartList = async ({}: RecommendPartListType) => {
 export interface PartApplyType {
   ID: number
   babpatID: number
+  accessToken: string
 }
 
-export const PartApply = async ({ ID, babpatID }: PartApplyType) => {
+export const PartApply = async ({ ID, babpatID, accessToken }: PartApplyType) => {
   const ROUTE = API_ROUTES.PART.APPLY
 
   const body = {
     userId: ID,
     babpatId: babpatID,
   }
-  console.log('part apply')
 
-  console.log(body)
   const res = await customFetch(
     ROUTE.url,
     {
       method: ROUTE.method,
       body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
     'WebServer',
   )

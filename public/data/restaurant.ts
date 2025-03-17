@@ -1,4 +1,4 @@
-import { placeDTO } from '@app/part/page'
+import { placeDTO } from '@app/(headerless)/part/page'
 
 export const placeListDummyData: placeDTO[] = [
   {
