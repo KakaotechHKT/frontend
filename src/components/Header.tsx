@@ -147,7 +147,7 @@ const MenuBar = ({ isAuthenticated, status, toggleStatus, isDesktop }: MenuBarPr
             unAuthenticated: '로그인',
           }}
           route={{
-            authenticated: URL.MYPAGE.INDEX.value,
+            authenticated: URL.MYPAGE.BABPART.value,
             unAuthenticated: URL.AUTH.LOGIN.value,
           }}
           className='w-full'

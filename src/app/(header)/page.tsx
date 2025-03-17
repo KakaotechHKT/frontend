@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import { Suspense } from 'react'
 
-import Footer from '@components/Footer'
-import Header from '@components/Header'
 import PartCardList from '@components/main/PartCards/PartCardList'
 import RecommendCardList from '@components/main/RecommendCardList'
 import Loading from '@components/ui/Loading'
@@ -14,7 +12,6 @@ export default function Home() {
   const pageSize = `w-full px-8 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
   return (
     <>
-      <Header className={cn('z-10 h-[12dvh]', pageSize)} />
       <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
         <Image src={KTBMainImage} alt='main-image' width={650} height={400} className='aspect-video w-full max-w-2xl rounded-lg' />
         <section className='flex flex-col items-center justify-start gap-4 font-dohyeon text-xl sm:text-2xl xl:text-4xl'>
@@ -40,7 +37,6 @@ export default function Home() {
           <PartCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4' />
         </Suspense>
       </main>
-      <Footer className='z-10 h-max w-full' />
     </>
   )
 }

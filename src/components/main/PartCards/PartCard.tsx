@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
-import { Menu } from '@app/part/page'
+import { Menu } from '@app/(headerless)/part/page'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk'
 
-import { placeDTO } from '@app/part/page'
+import { placeDTO } from '@app/(headerless)/part/page'
 import useKakaoLoader from '@lib/hooks/useKakaoLoader'
 import { GeoType } from '@lib/types/part/part'
 import { KTB_Position } from '@public/data'

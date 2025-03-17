@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { PartDTO } from '@app/part/page'
+import { PartDTO } from '@app/(headerless)/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { Button } from '@components/ui/button'
 import { DatePicker } from '@components/ui/DatePicker'

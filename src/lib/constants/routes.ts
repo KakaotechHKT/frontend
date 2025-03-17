@@ -35,13 +35,17 @@ export const URL = {
     },
   },
   MYPAGE: {
-    INDEX: {
+    BABPART: {
       name: '마이페이지',
-      value: '/mypage',
+      value: '/mypage/babpart',
     },
     SETTLEMENT: {
       name: '정산하기',
       value: '/mypage/settlement',
+    },
+    REQUESTS: {
+      name: '정산하기',
+      value: '/mypage/requests',
     },
   },
   PART: {
