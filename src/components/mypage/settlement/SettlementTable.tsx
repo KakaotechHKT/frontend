@@ -50,7 +50,7 @@ const TransformStatusType = (status: SettlementStatusType) => {
   }
 }
 
-const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string) => {
   const [fullYear, month, day] = dateString.split('T')[0].split('-')
   const shortYear = fullYear.slice(2) // 연도의 뒤 두 자리만 추출
   return `${shortYear}.${month}.${day}`

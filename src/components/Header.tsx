@@ -13,7 +13,7 @@ import { LogoutType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-import { TrackTransformer, TrackType } from '@public/data/tracks'
+import { TrackTransformer } from '@public/data/tracks'
 import BabPulImage from '@public/images/babpul.svg'
 import LogoImage from '@public/images/logo.svg'
 
@@ -95,10 +95,12 @@ const MobileNavBar = ({
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
-        <li className='relative cursor-pointer'>
-          <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-          {alarmStatus && <HeaderAlarm accessToken={accessToken} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
-        </li>
+        {isAuthenticated && (
+          <li className='relative cursor-pointer'>
+            <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
+            {alarmStatus && <HeaderAlarm accessToken={accessToken} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
+          </li>
+        )}
         <li className='relative cursor-pointer'>
           <LucideIcon name='AlignJustify' size={20} onClick={navbarToggleStatus} />
           {navbarStatus && (
@@ -276,12 +278,7 @@ interface DesktopNavBarProps {
   alarmStatus: boolean
   alarmToggleStatus: () => void
   isAuthenticated: boolean
-  authData: {
-    id: number
-    name: string
-    nickname: string
-    track: TrackType
-  }
+  authData: AuthDataType
   className?: string
 }
 
@@ -294,7 +291,7 @@ const DesktopNavBar = ({
   isAuthenticated,
   className,
 }: DesktopNavBarProps): ReactNode => {
-  const { name, nickname, track } = authData
+  const { name, nickname, track, accessToken } = authData
 
   const fullName = `${nickname} (${name}) / ${TrackTransformer[track]}`
   return (
@@ -304,8 +301,9 @@ const DesktopNavBar = ({
           <Link href={URL.PART.INDEX.value}>밥팟 만들기</Link>
         </li>
         {isAuthenticated ? (
-          <li>
-            <LucideIcon name='Bell' size={20} />
+          <li className='relative cursor-pointer'>
+            <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
+            {alarmStatus && <HeaderAlarm accessToken={accessToken} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
           </li>
         ) : (
           <Link href={URL.AUTH.LOGIN.value}>로그인</Link>
