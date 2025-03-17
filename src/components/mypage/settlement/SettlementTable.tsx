@@ -3,11 +3,8 @@ import { ReactNode } from 'react'
 
 import Loading from '@components/ui/Loading'
 import { useAuthData } from '@lib/hooks/useAuthData'
-import { SettlementList } from '@lib/HTTP/API/mypage/settlement'
-import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { TrackType } from '@public/data/tracks'
-import { useQuery } from '@tanstack/react-query'
 
 interface SettlementTableProps {
   className?: string
@@ -30,14 +27,13 @@ const TABLE_TITLES = ['정산현황', '음식점', '날짜', '참여자']
 const SettlementTable = ({ className }: SettlementTableProps): ReactNode => {
   const { accessToken } = useAuthData()
 
-  const { data, isPending } = useQuery({
-    queryKey: QUERY_KEYS.MYPAGE.SETTLEMENT_LIST.key,
-    queryFn: ({ signal }) => {
-      return SettlementList({ accessToken })
-    },
-    staleTime: Infinity,
-    enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
-  })
+  // const { data, isPending } = useQuery({
+  //   queryKey: QUERY_KEYS.MYPAGE.SETTLEMENT_LIST.key,
+  //   queryFn: ({ signal }) => {
+  //     return SettlementList({ accessToken })
+  //   },
+  //   enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
+  // })
 
   // let dummy_data = generateMockSettlements(12)
   // let contents = dummy_data.map(settlement => {
@@ -57,8 +53,6 @@ const SettlementTable = ({ className }: SettlementTableProps): ReactNode => {
   if (!true) {
     contents = <Loading />
   } else {
-    console.log(data)
-
     contents = <>123</>
   }
 

@@ -1,12 +1,12 @@
 import { API_ROUTES } from '@lib/constants/endpoint'
 import { customFetch, SuccessResponse } from '@lib/HTTP/Fetch'
 
-export interface SettlementListType {
+export interface SettlementAlarmListType {
   accessToken: string
 }
 
-export const SettlementList = async ({ accessToken }: SettlementListType) => {
-  const ROUTE = API_ROUTES.MYPAGE.SETTLEMENT_LIST
+export const SettlementAlarmList = async ({ accessToken }: SettlementAlarmListType) => {
+  const ROUTE = API_ROUTES.MYPAGE.ALARM_LIST
 
   const res = await customFetch(
     ROUTE.url,
