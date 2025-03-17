@@ -48,6 +48,10 @@ export const API_ROUTES = {
     },
   },
   MYPAGE: {
+    SETTLEMENT_LIST: {
+      method: HttpMethod.GET,
+      url: '/settlements',
+    },
     ALARM_LIST: {
       method: HttpMethod.GET,
       url: '/settlements/alarms',

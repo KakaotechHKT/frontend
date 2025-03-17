@@ -19,6 +19,10 @@ interface UsePaginationProps {
   totalPages: number // 전체 페이지 수
 }
 
+interface PaginationComponentProps {
+  className?: string
+}
+
 /**
  * URLParams를 기반으로 페이지네이션을 구현하는 컴포넌트
  * @totalPages 전체 페이지 개수
@@ -43,7 +47,7 @@ export function usePagination({ currentPage, totalPages }: UsePaginationProps) {
   /**
    * 렌더링할 페이지네이션 컴포넌트
    */
-  const PaginationComponent = () => {
+  const PaginationComponent = ({ className }: PaginationComponentProps) => {
     const getPageNumbers = () => {
       const pages = []
 
@@ -70,7 +74,7 @@ export function usePagination({ currentPage, totalPages }: UsePaginationProps) {
 
     return (
       totalPages !== 0 && (
-        <Pagination>
+        <Pagination className={cn(className)}>
           <PaginationContent>
             {/* 처음(«) 버튼 */}
             <PaginationItem>

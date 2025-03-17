@@ -1,6 +1,5 @@
 import { FilterType } from '@components/main/PartCards/PartCardList'
 import { DuplicateCheck, Login, Logout, Register } from '@lib/HTTP/API/auth'
-import { SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
 import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
@@ -20,10 +19,9 @@ export const QUERY_KEYS = {
     RECOMMEND_LIST: ['part', 'recommend'],
   },
   MYPAGE: {
-    ALARM_LIST: {
-      key: ['settlement'],
-      function: SettlementAlarmList,
-    },
+    SETTLEMENT_LIST: (pageNumber: number) => ['settlement', pageNumber],
+
+    ALARM_LIST: ['settlement'],
   },
 }
 /*
