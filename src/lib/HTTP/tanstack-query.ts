@@ -20,7 +20,6 @@ export const QUERY_KEYS = {
   },
   MYPAGE: {
     SETTLEMENT_LIST: (pageNumber: number) => ['settlement', pageNumber],
-
     ALARM_LIST: ['settlement'],
   },
 }

@@ -1,22 +1,27 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 
 import Loading from '@components/ui/Loading'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { usePagination } from '@lib/hooks/usePagination'
+import useScrollLock from '@lib/hooks/useScrollLock'
+import useToggle from '@lib/hooks/useToggle'
 import { SettlementList } from '@lib/HTTP/API/mypage/settlement'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { TrackType } from '@public/data/tracks'
 import { useQuery } from '@tanstack/react-query'
 
+import RequestSettlementModal from './RequestSettlementModal'
+
 interface SettlementTableProps {
   className?: string
 }
 
 type SettlementStatusType = 'BEFORE' | 'PENDING' | 'COMPLETED'
-type SettlementDTO = {
+export type SettlementDTO = {
   babpatId: number
   restaurantName: string
   babpatAt: string // "2025-03-17T22:57:58.758871" 형식
@@ -54,6 +59,11 @@ const formatDate = (dateString: string) => {
 const SettlementTable = ({ className }: SettlementTableProps) => {
   const params = useSearchParams()
   const { accessToken, nickname } = useAuthData()
+  const { status: requestModal, toggleStatus: openRequestModal } = useToggle(true)
+  const { lockScroll, unLockScroll } = useScrollLock()
+
+  /** 상태 */
+  const [modalData, setModalData] = useState<SettlementDTO>()
 
   /** 페이지네이션 정보 */
   const pageNumber = parseInt(params.get('page') ?? '1')
@@ -69,36 +79,48 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
     refetchOnReconnect: true, // 네트워크 연결 복구 시 최신 데이터 가져오기
   })
 
+  const openRequestModalHandler = (content: SettlementDTO) => {
+    lockScroll()
+    openRequestModal()
+    setModalData(content)
+  }
+
   let contents
+
   if (isPending || !data) {
-    contents = <Loading className='py-10' />
+    contents = (
+      <tr className='w-full py-10'>
+        <td className='flex w-full items-center justify-center'>
+          <Loading />
+        </td>
+      </tr>
+    )
   } else {
     const contentList: SettlementDTO[] = data.data.content
     const paginationInfo: PaginationInfo = data.data.page
     totalPageNumber = paginationInfo.totalPages
 
-    contents = (
-      <tbody>
-        {contentList.map((content, index) => {
-          const participantsCount = content.participants.length
-          const participantsString = participantsCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${content.participants.length - 1}명`
+    contents = contentList.map((content, index) => {
+      const participantsCount = content.participants.length
+      const participantsString = participantsCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${content.participants.length - 1}명`
 
-          return (
-            <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-sm')}>
-              <td className='w-[15%] px-4 py-6'>{TransformStatusType(content.settlementStatus)}</td>
-              <td className='w-[25%] truncate px-4 py-6'>{content.restaurantName}</td>
-              <td className='w-[10%] px-4 py-6'>{formatDate(content.babpatAt)}</td>
-              <td className='w-auto px-4 py-6'>{participantsString}</td>
-              {content.settlementStatus === 'BEFORE' && (
-                <td className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer rounded-md bg-rcKakaoYellow px-4 py-2 font-pretendard hover:bg-rcKakaoYellowHover'>
-                  정산 요청 보내기
-                </td>
-              )}
-            </tr>
-          )
-        })}
-      </tbody>
-    )
+      return (
+        <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-sm')}>
+          <td className='w-[15%] px-4 py-6'>{TransformStatusType(content.settlementStatus)}</td>
+          <td className='w-[25%] truncate px-4 py-6'>{content.restaurantName}</td>
+          <td className='w-[10%] px-4 py-6'>{formatDate(content.babpatAt)}</td>
+          <td className='w-auto px-4 py-6'>{participantsString}</td>
+          {content.settlementStatus === 'BEFORE' && (
+            <td
+              onClick={() => openRequestModalHandler(content)}
+              className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer rounded-md bg-rcKakaoYellow px-4 py-2 font-pretendard hover:bg-rcKakaoYellowHover'
+            >
+              정산 요청 보내기
+            </td>
+          )}
+        </tr>
+      )
+    })
   }
 
   const { PaginationComponent } = usePagination({ currentPage: pageNumber, totalPages: totalPageNumber })
@@ -117,9 +139,11 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
         </thead>
 
         {/* 테이블 바디 */}
-        {contents}
+        <tbody>{contents}</tbody>
       </table>
       <PaginationComponent className='my-4' />
+
+      {requestModal && <RequestSettlementModal modalData={modalData} className='' />}
     </section>
   )
 }
