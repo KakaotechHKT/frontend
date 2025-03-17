@@ -4,14 +4,15 @@ import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 import { formatDate } from '@components/mypage/settlement/SettlementTable'
 import { Button } from '@components/ui/button'
 import Loading from '@components/ui/Loading'
-import { SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
-import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
+import { AuthDataType } from '@lib/hooks/useAuthData'
+import { FinishSettlementType, SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
+import { QUERY_KEYS, useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 
 interface HeaderAlarmProps {
-  accessToken: string
+  authData: AuthDataType
   alarmStatus: boolean
   alarmToggleStatus: () => void
   className?: string
@@ -33,7 +34,9 @@ type AlarmDTO = {
   payStatus: PaymentStatusType
 }
 
-const HeaderAlarm = ({ accessToken, alarmStatus, alarmToggleStatus, className }: HeaderAlarmProps): ReactNode => {
+const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, className }: HeaderAlarmProps): ReactNode => {
+  const { accessToken } = authData
+
   const ref = useRef<HTMLDivElement>(null)
 
   useOutsideClick(ref as RefObject<HTMLElement>, alarmToggleStatus)
@@ -47,7 +50,20 @@ const HeaderAlarm = ({ accessToken, alarmStatus, alarmToggleStatus, className }:
     enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
   })
 
-  const completeSettlementHandler = () => {}
+  const { mutate: FinishSettlementMutate, isPending: isFinishing } = useMutationStore<FinishSettlementType>(['settlement'])
+  const completeSettlementHandler = (settlementId: number) => {
+    FinishSettlementMutate(
+      {
+        settlementId,
+        accessToken,
+      },
+      {
+        onSuccess(data, variables, context) {
+          window.location.reload()
+        },
+      },
+    )
+  }
 
   let contents
   if (!data) {
@@ -86,7 +102,7 @@ const HeaderAlarm = ({ accessToken, alarmStatus, alarmToggleStatus, className }:
               <li className='ml-2 py-1 text-xs'>인당 가격 : {perPrice}</li>
               {payStatus === 'UNPAID' && (
                 <Button
-                  onClick={completeSettlementHandler}
+                  onClick={() => completeSettlementHandler(alarm.settlementId)}
                   className='relative mt-4 w-full sm:absolute sm:bottom-4 sm:right-4 sm:w-max'
                   variant='rcKakaoYellow'
                 >

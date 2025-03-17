@@ -7,7 +7,7 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '../provider/QueryClientProvider'
 import { Chatting, CreateChat } from './API/chat'
-import { RequestSettlementAlarm } from './API/mypage/settlement'
+import { FinishSettlement, RequestSettlementAlarm } from './API/mypage/settlement'
 
 /**
  * GET
@@ -71,6 +71,10 @@ export const MUTATION_KEYS = {
     REQUEST_SETTLEMENT: {
       key: ['settlement'],
       function: RequestSettlementAlarm,
+    },
+    FINISH_SETTLEMENT: {
+      key: ['settlement'],
+      function: FinishSettlement,
     },
   },
 } as const
@@ -146,6 +150,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHAT.CHATTING.key, {
  */
 queryClient.setMutationDefaults(MUTATION_KEYS.MYPAGE.REQUEST_SETTLEMENT.key, {
   mutationFn: MUTATION_KEYS.MYPAGE.REQUEST_SETTLEMENT.function,
+  onSuccess(data, variables, context) {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.MYPAGE.FINISH_SETTLEMENT.key, {
+  mutationFn: MUTATION_KEYS.MYPAGE.FINISH_SETTLEMENT.function,
   onSuccess(data, variables, context) {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST })
   },

@@ -125,3 +125,33 @@ export const RequestSettlementAlarm = async ({
   // 204로 리턴값이 없음
   return null
 }
+
+export interface FinishSettlementType {
+  settlementId: number
+  accessToken: string
+}
+
+export const FinishSettlement = async ({ settlementId, accessToken }: FinishSettlementType) => {
+  const ROUTE = API_ROUTES.MYPAGE.FINISH_SETTLEMENT(settlementId)
+
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+    'WebServer',
+  )
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  // 204로 리턴값이 없음
+  return null
+}

@@ -91,14 +91,13 @@ const MobileNavBar = ({
   isAuthenticated,
   className,
 }: MobileNavBarProps): ReactNode => {
-  const { accessToken } = authData
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
         {isAuthenticated && (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-            {alarmStatus && <HeaderAlarm accessToken={accessToken} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
+            {alarmStatus && <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
           </li>
         )}
         <li className='relative cursor-pointer'>
@@ -303,7 +302,7 @@ const DesktopNavBar = ({
         {isAuthenticated ? (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-            {alarmStatus && <HeaderAlarm accessToken={accessToken} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
+            {alarmStatus && <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
           </li>
         ) : (
           <Link href={URL.AUTH.LOGIN.value}>로그인</Link>

@@ -60,5 +60,11 @@ export const API_ROUTES = {
       method: HttpMethod.GET,
       url: '/settlements/alarms',
     },
+    FINISH_SETTLEMENT: (settlementID: number) => {
+      return {
+        method: HttpMethod.PATCH,
+        url: `/settlements/${settlementID}`,
+      }
+    },
   },
 }
