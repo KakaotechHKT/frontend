@@ -7,10 +7,12 @@ import KakaoMap from '@components/common/KakaoMap'
 import Chatroom from '@components/part/ChatRoom'
 import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
+import RefuseModal from '@components/part/RefuseModal'
 import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { ChattingType, CreateChatType } from '@lib/HTTP/API/chat'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
+import { GeoType, SpeedType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
@@ -23,12 +25,6 @@ export type CategoryType = {
   keywords: string[] | ''
 }
 
-export type Geo = {
-  latitude: number
-  longitude: number
-}
-
-export type Speed = 'FAST' | 'MIDDLE' | 'SLOW'
 export type PartDTO = {
   // leader: {
   //   id: number
@@ -42,7 +38,7 @@ export type PartDTO = {
   time: string | undefined
   headCount: number | undefined
   comment: string | undefined
-  mealSpeed: Speed | null
+  mealSpeed: SpeedType | null
 }
 
 export type Menu = {
@@ -64,12 +60,24 @@ export type placeDTO = {
 
 const PartPage = (): ReactNode => {
   const authData = useAuthData()
+  /** 모바일인지 확인 */
+  const [showRefuseModal, setShowRefuseModal] = useState<boolean>(false)
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase()
+    const mobileKeywords = ['iphone', 'android', 'ipad', 'mobile']
+
+    // 모바일 기기 감지
+    if (mobileKeywords.some(keyword => userAgent.includes(keyword))) {
+      setShowRefuseModal(true)
+    }
+  }, [])
 
   // 검색값
   const [placeList, setPlaceList] = useState<placeDTO[]>(placeListDummyData)
 
   // 지도 관련 상태
-  const [center, setCenter] = useState<Geo>(KTB_Position)
+  const [center, setCenter] = useState<GeoType>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
   // 채팅 관련 상태
   const [chatId, setChatId] = useState<number>()
@@ -82,7 +90,6 @@ const PartPage = (): ReactNode => {
   }
 
   const [userChat, setUserChat] = useState<string>('')
-
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
   // 밥팟 데이터
@@ -101,10 +108,6 @@ const PartPage = (): ReactNode => {
   }
 
   const { mutate: CreateChatMutate, isPending: isCreatingChat } = useMutationStore<CreateChatType>(['chat'])
-
-  useEffect(() => {
-    console.log(userChat)
-  }, [userChat])
 
   // #1. 첫 입장시 ChatID 만들기
   useEffect(() => {
@@ -276,7 +279,7 @@ const PartPage = (): ReactNode => {
   }
 
   // 지도 관련 함수
-  const centerHandler = (center: Geo) => {
+  const centerHandler = (center: GeoType) => {
     setCenter(center)
   }
   const focusedPlaceIdHandler = (id: number) => {
@@ -355,6 +358,8 @@ const PartPage = (): ReactNode => {
       {isModalOpen && (
         <PartCreationModal setIsModalOpen={setIsModalOpen} authData={authData} partData={partData} updatePartData={updatePartData} />
       )}
+
+      <RefuseModal isOpen={showRefuseModal} text='밥팟 만들기는 웹 환경에서 작동합니다!' />
     </>
   )
 }

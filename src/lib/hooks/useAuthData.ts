@@ -8,20 +8,26 @@ export const useAuthData = (): {
   name: string
   nickname: string
   track: TrackType
+  accessToken: string
 } => {
-  const [authData, setAuthData] = useState<{ id: number; name: string; nickname: string; track: TrackType }>({
+  const [authData, setAuthData] = useState<{ id: number; name: string; nickname: string; track: TrackType; accessToken: string }>({
     id: 0,
     name: '',
     nickname: '',
     track: 'AI',
+    accessToken: '',
   })
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedData = sessionStorage.getItem('auth')
-      if (storedData) {
-        setAuthData(JSON.parse(storedData))
+    const authData = sessionStorage.getItem('authData')
+    const accessToken = sessionStorage.getItem('accessToken')
+    if (typeof window !== 'undefined' && authData && accessToken) {
+      const storedData = {
+        ...JSON.parse(authData),
+        accessToken,
       }
+
+      setAuthData(storedData)
     }
   }, [])
 

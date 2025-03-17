@@ -1,4 +1,4 @@
-import { DuplicateCheck, Login, Register } from '@lib/HTTP/API/auth'
+import { DuplicateCheck, Login, Logout, Register } from '@lib/HTTP/API/auth'
 import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
@@ -27,6 +27,10 @@ export const MUTATION_KEYS = {
     LOGIN: {
       key: ['login'],
       function: Login,
+    },
+    LOGOUT: {
+      key: ['logout'],
+      function: Logout,
     },
     REGISTER: {
       key: ['register'],
@@ -63,14 +67,18 @@ export const MUTATION_KEYS = {
  * data: mutate return value
  * variables: mutate 인자
  */
-/**
- * 프로젝트 전반적인 로직에 필요한  Mutation 설정을 다룹니다.
- */
+
 /**
  * [Auth]
  */
 queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.LOGIN.key, {
   mutationFn: MUTATION_KEYS.AUTH.LOGIN.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.LOGOUT.key, {
+  mutationFn: MUTATION_KEYS.AUTH.LOGOUT.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },

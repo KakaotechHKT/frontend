@@ -56,7 +56,7 @@ const useModal = () => {
         >
           <h2 className='flex items-center justify-center font-pretendard text-lg font-semibold'>{modalData?.title}</h2>
           <span
-            className={cn(modalData?.type === 'info' && 'text-rcRed', 'text-center text-xs')}
+            className={cn(modalData?.type === 'info' && 'text-rcRed', 'text-center text-xs leading-none')}
             dangerouslySetInnerHTML={{
               __html: formattedDetails,
             }}

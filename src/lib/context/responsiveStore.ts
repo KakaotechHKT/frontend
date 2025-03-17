@@ -12,6 +12,7 @@ const breakpoints = {
 // ✅ Zustand Store 생성 (각 Breakpoint를 Boolean 값으로 저장)
 interface ResponsiveState {
   width: number
+  tn: boolean // sm보다 작은 경우
   sm: boolean
   md: boolean
   lg: boolean
@@ -22,6 +23,7 @@ interface ResponsiveState {
 
 export const useResponsiveStore = create<ResponsiveState>(set => ({
   width: 0, // 초기값
+  tn: false,
   sm: false,
   md: false,
   lg: false,
@@ -30,6 +32,7 @@ export const useResponsiveStore = create<ResponsiveState>(set => ({
   updateWidth: width => {
     set({
       width,
+      tn: width < breakpoints.sm,
       sm: width >= breakpoints.sm && width < breakpoints.md,
       md: width >= breakpoints.md && width < breakpoints.lg,
       lg: width >= breakpoints.lg && width < breakpoints.xl,

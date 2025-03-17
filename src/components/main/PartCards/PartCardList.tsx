@@ -1,4 +1,5 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
 import FilterSelector from '@components/ui/FilterSelector'
@@ -6,11 +7,12 @@ import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import useModal from '@lib/hooks/useModal'
+import { usePagination } from '@lib/hooks/usePagination'
 import { PartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import { cn } from '@lib/utils/utils'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
-import { TRACKS, TrackType } from '@public/data/tracks'
+import { TrackType } from '@public/data/tracks'
 import { useQuery } from '@tanstack/react-query'
 
 import PartCard, { BabpartDTO } from './PartCard'
@@ -22,7 +24,7 @@ interface PartCardListProps {
 const TABS = ['전체', '밥팟', '도시락팟'] as const
 type TabType = (typeof TABS)[number]
 
-type FilterType = {
+export type FilterType = {
   mainCategory: MainCategoriesType[]
   track: TrackType[]
   capacity: string[] // 보낼때 다시 숫자로 전처리후 보내기
@@ -33,6 +35,8 @@ const MAX_HEADCOUNT = 10
 const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => String(i + 2))
 
 const PartCardList = ({ className }: PartCardListProps): ReactNode => {
+  const params = useSearchParams()
+
   const authData = useAuthData()
   const { openModalHandler, Modal } = useModal()
 
@@ -44,6 +48,9 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     capacity: undefined,
   })
   const [searchInput, setSearchInput] = useState<string>('')
+
+  const pageNumber = parseInt(params.get('page') ?? '1')
+  let totalPageNumber: number = 0
 
   const updateFilter = (type: 'mainCategory' | 'track' | 'capacity', selectedFilters: string[]) => {
     setFilters(prev => ({ ...prev, [type]: selectedFilters }))
@@ -59,10 +66,10 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     }
   }
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: QUERY_KEYS.PART.LIST,
     queryFn: ({ signal }) => {
-      return PartList({})
+      return PartList({ filters, searchInput, pageNumber })
     },
   })
 
@@ -70,13 +77,21 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   if (isPending || !data) {
     contents = <Loading />
   } else {
-    contents = data.data.babpats.map((elm: BabpartDTO) => {
+    const { content, page } = data.data
+    /** 페이지네이션 관리 */
+    const { size, number, totalElements, totalPages } = page
+    totalPageNumber = totalPages
+
+    /** 요소 표시 */
+    contents = content.map((elm: BabpartDTO) => {
       return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />
     })
   }
 
+  const { PaginationComponent } = usePagination({ currentPage: pageNumber, totalPages: totalPageNumber })
+
   return (
-    <section className='flex flex-col items-center justify-start gap-1'>
+    <section className='flex w-full flex-col items-center justify-start gap-1'>
       <span className='font-dohyeon text-xl sm:text-2xl xl:text-3xl'>밥팟 참여하기</span>
       <span className='text-xss text-rcDarkGray lg:text-sm'>* 밥팟에 참여하여 많은 사람들과 식사를 함께하세요!</span>
       <ul className='flex items-center justify-start gap-4 self-start text-xl'>
@@ -94,7 +109,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       {/* 필터 */}
       <div className='relative mt-4 flex w-full items-center justify-start gap-4 self-start'>
         <FilterSelector placeHolder={'종류'} options={MainCategories} updateFilter={updateFilter} />
-        <FilterSelector placeHolder={'과정'} options={TRACKS} updateFilter={updateFilter} />
+        {/* <FilterSelector placeHolder={'과정'} options={TRACKS} updateFilter={updateFilter} /> */}
         <FilterSelector placeHolder={'인원'} options={numbers} updateFilter={updateFilter} />
 
         <Input
@@ -115,6 +130,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       </div>
 
       <ul className={cn(!isPending ? 'grid gap-x-8 gap-y-10' : 'flex items-center justify-center', className)}>{contents}</ul>
+      <PaginationComponent />
       <Modal />
     </section>
   )

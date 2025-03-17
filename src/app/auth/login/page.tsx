@@ -1,38 +1,32 @@
 'use client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
+import { toast } from 'sonner'
 
 import Introduce from '@components/auth/Introduce'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
 import { URL } from '@lib/constants/routes'
-import useModal from '@lib/hooks/useModal'
 import { LoginType } from '@lib/HTTP/API/auth'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 
 const LoginPage = (): ReactNode => {
   const router = useRouter()
-  const { isOpen, openModalHandler, Modal } = useModal()
   // States for storing user input
   const [id, setId] = useState('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [saveAuthData, setSaveAuthData] = useState<boolean>(true)
   const [password, setPassword] = useState('')
 
   // Mutations
   const { mutate: LoginMutate, isPending } = useMutationStore<LoginType>(['login'])
-
-  useEffect(() => {
-    console.log(saveAuthData)
-  }, [saveAuthData])
-
   // Functions
   const loginHandler = () => {
     if (id.length === 0 || password.length === 0) {
-      console.log('데이터가 충분하지 않습니다.')
+      toast.error('아이디와 비밀번호를 입력해주세요.')
+
       return
     }
 
@@ -42,10 +36,9 @@ const LoginPage = (): ReactNode => {
         onSuccess(data, variables, context) {
           router.push(URL.MAIN.INDEX.value)
           // 로그인 정보를 SessionStorage에 저장
-          sessionStorage.setItem('auth', JSON.stringify(data.data))
-        },
-        onError(error, variables, context) {
-          alert(error.message)
+          const { authToken, ...authData } = data.data
+          sessionStorage.setItem('authData', JSON.stringify(authData))
+          sessionStorage.setItem('accessToken', authToken.accessToken)
         },
       },
     )
@@ -60,7 +53,7 @@ const LoginPage = (): ReactNode => {
           <Input type='text' placeholder='아이디' className='rounded-md' value={id} onChange={e => setId(e.target.value)} />
           <div className='relative h-11 w-full rounded-md'>
             <Input
-              type={!showPassword ? 'password' : 'text'}
+              type={showPassword ? 'text' : 'password'}
               placeholder='비밀번호'
               className='h-full w-full'
               value={password}
@@ -68,7 +61,7 @@ const LoginPage = (): ReactNode => {
             />
             <LucideIcon
               onClick={() => setShowPassword(prev => !prev)}
-              name={!showPassword ? 'EyeOff' : 'Eye'}
+              name={showPassword ? 'Eye' : 'EyeOff'}
               className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray'
             />
           </div>
@@ -97,7 +90,6 @@ const LoginPage = (): ReactNode => {
           </Link>
         </div>
       </div>
-      <Modal />
     </>
   )
 }

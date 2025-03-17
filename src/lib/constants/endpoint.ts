@@ -6,6 +6,10 @@ export const API_ROUTES = {
       method: HttpMethod.POST,
       url: '/auth/login',
     },
+    LOGOUT: {
+      method: HttpMethod.POST,
+      url: '/auth/logout',
+    },
     DUPLICATE_CHECK: {
       method: HttpMethod.POST,
       url: '/auth/duplicate',
