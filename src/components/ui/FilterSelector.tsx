@@ -1,32 +1,56 @@
 'use client'
-import { ReactNode, RefObject, useRef, useState } from 'react'
+import { ReactNode, RefObject, useEffect, useRef, useState } from 'react'
 import { useOutsideClick } from 'usehooks-jihostudy'
 
+import { FilterKeyType } from '@components/main/PartCards/PartCardList'
 import useToggle from '@lib/hooks/useToggle'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
+import { MainCategories, MainCategoriesType } from '@public/data/categories'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
 
 import { Button } from './button'
 
 interface FilterSelectorProps {
   placeHolder: string
-  options: string[] | readonly string[]
-  updateFilter: (type: 'mainCategory' | 'track' | 'capacity', selectedFilters: string[]) => void
+  filter: MainCategoriesType[] | TrackType[] | string[] | undefined
+  type: FilterKeyType
+  updateFilter: (type: FilterKeyType, selectedFilters: string[]) => void
   className?: string
 }
 
-const FilterSelector = ({ placeHolder, options, updateFilter, className }: FilterSelectorProps): ReactNode => {
+// headCount
+const MAX_HEADCOUNT = 10
+const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => String(i + 2))
+
+const FilterSelector = ({ placeHolder, filter, type, updateFilter, className }: FilterSelectorProps): ReactNode => {
   const { status, toggleStatus } = useToggle(false)
   // 상태
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [selectedOptions, setSelectedOptions] = useState(filter)
+
+  useEffect(() => {
+    setSelectedOptions(filter)
+  }, [filter])
+
   const ref = useRef<HTMLDivElement>(null)
 
   useOutsideClick(ref as RefObject<HTMLElement>, toggleStatus)
 
+  let options: string[] | readonly string[] = []
+  switch (type) {
+    case 'mainCategory':
+      options = MainCategories
+      break
+    case 'capacity':
+      options = numbers
+      break
+  }
+
   let value
-  if (selectedOptions.length === 0) value = placeHolder
-  else if (selectedOptions.length >= 1) {
+
+  if (!selectedOptions || selectedOptions.length === 0) {
+    value = placeHolder
+  } else if (selectedOptions.length >= 1) {
     switch (placeHolder) {
       case '종류':
         value = selectedOptions[0]
@@ -45,16 +69,17 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
   }
 
   const selectOptionHandler = (option: string) => {
-    setSelectedOptions(
-      prev =>
-        prev.includes(option)
-          ? prev.filter(item => item !== option) // 선택된 경우 제거
-          : [...prev, option], // 선택되지 않은 경우 추가
-    )
+    setSelectedOptions(prev => {
+      if (!prev) return [option] // prev가 undefined면 새로운 배열로 추가
+      return prev.includes(option as never)
+        ? prev.filter(item => item !== option) // 선택된 경우 제거
+        : [...prev, option] // 선택되지 않은 경우 추가
+    })
   }
 
   const resetHandler = () => {
     setSelectedOptions([])
+    updateFilter(type, [])
     toggleStatus()
   }
 
@@ -72,7 +97,7 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
         type = 'capacity'
         break
     }
-    updateFilter(type as any, selectedOptions)
+    updateFilter(type as any, selectedOptions as string[])
     toggleStatus()
   }
   return (
@@ -80,7 +105,9 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
       <div
         className={cn(
           'relative z-20 cursor-pointer rounded-md border-solid px-2 py-1 text-sm',
-          selectedOptions.length !== 0 ? 'border border-rcBlack bg-rcKakaoYellow hover:bg-rcKakaoYellowHover' : 'border border-rcDarkGray',
+          selectedOptions && selectedOptions.length !== 0
+            ? 'border border-rcBlack bg-rcKakaoYellow hover:bg-rcKakaoYellowHover'
+            : 'border border-rcDarkGray',
         )}
       >
         <div className='flex h-full w-full items-center justify-center gap-2' onClick={toggleStatus}>
@@ -96,7 +123,7 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
           >
             <ul className='flex h-36 w-full flex-col items-center justify-start overflow-y-auto px-4 py-2 text-sm'>
               {options.map(option => {
-                const isSelected = selectedOptions.includes(option)
+                const isSelected = selectedOptions && selectedOptions.includes(option as never)
                 let OptionText
                 switch (placeHolder) {
                   case '종류':

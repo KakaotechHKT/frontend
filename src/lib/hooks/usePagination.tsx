@@ -69,52 +69,52 @@ export function usePagination({ currentPage, totalPages }: UsePaginationProps) {
     }
 
     return (
-      <Pagination>
-        <PaginationContent>
-          {/* 처음(«) 버튼 */}
-          <PaginationItem>
-            <LucideIcon name='ChevronsLeft' onClick={() => changePage(1)} />
-          </PaginationItem>
-
-          {/* 이전(‹) 버튼 */}
-          <PaginationItem>
-            <LucideIcon name='ChevronLeft' onClick={currentPage !== 1 ? () => changePage(currentPage - 1) : undefined} />
-          </PaginationItem>
-
-          {/* 페이지 번호 렌더링 */}
-          {getPageNumbers().map((page, index) => (
-            <PaginationItem key={index}>
-              {page === '...' ? (
-                <PaginationEllipsis />
-              ) : (
-                <PaginationLink
-                  isActive={page === currentPage}
-                  onClick={() => changePage(Number(page))}
-                  className={cn(page === currentPage && 'bg-rcKakaoYellow hover:bg-rcKakaoYellowHover', 'rounded-full')}
-                >
-                  {page}
-                </PaginationLink>
-              )}
+      totalPages !== 0 && (
+        <Pagination>
+          <PaginationContent>
+            {/* 처음(«) 버튼 */}
+            <PaginationItem>
+              <LucideIcon name='ChevronsLeft' onClick={() => changePage(1)} />
             </PaginationItem>
-          ))}
 
-          {/* 처음(«) 버튼 */}
-          <PaginationItem>
-            <LucideIcon name='ChevronRight' onClick={() => changePage(currentPage + 1)} />
-          </PaginationItem>
+            {/* 이전(‹) 버튼 */}
+            <PaginationItem>
+              <LucideIcon name='ChevronLeft' onClick={currentPage !== 1 ? () => changePage(currentPage - 1) : undefined} />
+            </PaginationItem>
 
-          {/* 이전(‹) 버튼 */}
-          <PaginationItem>
-            <LucideIcon name='ChevronsRight' onClick={currentPage !== totalPages ? () => changePage(totalPages) : undefined} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {/* 페이지 번호 렌더링 */}
+            {getPageNumbers().map((page, index) => (
+              <PaginationItem key={index}>
+                {page === '...' ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    isActive={page === currentPage}
+                    onClick={() => changePage(Number(page))}
+                    className={cn(page === currentPage && 'bg-rcKakaoYellow hover:bg-rcKakaoYellowHover', 'rounded-full')}
+                  >
+                    {page}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            {/* 처음(«) 버튼 */}
+            <PaginationItem>
+              <LucideIcon name='ChevronRight' onClick={() => changePage(currentPage + 1)} />
+            </PaginationItem>
+
+            {/* 이전(‹) 버튼 */}
+            <PaginationItem>
+              <LucideIcon name='ChevronsRight' onClick={currentPage !== totalPages ? () => changePage(totalPages) : undefined} />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )
     )
   }
 
   return {
-    currentPage,
-    totalPages,
     changePage,
     PaginationComponent,
   }

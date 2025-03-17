@@ -1,3 +1,4 @@
+import { FilterType } from '@components/main/PartCards/PartCardList'
 import { DuplicateCheck, Login, Logout, Register } from '@lib/HTTP/API/auth'
 import { SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
 import { PartApply, PartCreate } from '@lib/HTTP/API/part'
@@ -15,7 +16,7 @@ import { Chatting, CreateChat } from './API/chat'
 
 export const QUERY_KEYS = {
   PART: {
-    LIST: (pageNumber: number) => ['part', pageNumber],
+    LIST: (pageNumber: number, filters: Partial<FilterType>) => ['part', pageNumber, filters.mainCategory, filters.capacity, filters.track],
     RECOMMEND_LIST: ['part', 'recommend'],
   },
   MYPAGE: {
