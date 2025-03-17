@@ -8,8 +8,7 @@ import Loading from '@components/ui/Loading'
 import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { cn } from '@lib/utils/utils'
-
-import { mypageSize } from '../layout'
+import { mypageSize } from '@public/data'
 
 interface SettlementPageProps {}
 
