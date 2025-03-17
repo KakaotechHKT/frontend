@@ -163,8 +163,8 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
 
         <Input
           type='text'
-          placeholder='🔍 제목으로 검색해보세요.'
-          className='h-9 w-full rounded-none border-0 border-b-[1px] border-solid border-rcKakaoYellow py-0 text-xss shadow-none outline-none focus:outline-none focus-visible:ring-0 sm:w-60'
+          placeholder='🔍  제목으로 검색해보세요.'
+          className='h-9 w-full rounded-none border-0 border-b-[1px] border-solid border-rcKakaoYellow py-0 text-sm shadow-none outline-none focus:outline-none focus-visible:ring-0 sm:w-60'
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           onKeyDown={e => {

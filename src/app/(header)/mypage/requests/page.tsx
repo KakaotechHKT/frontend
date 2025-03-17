@@ -18,6 +18,9 @@ const RequestsPage = ({}: RequestsPageProps): ReactNode => {
     <>
       <RouteHeader route={URL.MYPAGE.REQUESTS.value} className='w-full border-b border-solid border-rcLightGray' />
       <RouteText content={`${nickname}님이 받은 밥팟 정산 알림입니다!`} className={cn(mypageSize, 'my-6')} />
+      <div className={cn(mypageSize, 'mt-10 w-full items-center justify-center text-center font-dohyeon text-2xl')}>
+        서비스 준비중입니다...!
+      </div>
     </>
   )
 }
