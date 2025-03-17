@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 
 import { Menu } from '@app/(headerless)/part/page'
 import { URL } from '@lib/constants/routes'
+import { AuthDataType } from '@lib/hooks/useAuthData'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
@@ -45,12 +46,7 @@ export type BabpartDTO = {
 }
 
 interface PartCardProps {
-  authData: {
-    id: number
-    name: string
-    nickname: string
-    track: TrackType
-  }
+  authData: AuthDataType
   babpartData: BabpartDTO
 }
 
@@ -58,7 +54,7 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   const { openModalHandler, Modal } = useModal()
   const router = useRouter()
 
-  const { id: userID, name: userName, nickname, track } = authData
+  const { id: userID, name: userName, nickname, track, accessToken } = authData
   const { restaurantInfo, babpatInfo } = babpartData
 
   const { name, mainMenus, categories, thumbnailUrl } = restaurantInfo
@@ -94,15 +90,22 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   }
 
   const confirmHandler = () => {
-    if (!userID) {
+    if (!accessToken) {
       toast.error('로그인이 필요합니다.')
       router.push(URL.AUTH.LOGIN.value)
+      return
+    }
+    /** 내 밥팟인데 신청하려고 하는 경우 */
+
+    if (id === userID) {
+      toast.error('내가 신청한 밥팟에는 신청하지 못합니다')
       return
     }
     PartApplyMutate(
       {
         ID: userID,
         babpatID: id,
+        accessToken,
       },
       {
         onSuccess(data, variables, context) {

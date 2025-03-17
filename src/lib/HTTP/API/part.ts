@@ -147,23 +147,25 @@ export const RecommendPartList = async ({}: RecommendPartListType) => {
 export interface PartApplyType {
   ID: number
   babpatID: number
+  accessToken: string
 }
 
-export const PartApply = async ({ ID, babpatID }: PartApplyType) => {
+export const PartApply = async ({ ID, babpatID, accessToken }: PartApplyType) => {
   const ROUTE = API_ROUTES.PART.APPLY
 
   const body = {
     userId: ID,
     babpatId: babpatID,
   }
-  console.log('part apply')
 
-  console.log(body)
   const res = await customFetch(
     ROUTE.url,
     {
       method: ROUTE.method,
       body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
     'WebServer',
   )

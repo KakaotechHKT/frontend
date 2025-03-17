@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react'
 import FilterSelector from '@components/ui/FilterSelector'
 import { Input } from '@components/ui/input'
 import Loading from '@components/ui/Loading'
-import { useAuthData } from '@lib/hooks/useAuthData'
+import { AuthDataType, useAuthData } from '@lib/hooks/useAuthData'
 import useModal from '@lib/hooks/useModal'
 import { usePagination } from '@lib/hooks/usePagination'
 import { PartList } from '@lib/HTTP/API/part'
@@ -37,7 +37,7 @@ const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => String(i + 2
 const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   const params = useSearchParams()
 
-  const authData = useAuthData()
+  const authData: AuthDataType = useAuthData()
   const { openModalHandler, Modal } = useModal()
 
   // 상태
@@ -111,15 +111,17 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       </ul>
 
       {/* 필터 */}
-      <div className='relative mt-4 flex w-full items-center justify-start gap-4 self-start'>
-        <FilterSelector placeHolder={'종류'} options={MainCategories} updateFilter={updateFilter} />
-        {/* <FilterSelector placeHolder={'과정'} options={TRACKS} updateFilter={updateFilter} /> */}
-        <FilterSelector placeHolder={'인원'} options={numbers} updateFilter={updateFilter} />
+      <div className='relative mt-4 flex w-full flex-col items-start justify-between gap-4 self-start sm:flex-row sm:items-center'>
+        <div className='flex items-center justify-start gap-4'>
+          <FilterSelector placeHolder={'종류'} options={MainCategories} updateFilter={updateFilter} />
+          {/* <FilterSelector placeHolder={'과정'} options={TRACKS} updateFilter={updateFilter} /> */}
+          <FilterSelector placeHolder={'인원'} options={numbers} updateFilter={updateFilter} />
+        </div>
 
         <Input
           type='text'
           placeholder='🔍 제목으로 검색해보세요.'
-          className='absolute right-0 h-full w-44 rounded-3xl py-0 text-xss shadow-none outline-none focus:outline-none focus-visible:ring-0'
+          className='h-9 w-full rounded-none border-0 border-b-[1px] border-solid border-rcKakaoYellow py-0 text-xss shadow-none outline-none focus:outline-none focus-visible:ring-0 sm:w-60'
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           // TODO: 검색 API

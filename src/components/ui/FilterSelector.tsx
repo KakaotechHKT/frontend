@@ -79,7 +79,7 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
     <>
       <div
         className={cn(
-          'relative z-20 cursor-pointer rounded-md border-solid px-2 py-2 text-sm',
+          'relative z-20 cursor-pointer rounded-md border-solid px-2 py-1 text-sm',
           selectedOptions.length !== 0 ? 'border border-rcBlack bg-rcKakaoYellow hover:bg-rcKakaoYellowHover' : 'border border-rcDarkGray',
         )}
       >
@@ -94,7 +94,7 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
               className,
             )}
           >
-            <ul className='flex h-36 w-full flex-col items-center justify-start gap-3 overflow-y-auto px-4 py-2 text-sm'>
+            <ul className='flex h-36 w-full flex-col items-center justify-start overflow-y-auto px-4 py-2 text-sm'>
               {options.map(option => {
                 const isSelected = selectedOptions.includes(option)
                 let OptionText
@@ -114,7 +114,7 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
                   <li
                     onClick={() => selectOptionHandler(option)}
                     key={option}
-                    className='flex w-full cursor-pointer items-center justify-start gap-2 font-semibold'
+                    className='flex w-full cursor-pointer items-center justify-start gap-2 pb-3 font-semibold'
                   >
                     <LucideIcon
                       name={!isSelected ? 'Square' : 'SquareCheck'}

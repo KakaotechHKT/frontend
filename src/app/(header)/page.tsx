@@ -34,7 +34,7 @@ export default function Home() {
           <RecommendCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3' />
         </section>
         <Suspense fallback={<Loading className='w-full' />}>
-          <PartCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4' />
+          <PartCardList className='my-2 w-full grid-cols-1 sm:my-6 md:grid-cols-2 lg:grid-cols-4' />
         </Suspense>
       </main>
     </>
