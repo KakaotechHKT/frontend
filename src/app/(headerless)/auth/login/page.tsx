@@ -46,7 +46,7 @@ const LoginPage = (): ReactNode => {
   return (
     <>
       <Introduce className='flex flex-col items-center justify-start gap-6' />
-      <div className='mt-8 flex w-1/2 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
+      <div className='mt-8 flex w-4/5 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8 sm:w-1/2'>
         <h1 className='self-start px-12 font-dohyeon text-xl'>로그인</h1>
 
         <div className='relative flex w-full flex-col items-start justify-start gap-3 px-12'>

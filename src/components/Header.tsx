@@ -97,7 +97,7 @@ const MobileNavBar = ({
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
         <li className='relative cursor-pointer'>
           <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-          {alarmStatus && <HeaderAlarm accessToken={accessToken} />}
+          {alarmStatus && <HeaderAlarm accessToken={accessToken} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
         </li>
         <li className='relative cursor-pointer'>
           <LucideIcon name='AlignJustify' size={20} onClick={navbarToggleStatus} />

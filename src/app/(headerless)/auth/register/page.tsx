@@ -198,7 +198,7 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
   }
 
   return (
-    <div className='mt-8 flex w-[70%] max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
+    <div className='mt-8 flex w-4/5 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='self-start px-12 font-dohyeon text-xl'>회원가입</h1>
 
       <div className='relative flex w-full flex-col items-start justify-start gap-3 px-12'>
@@ -313,7 +313,7 @@ const KTBInfoStep = ({ className, data, updateData }: KTBInfoStepProps) => {
     )
   }
   return (
-    <div className='mt-8 flex w-1/2 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
+    <div className='mt-8 flex w-4/5 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8 sm:w-1/2'>
       <h1 className='flex w-full flex-col items-start justify-start self-start px-12 font-dohyeon text-xl'>
         <span>카테부 정보 입력</span>
         <span className='w-full font-pretendard text-[10px] font-light'>
