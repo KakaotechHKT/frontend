@@ -69,3 +69,59 @@ export const SettlementAlarmList = async ({ accessToken }: SettlementAlarmListTy
 
   return data
 }
+
+export interface RequestSettlementAlarmType {
+  babpatId: number
+  totalPrice: number
+  perPrice: number
+  memberCount: number
+  accountNumber: string
+  bankName: string
+  accountHolder: string
+  accessToken: string
+}
+
+export const RequestSettlementAlarm = async ({
+  babpatId,
+  totalPrice,
+  perPrice,
+  memberCount,
+  accountNumber,
+  bankName,
+  accountHolder,
+  accessToken,
+}: RequestSettlementAlarmType) => {
+  const ROUTE = API_ROUTES.MYPAGE.REQUEST_ALARM
+
+  const body = {
+    babpatId,
+    totalPrice,
+    perPrice,
+    memberCount,
+    accountNumber,
+    bankName,
+    accountHolder,
+  }
+
+  const res = await customFetch(
+    ROUTE.url,
+    {
+      method: ROUTE.method,
+      body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+    'WebServer',
+  )
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  // 204로 리턴값이 없음
+  return null
+}

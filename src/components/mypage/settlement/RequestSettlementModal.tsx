@@ -1,5 +1,7 @@
 'use client'
-import { ReactNode, RefObject, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { ReactNode, RefObject, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 
 import Backdrop from '@components/common/Backdrop'
@@ -7,6 +9,11 @@ import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
 import { Label } from '@components/ui/label'
+import Loading from '@components/ui/Loading'
+import { URL } from '@lib/constants/routes'
+import { useAuthData } from '@lib/hooks/useAuthData'
+import { RequestSettlementAlarmType } from '@lib/HTTP/API/mypage/settlement'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 
@@ -135,6 +142,9 @@ type InputDataType = {
   accountHolder: string
 }
 const InfoInputStep = ({ data }: InfoInputStepProps) => {
+  const { accessToken } = useAuthData()
+  const router = useRouter()
+
   const { participants } = data as SettlementDTO
   const participantsCount = participants.length
 
@@ -160,11 +170,40 @@ const InfoInputStep = ({ data }: InfoInputStepProps) => {
     }
   })
 
-  useEffect(() => {
-    console.log(inputData)
-  }, [inputData])
+  const { mutate: RequestSettlementMutate, isPending: isSending } = useMutationStore<RequestSettlementAlarmType>(['settlement'])
 
-  const sendSettlementHandler = () => {}
+  const requestSettlementHandler = () => {
+    if (data) {
+      const { babpatId } = data
+      const { totalPrice, perPrice, memberCount, accountNumber, bankName, accountHolder } = inputData
+      if (!totalPrice || !perPrice || !memberCount || !accountNumber || !bankName || !accountHolder) {
+        toast.error('정산 정보를 모두 입력해주세요.')
+        return
+      }
+      if (!accessToken) {
+        toast.error('로그인 정보를 확인할 수 없습니다. 다시 로그인해주세요')
+        router.push(URL.AUTH.LOGIN.value)
+        return
+      }
+      RequestSettlementMutate(
+        {
+          babpatId,
+          totalPrice,
+          perPrice,
+          memberCount,
+          accountNumber,
+          bankName,
+          accountHolder,
+          accessToken,
+        },
+        {
+          onSuccess(data, variables, context) {
+            window.location.reload()
+          },
+        },
+      )
+    }
+  }
   return (
     <div className='relative flex h-full w-full flex-grow flex-col items-start justify-between gap-6'>
       <div className='flex w-full flex-col items-start justify-start gap-4'>
@@ -227,9 +266,9 @@ const InfoInputStep = ({ data }: InfoInputStepProps) => {
         )}
         variant='rcKakaoYellow'
         disabled={!allChecked}
-        onClick={sendSettlementHandler}
+        onClick={requestSettlementHandler}
       >
-        정산 요청하기
+        {!isSending ? '정산 요청하기' : <Loading />}
       </Button>
     </div>
   )
