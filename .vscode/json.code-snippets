@@ -3,7 +3,8 @@
     "scope": "javascript,typescript,javascriptreact,typescriptreact",
     "prefix": ["tscmp"],
     "body": [
-      "import React, { ReactNode } from 'react';",
+      "import { cn } from '@lib/utils/utils';",
+      "import { ReactNode } from 'react';",
       "",
       "interface ${1:ComponentName}Props {",
       "  className?: string;",
@@ -12,12 +13,12 @@
       "",
       "const ${1:ComponentName} = ({ className }: ${1:ComponentName}Props): ReactNode => {",
       "  return (",
-      "    <div className={className}>${1:ComponentName}</div>",
+      "    <div className={cn(className)}>${1:ComponentName}</div>",
       "  );",
       "};",
       "",
       "export default ${1:ComponentName};"
     ],
-    "description": "React Functional Component with TypeScript including className prop"
+    "description": "React Functional Component with TypeScript including className prop and cn utility"
   }
 }

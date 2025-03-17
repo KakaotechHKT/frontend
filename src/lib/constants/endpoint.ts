@@ -47,4 +47,10 @@ export const API_ROUTES = {
       url: '/chat/chatting',
     },
   },
+  MYPAGE: {
+    SETTLEMENT_LIST: {
+      method: HttpMethod.GET,
+      url: '/settlements',
+    },
+  },
 }

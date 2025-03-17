@@ -1,4 +1,5 @@
 import { DuplicateCheck, Login, Logout, Register } from '@lib/HTTP/API/auth'
+import { SettlementList } from '@lib/HTTP/API/mypage/settlement'
 import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
@@ -16,6 +17,12 @@ export const QUERY_KEYS = {
   PART: {
     LIST: ['part'],
     RECOMMEND_LIST: ['part', 'recommend'],
+  },
+  MYPAGE: {
+    SETTLEMENT_LIST: {
+      key: ['part', 'settlement'],
+      function: SettlementList,
+    },
   },
 }
 /*
@@ -128,6 +135,10 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHAT.CHATTING.key, {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },
 })
+
+/**
+ * [MyPage]
+ */
 
 export type MutationKeyType = ExtractValueByKey<typeof MUTATION_KEYS, 'key'>
 

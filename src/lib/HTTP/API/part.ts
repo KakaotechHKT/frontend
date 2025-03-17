@@ -16,9 +16,10 @@ export interface PartCreateType {
   headCount: number
   comment: string
   mealSpeed: SpeedType | null
+  accessToken: string
 }
 
-export const PartCreate = async ({ leaderID, placeID, date, time, headCount, comment, mealSpeed }: PartCreateType) => {
+export const PartCreate = async ({ leaderID, placeID, date, time, headCount, comment, mealSpeed, accessToken }: PartCreateType) => {
   const ROUTE = API_ROUTES.PART.CREATE
 
   const body = {
@@ -36,6 +37,9 @@ export const PartCreate = async ({ leaderID, placeID, date, time, headCount, com
     {
       method: ROUTE.method,
       body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
     'WebServer',
   )
