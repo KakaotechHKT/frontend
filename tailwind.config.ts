@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import TailwindAniamte from 'tailwindcss-animate'
 
 export default {
   darkMode: ['class'],
@@ -58,7 +59,7 @@ export default {
         rcBlack: '#000000',
         rcWhite: '#FFFFFF',
         rcChatGray: '#E8E9EB60',
-        rcBackdrop: '#00000040',
+        rcBackdrop: '#00000080',
 
         // Hover colors
         rcKakaoYellowHover: '#FFDC44',
@@ -98,5 +99,5 @@ export default {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [TailwindAniamte],
 } satisfies Config

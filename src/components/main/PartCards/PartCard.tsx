@@ -1,8 +1,11 @@
 'use client'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
+import { toast } from 'sonner'
 
 import { Menu } from '@app/(headerless)/part/page'
+import { URL } from '@lib/constants/routes'
 import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
@@ -53,6 +56,7 @@ interface PartCardProps {
 
 const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   const { openModalHandler, Modal } = useModal()
+  const router = useRouter()
 
   const { id: userID, name: userName, nickname, track } = authData
   const { restaurantInfo, babpatInfo } = babpartData
@@ -90,6 +94,11 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
   }
 
   const confirmHandler = () => {
+    if (!userID) {
+      toast.error('로그인이 필요합니다.')
+      router.push(URL.AUTH.LOGIN.value)
+      return
+    }
     PartApplyMutate(
       {
         ID: userID,
