@@ -3,20 +3,21 @@
     "scope": "javascript,typescript,javascriptreact,typescriptreact",
     "prefix": ["tscmp"],
     "body": [
-      "import React, {ReactNode} from 'react'",
+      "import React, { ReactNode } from 'react';",
       "",
       "interface ${1:ComponentName}Props {",
+      "  className?: string;",
       "  $2",
       "}",
       "",
-      "const ${1:ComponentName} = ({}: ${1:ComponentName}Props): ReactNode => {",
+      "const ${1:ComponentName} = ({ className }: ${1:ComponentName}Props): ReactNode => {",
       "  return (",
-      "    <div>${1:ComponentName}</div>",
-      "  )",
-      "}",
+      "    <div className={className}>${1:ComponentName}</div>",
+      "  );",
+      "};",
       "",
-      "export default ${1:ComponentName}"
+      "export default ${1:ComponentName};"
     ],
-    "description": "React Functional Component with TypeScript"
+    "description": "React Functional Component with TypeScript including className prop"
   }
 }
