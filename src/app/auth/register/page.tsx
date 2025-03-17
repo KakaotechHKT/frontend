@@ -197,10 +197,6 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
     navigateToNextStep()
   }
 
-  // if(duplicateChecked !== undefined) {
-  //   if(duplicateChecked)
-  //     else
-  // }
   return (
     <div className='mt-8 flex w-[70%] max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='self-start px-12 font-dohyeon text-xl'>회원가입</h1>
