@@ -110,11 +110,11 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
       const participantsString = participantsCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${content.participants.length - 1}명`
 
       return (
-        <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-sm')}>
-          <td className='w-[15%] px-4 py-6'>{TransformStatusType(content.settlementStatus)}</td>
-          <td className='w-[25%] truncate px-4 py-6'>{content.restaurantName}</td>
-          <td className='w-[10%] px-4 py-6'>{formatDate(content.babpatAt)}</td>
-          <td className='w-auto px-4 py-6'>{participantsString}</td>
+        <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-xs sm:text-sm')}>
+          <td className='min w-[18%] py-6 pr-2 sm:px-4'>{TransformStatusType(content.settlementStatus)}</td>
+          <td className='w-[25%] truncate px-2 py-6 sm:px-4'>{content.restaurantName}</td>
+          <td className='w-[10%] px-2 py-6 sm:px-4'>{formatDate(content.babpatAt)}</td>
+          <td className='w-auto px-2 py-6 sm:px-4'>{participantsString}</td>
           {content.settlementStatus === 'BEFORE' && (
             <td
               onClick={() => openRequestModalHandler(content)}
@@ -132,14 +132,14 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
 
   return (
     <section className={cn(className, 'relative')}>
-      <table className='w-full border-collapse'>
+      <table className='w-full border-collapse text-xs sm:text-base'>
         {/* 테이블 헤더 */}
-        <thead className='border-b-2 border-rcBlack bg-rcWhite'>
+        <thead className='w-full border-b-2 border-rcBlack bg-rcWhite'>
           <tr className='text-left font-bold'>
-            <th className='w-[10%] px-4 py-3'>정산 현황</th>
-            <th className='w-[25%] truncate px-4 py-3'>음식점</th>
-            <th className='w-[10%] px-4 py-3'>날짜</th>
-            <th className='w-auto px-4 py-3'>참여자</th>
+            <th className='w-[18%] py-3 pr-2 sm:px-4'>정산 현황</th>
+            <th className='w-[25%] truncate px-2 py-3 sm:px-4'>음식점</th>
+            <th className='w-[10%] px-2 py-3 sm:px-4'>날짜</th>
+            <th className='w-auto px-2 py-3 sm:px-4'>참여자</th>
           </tr>
         </thead>
 

@@ -61,13 +61,15 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   }
 
   const currentTabSwitchHandler = (tab: TabType) => {
-    if (tab === '도시락팟' || tab === '밥팟') {
+    if (tab === '도시락팟') {
       openModalHandler({
         title: '서비스 준비중입니다!',
         details: '빠른 시일내로 서비스 제공을 약속드립니다.',
         type: 'info',
       })
+      return
     }
+    setCurrentTab(tab)
   }
 
   const resetFilters = () => {

@@ -35,8 +35,8 @@ const RouteHeader = ({ route, className }: RouteHeaderProps): ReactNode => {
       href={route_button.route}
       className={cn(
         route === route_button.route
-          ? 'border-b-2 border-solid border-rcKakaoYellow text-xl font-bold text-rcBlack'
-          : 'text-lg text-rcDarkGray hover:text-rcBlack',
+          ? 'border-b-2 border-solid border-rcKakaoYellow text-base font-bold text-rcBlack sm:text-xl'
+          : 'text-sm text-rcDarkGray hover:text-rcBlack sm:text-lg',
         'cursor-pointer pb-3 pt-6',
       )}
       key={route_button.route}
@@ -46,7 +46,7 @@ const RouteHeader = ({ route, className }: RouteHeaderProps): ReactNode => {
   ))
   return (
     <div className={cn(className, 'relative flex items-center justify-center')}>
-      <div className='flex w-4/5 max-w-xl items-center justify-start gap-10 md:max-w-4xl lg:max-w-7xl'>{route_buttons}</div>
+      <div className='flex w-4/5 max-w-xl items-center justify-start gap-10 overflow-x-auto md:max-w-4xl lg:max-w-7xl'>{route_buttons}</div>
     </div>
   )
 }

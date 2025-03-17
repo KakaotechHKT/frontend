@@ -121,7 +121,7 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, className }: He
       ref={ref}
       className={cn(
         className,
-        'absolute right-0 z-10 flex h-[420px] w-max flex-col items-start justify-start overflow-y-auto rounded-2xl bg-rcWhite px-6 py-4 shadow-rc-shadow',
+        'absolute right-0 z-10 flex h-auto max-h-[420px] w-max flex-col items-start justify-start overflow-y-auto rounded-2xl bg-rcWhite px-6 py-4 shadow-rc-shadow',
       )}
     >
       <LucideIcon onClick={alarmToggleStatus} name='X' className='absolute right-4 top-4 cursor-pointer' size={16} />
