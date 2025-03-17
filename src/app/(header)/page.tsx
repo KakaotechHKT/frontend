@@ -9,7 +9,7 @@ import KTBMainImage from '@public/images/ktb_1.jpeg'
 import SpoonImage from '@public/images/spoon.svg'
 
 export default function Home() {
-  const pageSize = `w-full sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
+  const pageSize = `w-full px-4 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
   return (
     <>
       <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>

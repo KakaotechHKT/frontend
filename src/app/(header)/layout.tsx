@@ -16,7 +16,7 @@ const HeaderLayout = ({ children }: HeaderLayoutProps): ReactNode => {
   return (
     <>
       <Header className={cn('z-10 h-[12dvh] w-full max-w-xl px-8 sm:px-6 md:max-w-4xl lg:max-w-7xl lg:px-8')} />
-      <main className='relative flex min-h-screen w-screen flex-col items-center justify-start bg-rcWhite'>{children}</main>
+      {children}
       <Footer className='z-10 h-max w-full' />
     </>
   )

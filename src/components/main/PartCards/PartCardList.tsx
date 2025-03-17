@@ -98,7 +98,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     <section className='flex w-full flex-col items-center justify-start gap-1'>
       <span className='font-dohyeon text-xl sm:text-2xl xl:text-3xl'>밥팟 참여하기</span>
       <span className='text-xss text-rcDarkGray lg:text-sm'>* 밥팟에 참여하여 많은 사람들과 식사를 함께하세요!</span>
-      <ul className='flex items-center justify-start gap-4 self-start text-xl'>
+      <ul className='mt-4 flex items-center justify-start gap-4 self-start text-xl'>
         {TABS.map(tab => (
           <li
             key={tab}

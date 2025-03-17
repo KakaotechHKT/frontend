@@ -79,7 +79,7 @@ const FilterSelector = ({ placeHolder, options, updateFilter, className }: Filte
     <>
       <div
         className={cn(
-          'relative z-20 cursor-pointer rounded-xl border-solid px-2 py-1 text-sm',
+          'relative z-20 cursor-pointer rounded-md border-solid px-2 py-2 text-sm',
           selectedOptions.length !== 0 ? 'border border-rcBlack bg-rcKakaoYellow hover:bg-rcKakaoYellowHover' : 'border border-rcDarkGray',
         )}
       >
