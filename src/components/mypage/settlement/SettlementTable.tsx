@@ -59,7 +59,7 @@ const formatDate = (dateString: string) => {
 const SettlementTable = ({ className }: SettlementTableProps) => {
   const params = useSearchParams()
   const { accessToken, nickname } = useAuthData()
-  const { status: requestModal, toggleStatus: openRequestModal } = useToggle(true)
+  const { status: requestModal, toggleStatus: toggleRequestModal } = useToggle()
   const { lockScroll, unLockScroll } = useScrollLock()
 
   /** 상태 */
@@ -81,8 +81,13 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
 
   const openRequestModalHandler = (content: SettlementDTO) => {
     lockScroll()
-    openRequestModal()
+    toggleRequestModal()
     setModalData(content)
+  }
+  const closeRequestModalHandler = () => {
+    unLockScroll()
+    toggleRequestModal()
+    setModalData(undefined)
   }
 
   let contents
@@ -143,7 +148,14 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
       </table>
       <PaginationComponent className='my-4' />
 
-      {requestModal && <RequestSettlementModal modalData={modalData} className='' />}
+      {requestModal && (
+        <RequestSettlementModal
+          modalData={modalData}
+          requestModal={requestModal}
+          closeRequestModalHandler={closeRequestModalHandler}
+          className=''
+        />
+      )}
     </section>
   )
 }
