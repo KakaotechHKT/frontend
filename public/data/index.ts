@@ -10,3 +10,5 @@ export const SpeedTransformer = {
   MIDDLE: '적당히',
   SLOW: '천천히',
 }
+
+export const mypageSize = `w-[90%] max-w-xl md:w-4/5 md:max-w-4xl lg:max-w-7xl`

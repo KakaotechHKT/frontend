@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 
-import { PartDTO, placeDTO } from '@app/part/page'
+import { PartDTO, placeDTO } from '@app/(headerless)/part/page'
 import { Button } from '@components/ui/button'
 import { GeoType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'

@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { Dispatch, ReactNode, SetStateAction, useRef, useState } from 'react'
 
-import { CategoryType } from '@app/part/page'
+import { CategoryType } from '@app/(headerless)/part/page'
 import LoadingDots from '@components/common/LoadingShimmer'
 import AIChatButtonFrame from '@components/part/AIChatButtonFrame'
 import AIChatFrame from '@components/part/AIChatFrame'

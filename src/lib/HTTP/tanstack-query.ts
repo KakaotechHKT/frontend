@@ -1,3 +1,4 @@
+import { FilterType } from '@components/main/PartCards/PartCardList'
 import { DuplicateCheck, Login, Logout, Register } from '@lib/HTTP/API/auth'
 import { PartApply, PartCreate } from '@lib/HTTP/API/part'
 import { SuccessResponse } from '@lib/HTTP/Fetch'
@@ -6,6 +7,7 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '../provider/QueryClientProvider'
 import { Chatting, CreateChat } from './API/chat'
+import { FinishSettlement, RequestSettlementAlarm } from './API/mypage/settlement'
 
 /**
  * GET
@@ -14,8 +16,12 @@ import { Chatting, CreateChat } from './API/chat'
 
 export const QUERY_KEYS = {
   PART: {
-    LIST: ['part'],
+    LIST: (pageNumber: number, filters: Partial<FilterType>) => ['part', pageNumber, filters.mainCategory, filters.capacity, filters.track],
     RECOMMEND_LIST: ['part', 'recommend'],
+  },
+  MYPAGE: {
+    SETTLEMENT_LIST: (pageNumber: number) => ['settlement', pageNumber],
+    ALARM_LIST: ['settlement'],
   },
 }
 /*
@@ -59,6 +65,16 @@ export const MUTATION_KEYS = {
     CHATTING: {
       key: ['chatting'],
       function: Chatting,
+    },
+  },
+  MYPAGE: {
+    REQUEST_SETTLEMENT: {
+      key: ['settlement'],
+      function: RequestSettlementAlarm,
+    },
+    FINISH_SETTLEMENT: {
+      key: ['settlement'],
+      function: FinishSettlement,
     },
   },
 } as const
@@ -126,6 +142,22 @@ queryClient.setMutationDefaults(MUTATION_KEYS.CHAT.CHATTING.key, {
   mutationFn: MUTATION_KEYS.CHAT.CHATTING.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+
+/**
+ * [MyPage]
+ */
+queryClient.setMutationDefaults(MUTATION_KEYS.MYPAGE.REQUEST_SETTLEMENT.key, {
+  mutationFn: MUTATION_KEYS.MYPAGE.REQUEST_SETTLEMENT.function,
+  onSuccess(data, variables, context) {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.MYPAGE.FINISH_SETTLEMENT.key, {
+  mutationFn: MUTATION_KEYS.MYPAGE.FINISH_SETTLEMENT.function,
+  onSuccess(data, variables, context) {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST })
   },
 })
 

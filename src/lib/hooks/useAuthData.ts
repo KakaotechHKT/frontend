@@ -3,14 +3,15 @@ import { useEffect, useState } from 'react'
 
 import { TrackType } from '@public/data/tracks'
 
-export const useAuthData = (): {
+export type AuthDataType = {
   id: number
   name: string
   nickname: string
   track: TrackType
   accessToken: string
-} => {
-  const [authData, setAuthData] = useState<{ id: number; name: string; nickname: string; track: TrackType; accessToken: string }>({
+}
+export const useAuthData = (): AuthDataType => {
+  const [authData, setAuthData] = useState<AuthDataType>({
     id: 0,
     name: '',
     nickname: '',

@@ -9,7 +9,7 @@ import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
 import RefuseModal from '@components/part/RefuseModal'
 import { URL } from '@lib/constants/routes'
-import { useAuthData } from '@lib/hooks/useAuthData'
+import { AuthDataType, useAuthData } from '@lib/hooks/useAuthData'
 import { ChattingType, CreateChatType } from '@lib/HTTP/API/chat'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import { GeoType, SpeedType } from '@lib/types/part/part'
@@ -59,7 +59,7 @@ export type placeDTO = {
 }
 
 const PartPage = (): ReactNode => {
-  const authData = useAuthData()
+  const authData: AuthDataType = useAuthData()
   /** 모바일인지 확인 */
   const [showRefuseModal, setShowRefuseModal] = useState<boolean>(false)
 

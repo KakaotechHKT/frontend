@@ -47,4 +47,24 @@ export const API_ROUTES = {
       url: '/chat/chatting',
     },
   },
+  MYPAGE: {
+    REQUEST_ALARM: {
+      method: HttpMethod.POST,
+      url: '/settlements',
+    },
+    SETTLEMENT_LIST: {
+      method: HttpMethod.GET,
+      url: '/settlements',
+    },
+    ALARM_LIST: {
+      method: HttpMethod.GET,
+      url: '/settlements/alarms',
+    },
+    FINISH_SETTLEMENT: (settlementID: number) => {
+      return {
+        method: HttpMethod.PATCH,
+        url: `/settlements/${settlementID}`,
+      }
+    },
+  },
 }
