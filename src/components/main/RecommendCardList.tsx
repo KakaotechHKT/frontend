@@ -31,7 +31,6 @@ const RecommendCardList = ({ className }: RecommendCardListProps): ReactNode => 
     DISPLAY_ITEMS_COUNT = 1
   }
 
-  const [cardsData, setCardsData] = useState<RecommendBabpartDTO>()
   const [startIndex, setStartIndex] = useState(0)
 
   const { data, isPending } = useQuery({

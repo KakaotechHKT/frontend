@@ -66,7 +66,7 @@ interface RegisterPageProps {
   updateData: (partial: Partial<RegisterDTO>) => void
 }
 const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProps) => {
-  const [duplicateChecked, setDuplicatedChecked] = useState<boolean>(false)
+  const [duplicateChecked, setDuplicatedChecked] = useState<boolean | undefined>()
 
   const [passwordConfirmValue, setPasswordConfirmValue] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -92,9 +92,16 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
       },
       {
         onSuccess(data, variables, context) {
-          toast('중복 검사 성공!')
+          const content = data.data
 
-          setDuplicatedChecked(true)
+          const { isOccupied } = content
+          if (isOccupied) {
+            toast.error('중복 검사 실패')
+            setDuplicatedChecked(false)
+          } else {
+            toast('중복 검사 성공!')
+            setDuplicatedChecked(true)
+          }
         },
       },
     )
@@ -189,6 +196,11 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
     }
     navigateToNextStep()
   }
+
+  // if(duplicateChecked !== undefined) {
+  //   if(duplicateChecked)
+  //     else
+  // }
   return (
     <div className='mt-8 flex w-[70%] max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8'>
       <h1 className='self-start px-12 font-dohyeon text-xl'>회원가입</h1>
@@ -199,7 +211,7 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
             <Input
               type='text'
               placeholder='아이디'
-              className={cn(duplicateChecked && 'border-rcBlue', 'rounded-md')}
+              className={cn(duplicateChecked !== undefined ? (duplicateChecked ? 'border-rcBlue' : 'border-rcRed') : '', 'rounded-md')}
               value={data.id}
               onChange={e => updateData({ id: e.target.value })}
             />

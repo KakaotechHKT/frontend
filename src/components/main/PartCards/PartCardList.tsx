@@ -1,5 +1,5 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { ReactNode, useState } from 'react'
 
 import FilterSelector from '@components/ui/FilterSelector'
@@ -35,7 +35,6 @@ const MAX_HEADCOUNT = 10
 const numbers = Array.from({ length: MAX_HEADCOUNT - 1 }, (_, i) => String(i + 2))
 
 const PartCardList = ({ className }: PartCardListProps): ReactNode => {
-  const router = useRouter()
   const params = useSearchParams()
 
   const authData = useAuthData()
