@@ -53,6 +53,7 @@ export default {
         rcGreen: '#A3DB7E',
         rcRed: '#FC2312',
         rcBlue: '#175EB5',
+        rcOrange: '#F7861C',
         rcGray: '#E1E2E6',
         rcLightGray: '#E8E9EB',
         rcDarkGray: '#5D5F62',
