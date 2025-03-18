@@ -94,8 +94,8 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
 
   if (isPending || !data) {
     contents = (
-      <tr className='w-full py-10'>
-        <td className='flex w-full items-center justify-center'>
+      <tr>
+        <td colSpan={4} className='py-10 text-center'>
           <Loading />
         </td>
       </tr>
