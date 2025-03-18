@@ -10,12 +10,14 @@ import { useResponsiveStore } from '@lib/context/responsiveStore'
 import { AuthDataType, useAuthData } from '@lib/hooks/useAuthData'
 import useToggle from '@lib/hooks/useToggle'
 import { LogoutType } from '@lib/HTTP/API/auth'
-import { useMutationStore } from '@lib/HTTP/tanstack-query'
+import { SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
+import { QUERY_KEYS, useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
 import { TrackTransformer } from '@public/data/tracks'
 import BabPulImage from '@public/images/babpul.svg'
 import LogoImage from '@public/images/logo.svg'
+import { useQuery } from '@tanstack/react-query'
 
 import { KAKAO_CHANNEL_LINK } from './Footer'
 import HeaderAlarm from './main/Alarm/HeaderAlarm'
@@ -25,13 +27,40 @@ interface HeaderProps {
   className?: string
 }
 
+type PaymentStatusType = 'UNPAID' | 'PAID'
+
+export type AlarmDTO = {
+  settlementId: number
+  totalPrice: number
+  perPrice: number
+  accountNumber: string
+  bankName: string
+  totalPeopleCount: number
+  accountHolder: string
+  restaurantName: string
+  leaderNickname: string
+  babpatAt: string
+  payStatus: PaymentStatusType
+}
+
 const Header = ({ className }: HeaderProps): ReactNode => {
   const { tn, sm, md, lg, xl, xll } = useResponsiveStore()
   const authData: AuthDataType = useAuthData()
   const { status: navbarStatus, toggleStatus: navbarToggleStatus } = useToggle()
-  const { status: alarmStatus, toggleStatus: alarmToggleStatus } = useToggle(true)
+  const { status: alarmStatus, toggleStatus: alarmToggleStatus } = useToggle()
 
   const isAuthenticated = authData.id !== 0
+
+  const { accessToken } = authData
+  const { data: AlarmData, isPending: isPendingAlarmData } = useQuery({
+    queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST,
+    queryFn: async () => {
+      const data = await SettlementAlarmList({ accessToken })
+
+      return data.data as AlarmDTO[]
+    },
+    enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
+  })
 
   let navContent
   if (tn || sm) {
@@ -42,6 +71,7 @@ const Header = ({ className }: HeaderProps): ReactNode => {
         navbarToggleStatus={navbarToggleStatus}
         alarmStatus={alarmStatus}
         alarmToggleStatus={alarmToggleStatus}
+        AlarmData={AlarmData}
         isAuthenticated={isAuthenticated}
       />
     )
@@ -53,6 +83,7 @@ const Header = ({ className }: HeaderProps): ReactNode => {
         navbarToggleStatus={navbarToggleStatus}
         alarmStatus={alarmStatus}
         alarmToggleStatus={alarmToggleStatus}
+        AlarmData={AlarmData}
         isAuthenticated={isAuthenticated}
       />
     )
@@ -78,6 +109,7 @@ interface MobileNavBarProps {
   navbarToggleStatus: () => void
   alarmStatus: boolean
   alarmToggleStatus: () => void
+  AlarmData: AlarmDTO[] | undefined
   isAuthenticated: boolean
   className?: string
 }
@@ -88,6 +120,7 @@ const MobileNavBar = ({
   navbarToggleStatus,
   alarmStatus,
   alarmToggleStatus,
+  AlarmData,
   isAuthenticated,
   className,
 }: MobileNavBarProps): ReactNode => {
@@ -97,7 +130,10 @@ const MobileNavBar = ({
         {isAuthenticated && (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-            {alarmStatus && <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
+            {AlarmData && AlarmData.length !== 0 && <div className='absolute -right-1 -top-1 aspect-square w-2 rounded-full bg-rcOrange' />}
+            {alarmStatus && (
+              <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} AlarmData={AlarmData} />
+            )}
           </li>
         )}
         <li className='relative cursor-pointer'>
@@ -272,12 +308,13 @@ const NavLink = ({ isAuthenticated, text, route, onClick, className }: NavLinkPr
 }
 
 interface DesktopNavBarProps {
+  authData: AuthDataType
   navbarStatus: boolean
   navbarToggleStatus: () => void
   alarmStatus: boolean
   alarmToggleStatus: () => void
   isAuthenticated: boolean
-  authData: AuthDataType
+  AlarmData: AlarmDTO[] | undefined
   className?: string
 }
 
@@ -288,6 +325,7 @@ const DesktopNavBar = ({
   alarmStatus,
   alarmToggleStatus,
   isAuthenticated,
+  AlarmData,
   className,
 }: DesktopNavBarProps): ReactNode => {
   const { name, nickname, track, accessToken } = authData
@@ -296,13 +334,15 @@ const DesktopNavBar = ({
   return (
     <nav className={cn('font-normal', className)}>
       <ul className='flex items-center justify-evenly gap-6 text-sm'>
-        <li className={cn('cursor-pointer rounded-2xl bg-rcKakaoYellow px-4 py-2 font-semibold hover:bg-rcKakaoYellowHover')}>
+        <li className={cn('cursor-pointer rounded-3xl bg-rcKakaoYellow px-4 py-2 font-semibold hover:bg-rcKakaoYellowHover')}>
           <Link href={URL.PART.INDEX.value}>밥팟 만들기</Link>
         </li>
         {isAuthenticated ? (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-            {alarmStatus && <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} />}
+            {alarmStatus && (
+              <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} AlarmData={AlarmData} />
+            )}
           </li>
         ) : (
           <Link href={URL.AUTH.LOGIN.value}>로그인</Link>

@@ -1,54 +1,31 @@
 import { ReactNode, RefObject, useRef } from 'react'
 import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 
+import { AlarmDTO } from '@components/Header'
 import { formatDate } from '@components/mypage/settlement/SettlementTable'
 import { Button } from '@components/ui/button'
 import Loading from '@components/ui/Loading'
 import { AuthDataType } from '@lib/hooks/useAuthData'
-import { FinishSettlementType, SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
-import { QUERY_KEYS, useMutationStore } from '@lib/HTTP/tanstack-query'
+import { FinishSettlementType } from '@lib/HTTP/API/mypage/settlement'
+import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
-import { useQuery } from '@tanstack/react-query'
 
 interface HeaderAlarmProps {
   authData: AuthDataType
   alarmStatus: boolean
   alarmToggleStatus: () => void
+  AlarmData: AlarmDTO[] | undefined
   className?: string
 }
 
-type PaymentStatusType = 'UNPAID' | 'PAID'
-
-type AlarmDTO = {
-  settlementId: number
-  totalPrice: number
-  perPrice: number
-  accountNumber: string
-  bankName: string
-  totalPeopleCount: number
-  accountHolder: string
-  restaurantName: string
-  leaderNickname: string
-  babpatAt: string
-  payStatus: PaymentStatusType
-}
-
-const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, className }: HeaderAlarmProps): ReactNode => {
+const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, AlarmData, className }: HeaderAlarmProps): ReactNode => {
   const { accessToken } = authData
 
   const ref = useRef<HTMLDivElement>(null)
 
   useOutsideClick(ref as RefObject<HTMLElement>, alarmToggleStatus)
   useEscClose(alarmStatus, alarmToggleStatus)
-
-  const { data, isPending } = useQuery({
-    queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST,
-    queryFn: ({ signal }) => {
-      return SettlementAlarmList({ accessToken })
-    },
-    enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
-  })
 
   const { mutate: FinishSettlementMutate, isPending: isFinishing } = useMutationStore<FinishSettlementType>(['settlement'])
   const completeSettlementHandler = (settlementId: number) => {
@@ -66,12 +43,12 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, className }: He
   }
 
   let contents
-  if (!data) {
+
+  if (!AlarmData) {
     contents = <Loading />
   } else {
-    const alarms: AlarmDTO[] = data.data as AlarmDTO[]
     /** 알람이 아직 없는 경우 */
-    if (alarms.length === 0) {
+    if (AlarmData.length === 0) {
       contents = (
         <span className='mt-2 w-full rounded-md bg-rcLightGray py-3 text-center text-sm font-semibold text-rcBlack'>
           도착한 알림이 없습니다!
@@ -81,7 +58,7 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, className }: He
       /** 알람 있는 경우 */
       contents = (
         <div className='relative mt-4 flex w-full flex-col items-start justify-start rounded-md bg-rcLightGray'>
-          {alarms.map(alarm => {
+          {AlarmData.map(alarm => {
             const {
               payStatus,
               restaurantName,
