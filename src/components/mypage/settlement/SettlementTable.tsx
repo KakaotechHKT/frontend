@@ -94,8 +94,8 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
 
   if (isPending || !data) {
     contents = (
-      <tr className='w-full py-10'>
-        <td className='flex w-full items-center justify-center'>
+      <tr>
+        <td colSpan={4} className='py-10 text-center'>
           <Loading />
         </td>
       </tr>
@@ -105,27 +105,41 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
     const paginationInfo: PaginationInfo = data.data.page
     totalPageNumber = paginationInfo.totalPages
 
-    contents = contentList.map((content, index) => {
-      const participantsCount = content.participants.length
-      const participantsString = participantsCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${content.participants.length - 1}명`
-
-      return (
-        <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-xs sm:text-sm')}>
-          <td className='min w-[18%] py-6 pr-2 sm:px-4'>{TransformStatusType(content.settlementStatus)}</td>
-          <td className='w-[25%] truncate px-2 py-6 sm:px-4'>{content.restaurantName}</td>
-          <td className='w-[10%] px-2 py-6 sm:px-4'>{formatDate(content.babpatAt)}</td>
-          <td className='w-auto px-2 py-6 sm:px-4'>{participantsString}</td>
-          {content.settlementStatus === 'BEFORE' && (
-            <td
-              onClick={() => openRequestModalHandler(content)}
-              className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer rounded-md bg-rcKakaoYellow px-4 py-2 font-pretendard hover:bg-rcKakaoYellowHover'
-            >
-              정산 요청 보내기
-            </td>
-          )}
+    /** 참여자가 없는 경우 */
+    if (contentList.length === 0) {
+      contents = (
+        <tr>
+          <td colSpan={4} className='py-8 text-center font-bold'>
+            아직 참여한 밥팟이 없습니다!
+          </td>
         </tr>
       )
-    })
+    } else {
+      /** 참여자가 있는  경우 */
+      contents = contentList.map((content, index) => {
+        const participantsCount = content.participants.length
+        const participantsString = participantsCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${content.participants.length - 1}명`
+
+        return (
+          <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-xs sm:text-sm')}>
+            <td className='min w-[18%] py-6 pr-2 sm:px-4'>{TransformStatusType(content.settlementStatus)}</td>
+            <td className='w-[25%] truncate px-2 py-6 sm:px-4'>{content.restaurantName}</td>
+            <td className='w-[10%] px-2 py-6 sm:px-4'>{formatDate(content.babpatAt)}</td>
+            <td className='w-auto px-2 py-6 sm:px-4'>{participantsString}</td>
+            {content.settlementStatus === 'BEFORE' && participantsCount != 1 ? (
+              <td
+                onClick={() => openRequestModalHandler(content)}
+                className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer rounded-md bg-rcKakaoYellow px-4 py-2 font-pretendard hover:bg-rcKakaoYellowHover'
+              >
+                정산 요청 보내기
+              </td>
+            ) : (
+              <></>
+            )}
+          </tr>
+        )
+      })
+    }
   }
 
   const { PaginationComponent } = usePagination({ currentPage: pageNumber, totalPages: totalPageNumber })
