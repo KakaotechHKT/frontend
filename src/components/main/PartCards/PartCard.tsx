@@ -11,6 +11,7 @@ import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import { SpeedType } from '@lib/types/part/part'
+import { formatDateToFullString } from '@lib/utils/date'
 import { SpeedTransformer } from '@public/data'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
 
@@ -59,6 +60,7 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
 
   const { name, mainMenus, categories, thumbnailUrl } = restaurantInfo
   const { id, comment, capacity, mealSpeed, date, time, leaderProfile } = babpatInfo
+  console.log(babpatInfo)
 
   const parseMenus = (menuString: string): Menu[] => {
     // 1. 메뉴 항목 `{}` 단위로 분리
@@ -135,25 +137,25 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
 
         <div className='relative flex w-full flex-col items-start justify-start py-3'>
           <div className='mb-2 flex w-full flex-col items-start justify-start px-2'>
-            <span className='text-ellipsis text-nowrap text-lg'>{comment}</span>
-            <span className='mb-2 mt-2 w-full text-ellipsis whitespace-nowrap text-xs font-medium text-rcBlue group-hover:text-rcBlueHover'>
-              {name}
+            <span className='text-ellipsis text-nowrap text-lg'>{name}</span>
+            <span className='my-2 w-full text-ellipsis whitespace-nowrap text-xs font-medium text-rcBlue group-hover:text-rcBlueHover'>
+              {comment}
             </span>
 
-            <div className='flex w-full items-center justify-between'>
-              <ul className='my-1 flex items-center justify-start gap-1 text-xss'>
-                {categories.slice(0, 2).map(cat => (
-                  <li key={cat}># {cat}</li>
-                ))}
-                <li className='text-xss'># {SpeedTransformer[mealSpeed]}</li>
-              </ul>
+            {/* <div className='flex w-full flex-col items-start justify-between'> */}
+            <ul className='my-1 flex items-center justify-start gap-1 text-xs'>
+              {categories.slice(0, 2).map(cat => (
+                <li key={cat}># {cat}</li>
+              ))}
+              <li className='text-xs'># {SpeedTransformer[mealSpeed]}</li>
+            </ul>
 
-              <div className='flex items-center justify-between gap-1 text-xss'>
-                <span>{date}</span>
-                <span>{time.slice(0, 5)}</span>
-              </div>
+            <div className='my-1 flex items-center justify-between gap-1 text-xs'>
+              <span>{formatDateToFullString(date)}</span>
+              <span>{time.slice(0, 5)}</span>
             </div>
           </div>
+          {/* </div> */}
 
           <div className='flex w-full items-center justify-between border-t-sm border-solid border-rcDarkGray px-2 pt-2 text-xs'>
             <span className=''>
