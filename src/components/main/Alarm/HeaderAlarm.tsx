@@ -27,7 +27,7 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, AlarmData, clas
   useOutsideClick(ref as RefObject<HTMLElement>, alarmToggleStatus)
   useEscClose(alarmStatus, alarmToggleStatus)
 
-  const { mutate: FinishSettlementMutate, isPending: isFinishing } = useMutationStore<FinishSettlementType>(['settlement'])
+  const { mutate: FinishSettlementMutate, isPending: isFinishing } = useMutationStore<FinishSettlementType>(['settlement', 'finish'])
   const completeSettlementHandler = (settlementId: number) => {
     FinishSettlementMutate(
       {
