@@ -70,50 +70,62 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, className }: He
     contents = <Loading />
   } else {
     const alarms: AlarmDTO[] = data.data as AlarmDTO[]
-    contents = (
-      <div className='relative mt-4 flex w-full flex-col items-start justify-start rounded-md bg-rcLightGray'>
-        {alarms.map(alarm => {
-          const {
-            payStatus,
-            restaurantName,
-            leaderNickname,
-            babpatAt,
-            accountNumber,
-            accountHolder,
-            totalPrice,
-            totalPeopleCount,
-            perPrice,
-          } = alarm
-          return (
-            <ul
-              className='relative flex w-full list-inside list-disc flex-col items-start justify-start px-6 py-4'
-              key={alarm.settlementId}
-            >
-              <li className={cn('mb-2 flex items-center justify-start gap-2')}>
-                <span className={cn(payStatus === 'PAID' ? 'text-rcBlue' : 'text-rcRed', 'text-lg font-bold')}>
-                  {payStatus === 'PAID' ? '정산 완료' : '정산 전'}
-                </span>
-                <span className={cn('hidden text-xs sm:block')}>({`${restaurantName} · ${leaderNickname} · ${formatDate(babpatAt)}`})</span>
-              </li>
-              <li className='ml-2 py-1 text-xs'>계좌번호 : {accountNumber}</li>
-              <li className='ml-2 py-1 text-xs'>수령인 : {accountHolder}</li>
-              <li className='ml-2 py-1 text-xs'>총 가격 : {totalPrice}</li>
-              <li className='ml-2 py-1 text-xs'>참여자 : {totalPeopleCount}</li>
-              <li className='ml-2 py-1 text-xs'>인당 가격 : {perPrice}</li>
-              {payStatus === 'UNPAID' && (
-                <Button
-                  onClick={() => completeSettlementHandler(alarm.settlementId)}
-                  className='relative mt-4 w-full sm:absolute sm:bottom-4 sm:right-4 sm:w-max'
-                  variant='rcKakaoYellow'
-                >
-                  정산 완료하기
-                </Button>
-              )}
-            </ul>
-          )
-        })}
-      </div>
-    )
+    /** 알람이 아직 없는 경우 */
+    if (alarms.length === 0) {
+      contents = (
+        <span className='mt-2 w-full rounded-md bg-rcLightGray py-3 text-center text-sm font-semibold text-rcBlack'>
+          도착한 알림이 없습니다!
+        </span>
+      )
+    } else {
+      /** 알람 있는 경우 */
+      contents = (
+        <div className='relative mt-4 flex w-full flex-col items-start justify-start rounded-md bg-rcLightGray'>
+          {alarms.map(alarm => {
+            const {
+              payStatus,
+              restaurantName,
+              leaderNickname,
+              babpatAt,
+              accountNumber,
+              accountHolder,
+              totalPrice,
+              totalPeopleCount,
+              perPrice,
+            } = alarm
+            return (
+              <ul
+                className='relative flex w-full list-inside list-disc flex-col items-start justify-start px-6 py-4'
+                key={alarm.settlementId}
+              >
+                <li className={cn('mb-2 flex items-center justify-start gap-2')}>
+                  <span className={cn(payStatus === 'PAID' ? 'text-rcBlue' : 'text-rcRed', 'text-lg font-bold')}>
+                    {payStatus === 'PAID' ? '정산 완료' : '정산 전'}
+                  </span>
+                  <span className={cn('hidden text-xs sm:block')}>
+                    ({`${restaurantName} · ${leaderNickname} · ${formatDate(babpatAt)}`})
+                  </span>
+                </li>
+                <li className='ml-2 py-1 text-xs'>계좌번호 : {accountNumber}</li>
+                <li className='ml-2 py-1 text-xs'>수령인 : {accountHolder}</li>
+                <li className='ml-2 py-1 text-xs'>총 가격 : {totalPrice}</li>
+                <li className='ml-2 py-1 text-xs'>참여자 : {totalPeopleCount}</li>
+                <li className='ml-2 py-1 text-xs'>인당 가격 : {perPrice}</li>
+                {payStatus === 'UNPAID' && (
+                  <Button
+                    onClick={() => completeSettlementHandler(alarm.settlementId)}
+                    className='relative mt-4 w-full sm:absolute sm:bottom-4 sm:right-4 sm:w-max'
+                    variant='rcKakaoYellow'
+                  >
+                    정산 완료하기
+                  </Button>
+                )}
+              </ul>
+            )
+          })}
+        </div>
+      )
+    }
   }
 
   return (
