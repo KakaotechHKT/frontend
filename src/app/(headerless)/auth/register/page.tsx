@@ -135,20 +135,9 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
     return { valid: true }
   }
   function validatePassword(password: string, username?: string): { valid: boolean; message?: string } {
-    // 길이 제한
-    if (password.length < 10) {
-      return { valid: false, message: '* 비밀번호는 최소 10자 이상이어야 합니다.' }
-    }
-
-    // 영문 소문자, 숫자, 특수문자 포함 여부 확인
-    if (!/[a-z]/.test(password)) {
-      return { valid: false, message: '* 비밀번호에는 최소 1개의 소문자가 포함되어야 합니다.' }
-    }
-    if (!/[0-9]/.test(password)) {
-      return { valid: false, message: '* 비밀번호에는 최소 1개의 숫자가 포함되어야 합니다.' }
-    }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      return { valid: false, message: '* 비밀번호에는 최소 1개의 특수문자가 포함되어야 합니다.' }
+    // 유효성 검사
+    if (password.length < 10 || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      return { valid: false, message: '* 소문자, 대문자, 특수문자를 포함한 10자 이상의 비밀번호를 설정해주세요.' }
     }
 
     // 연속된 문자 제한 (3회 이상 같은 문자 반복 방지)
