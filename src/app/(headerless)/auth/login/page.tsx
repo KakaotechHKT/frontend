@@ -49,7 +49,13 @@ const LoginPage = (): ReactNode => {
       <div className='mt-8 flex w-4/5 max-w-sm flex-col items-center justify-start gap-4 rounded-xl bg-rcWhite pb-4 pt-8 sm:w-1/2'>
         <h1 className='self-start px-12 font-dohyeon text-xl'>로그인</h1>
 
-        <div className='relative flex w-full flex-col items-start justify-start gap-3 px-12'>
+        <form
+          onSubmit={e => {
+            event?.preventDefault()
+            loginHandler()
+          }}
+          className='relative flex w-full flex-col items-start justify-start gap-3 px-12'
+        >
           <Input type='text' placeholder='아이디' className='rounded-md' value={id} onChange={e => setId(e.target.value)} />
           <div className='relative h-11 w-full rounded-md'>
             <Input
@@ -67,7 +73,7 @@ const LoginPage = (): ReactNode => {
           </div>
 
           {!isPending ? (
-            <Button onClick={loginHandler} variant='rcKakaoYellow' className='my-1 w-full'>
+            <Button type='submit' onClick={loginHandler} variant='rcKakaoYellow' className='my-1 w-full'>
               로그인하기
             </Button>
           ) : (
@@ -79,7 +85,7 @@ const LoginPage = (): ReactNode => {
               비밀번호 찾기
             </Link>
           </div>
-        </div>
+        </form>
 
         <div className='h-[1px] w-full bg-rcGray' />
 

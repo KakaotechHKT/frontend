@@ -140,7 +140,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
   const { PaginationComponent } = usePagination({ currentPage: pageNumber, totalPages: totalPageNumber })
 
   return (
-    <section className='flex w-full flex-col items-center justify-start gap-1'>
+    <section className='flex w-full flex-col items-center justify-start gap-[0.5px]'>
       <span className='font-dohyeon text-xl sm:text-2xl xl:text-3xl'>밥팟 · 도시락팟 참여하기</span>
       <span className='text-xss text-rcDarkGray lg:text-sm'>* 밥팟에 참여하여 사람들과 함께 식사하세요!</span>
       <ul className='mt-4 flex items-center justify-start gap-4 self-start text-xl'>
@@ -166,7 +166,7 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
         <Input
           type='text'
           placeholder='제목으로 검색해보세요.'
-          className='h-9 w-full rounded-none border-0 border-b-[1px] border-solid border-rcKakaoYellow py-0 text-sm shadow-none outline-none focus:outline-none focus-visible:ring-0 sm:w-60'
+          className='h-9 w-full rounded-none border-0 border-b-2 border-solid border-rcKakaoYellow py-0 text-sm shadow-none outline-none focus:outline-none focus-visible:ring-0 sm:w-60'
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           onKeyDown={e => {
