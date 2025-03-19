@@ -170,7 +170,7 @@ const InfoInputStep = ({ data }: InfoInputStepProps) => {
     }
   })
 
-  const { mutate: RequestSettlementMutate, isPending: isSending } = useMutationStore<RequestSettlementAlarmType>(['settlement'])
+  const { mutate: RequestSettlementMutate, isPending: isSending } = useMutationStore<RequestSettlementAlarmType>(['settlement', 'request'])
 
   const requestSettlementHandler = () => {
     if (data) {

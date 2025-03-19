@@ -35,7 +35,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
   const isAuthenticated: boolean = id === 0 ? false : true
   const { placeName, placeId, date, time, headCount, comment, mealSpeed } = partData
   const [tmpTime, setTmpTime] = useState<Date>()
-  const leaderName = isAuthenticated ? `${id} (${name}) / ${TrackTransformer[track]}` : '로그인이 필요합니다'
+  const leaderName = isAuthenticated ? `${nickname} (${name}) / ${TrackTransformer[track]}` : '로그인이 필요합니다'
 
   useEffect(() => {
     if (tmpTime) {
@@ -103,7 +103,6 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
 
         <div className='grid w-full grid-cols-[2fr,5fr] grid-rows-7 place-items-start gap-y-2'>
           {/* 대표자 */}
-
           <Name name='대표자' isNotNull={true} />
           <span className={cn('flex h-full w-full items-center justify-start text-sm text-rcGray', !isAuthenticated && 'text-rcRed')}>
             {leaderName}

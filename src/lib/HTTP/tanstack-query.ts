@@ -69,11 +69,11 @@ export const MUTATION_KEYS = {
   },
   MYPAGE: {
     REQUEST_SETTLEMENT: {
-      key: ['settlement'],
+      key: ['settlement', 'request'],
       function: RequestSettlementAlarm,
     },
     FINISH_SETTLEMENT: {
-      key: ['settlement'],
+      key: ['settlement', 'finish'],
       function: FinishSettlement,
     },
   },
