@@ -60,7 +60,6 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
 
   const { name, mainMenus, categories, thumbnailUrl } = restaurantInfo
   const { id, comment, capacity, mealSpeed, date, time, leaderProfile } = babpatInfo
-  console.log(babpatInfo)
 
   const parseMenus = (menuString: string): Menu[] => {
     // 1. 메뉴 항목 `{}` 단위로 분리
