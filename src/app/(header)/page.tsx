@@ -9,12 +9,12 @@ import KTBMainImage from '@public/images/ktb_1.jpeg'
 import SpoonImage from '@public/images/spoon.svg'
 
 export default function Home() {
-  const pageSize = `w-full px-4 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
+  const pageSize = `w-full px-8 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
   return (
     <>
       <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
         <Image src={KTBMainImage} alt='main-image' width={650} height={400} className='aspect-video w-full max-w-2xl rounded-lg' />
-        <section className='flex flex-col items-center justify-start gap-4 font-dohyeon text-xl sm:text-2xl xl:text-4xl'>
+        <section className='flex flex-col items-center justify-start gap-1 font-dohyeon text-xl sm:text-2xl xl:text-4xl'>
           <h1>카카오테크 부트캠프 예비 개발자</h1>
           <h1>여러분 환영합니다!</h1>
         </section>
@@ -24,7 +24,7 @@ export default function Home() {
           </h3>
         </section>
 
-        <section className='mb-7 flex w-full flex-col items-center justify-start gap-1'>
+        <section className='mb-7 flex w-full flex-col items-center justify-start gap-[0.5px]'>
           <div className='relative flex items-center justify-between gap-3 font-dohyeon text-xl sm:text-2xl xl:text-3xl'>
             밥팟의 추천 장소
             <Image src={SpoonImage} alt='spoon-image' className='absolute -right-8' />
@@ -34,7 +34,7 @@ export default function Home() {
           <RecommendCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3' />
         </section>
         <Suspense fallback={<Loading className='w-full' />}>
-          <PartCardList className='my-2 w-full grid-cols-1 sm:my-6 md:grid-cols-2 lg:grid-cols-4' />
+          <PartCardList className='my-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4' />
         </Suspense>
       </main>
     </>

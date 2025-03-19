@@ -26,12 +26,6 @@ export type CategoryType = {
 }
 
 export type PartDTO = {
-  // leader: {
-  //   id: number
-  //   name: string
-  //   nickname: string
-  //   track: Track
-  // }
   placeName: string | undefined
   placeId: number | undefined
   date: Date | undefined
@@ -121,10 +115,6 @@ const PartPage = (): ReactNode => {
     )
   }, [])
 
-  // useEffect(() => {
-  //   console.log(chats)
-  // }, [chats])
-
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
     setCategory({
@@ -171,8 +161,6 @@ const PartPage = (): ReactNode => {
         keywords: newKeywords,
       }))
     }
-
-    // sendKeywordSelection(newKeywords, mainCategory, chat_index)
   }
 
   const restartClickHandler = (chat_index: number) => {
