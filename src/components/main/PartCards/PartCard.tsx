@@ -135,28 +135,28 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
         </div>
 
         <div className='relative flex w-full flex-col items-start justify-start py-3'>
-          <div className='mb-2 flex w-full flex-col items-start justify-start px-2'>
+          <div className='mb-2 flex w-full flex-col items-start justify-start px-4'>
             <span className='text-ellipsis text-nowrap text-lg'>{name}</span>
-            <span className='my-2 w-full text-ellipsis whitespace-nowrap text-xs font-medium text-rcBlue group-hover:text-rcBlueHover'>
+            <span className='w-full text-ellipsis whitespace-nowrap text-sm font-medium text-rcBlue group-hover:text-rcBlueHover'>
               {comment}
             </span>
 
             {/* <div className='flex w-full flex-col items-start justify-between'> */}
-            <ul className='my-1 flex items-center justify-start gap-1 text-xs'>
+            <ul className='mb-1 mt-2 flex items-center justify-start gap-1 text-xs'>
               {categories.slice(0, 2).map(cat => (
                 <li key={cat}># {cat}</li>
               ))}
               <li className='text-xs'># {SpeedTransformer[mealSpeed]}</li>
             </ul>
 
-            <div className='my-1 flex items-center justify-between gap-1 text-xs'>
+            <div className='mb-1 mt-4 flex items-center justify-between gap-1 self-end text-xs'>
               <span>{formatDateToFullString(date)}</span>
               <span>{time.slice(0, 5)}</span>
             </div>
           </div>
           {/* </div> */}
 
-          <div className='flex w-full items-center justify-between border-t-sm border-solid border-rcDarkGray px-2 pt-2 text-xs'>
+          <div className='flex w-full items-center justify-between border-t-sm border-solid border-rcDarkGray px-4 pt-2 text-xs'>
             <span className=''>
               {leaderProfile.nickname} ({leaderProfile.name} / {TrackTransformer[leaderProfile.track]})
             </span>

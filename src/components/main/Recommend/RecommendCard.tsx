@@ -86,13 +86,13 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
         <span className='flex w-full items-center justify-start text-ellipsis text-nowrap font-dohyeon text-rcBlue'>{name}</span>
 
         <div className='text-xstext-rcDarkGray mt-2 flex w-full grow flex-col items-start justify-start'>
-          <ul className='my-1 flex items-center justify-start gap-2 text-xss'>
+          <ul className='my-1 flex items-center justify-start gap-1 text-xss'>
             {categories.map(cat => (
               <li key={cat}># {cat}</li>
             ))}
+            <li className='text-xss'># {averagePrice}</li>
           </ul>
 
-          <span className='text-xss'># {averagePrice}</span>
           <span className='my-1 mt-3 text-sm font-semibold text-rcBlack'>대표메뉴</span>
           <ul className='flex flex-col items-start justify-start text-xss'>
             {mainMenu.slice(0, 3).map(menu => (
