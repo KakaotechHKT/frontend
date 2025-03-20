@@ -5,7 +5,6 @@ import PartCardList from '@components/main/PartCards/PartCardList'
 import RecommendCardList from '@components/main/RecommendCardList'
 import Loading from '@components/ui/Loading'
 import { cn } from '@lib/utils/utils'
-import KTBMainImage from '@public/images/ktb_2.svg'
 import SpoonImage from '@public/images/spoon.svg'
 
 export default function Home() {
@@ -13,7 +12,7 @@ export default function Home() {
   return (
     <>
       <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
-        <Image src={KTBMainImage} alt='main-image' width={650} height={400} className='aspect-video w-full max-w-2xl rounded-lg' />
+        {/* <Image src={KTBMainImage} alt='main-image' width={650} height={400} className='aspect-video w-full max-w-2xl rounded-lg' /> */}
 
         <section className='flex flex-col items-center justify-start gap-1 font-dohyeon text-xl sm:text-2xl xl:text-4xl'>
           <h1>카카오테크 부트캠프 예비 개발자</h1>
