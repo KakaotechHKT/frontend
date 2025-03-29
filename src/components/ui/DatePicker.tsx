@@ -12,9 +12,10 @@ import { cn } from '@lib/utils/utils'
 interface DatePickerProps {
   date: Date | undefined
   updatePartData: (partial: Partial<PartDTO>) => void
+  className?: string
 }
 
-export function DatePicker({ date, updatePartData }: DatePickerProps) {
+export function DatePicker({ date, updatePartData, className }: DatePickerProps) {
   const selectHandler = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       updatePartData({ date: selectedDate })
@@ -22,10 +23,10 @@ export function DatePicker({ date, updatePartData }: DatePickerProps) {
   }
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className={cn(className, 'relative')}>
         <Button
           variant='secondary'
-          className={cn('w-[280px] justify-center bg-rcWhite text-left shadow-none', !date && 'text-muted-foreground')}
+          className={cn('w-full justify-center bg-rcWhite text-left shadow-none', !date && 'text-muted-foreground')}
         >
           <CalendarIcon className='mr-2 h-4 w-4 text-rcBlack' />
           {date ? (

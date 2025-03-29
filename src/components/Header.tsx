@@ -130,7 +130,9 @@ const MobileNavBar = ({
         {isAuthenticated && (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-            {AlarmData && AlarmData.length !== 0 && <div className='absolute -right-1 -top-1 aspect-square w-2 rounded-full bg-rcOrange' />}
+            {AlarmData && AlarmData.length !== 0 && (
+              <div className='absolute -right-1 -top-1 aspect-square w-2 animate-opacityDelay1 rounded-full bg-rcOrange' />
+            )}
             {alarmStatus && (
               <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} AlarmData={AlarmData} />
             )}
@@ -340,6 +342,9 @@ const DesktopNavBar = ({
         {isAuthenticated ? (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
+            {AlarmData && AlarmData.length !== 0 && (
+              <div className={cn('absolute -right-1 -top-1 aspect-square w-2 animate-opacityDelay1 rounded-full bg-rcOrange')} />
+            )}
             {alarmStatus && (
               <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} AlarmData={AlarmData} />
             )}
