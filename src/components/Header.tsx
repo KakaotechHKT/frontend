@@ -179,8 +179,7 @@ const MenuBar = ({ isAuthenticated, navbarStatus, navbarToggleStatus, isDesktop 
       {
         /** TODO: 로그아웃시 메인페이지로 이동하는 로직 (메인페이지에서 로그아웃 시 제대로 안됨) */
         onSuccess(data, variables, context) {
-          router.replace(URL.MAIN.INDEX.value)
-          window.location.reload()
+          router.push(URL.MAIN.INDEX.value)
 
           sessionStorage.removeItem('authData')
           sessionStorage.removeItem('accessToken')
