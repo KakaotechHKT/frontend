@@ -137,7 +137,7 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
   function validatePassword(password: string, username?: string): { valid: boolean; message?: string } {
     // 유효성 검사
     if (password.length < 8 || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      return { valid: false, message: '* 소문자, 대문자, 특수문자를 포함한 8자 이상의 비밀번호를 설정해주세요.' }
+      return { valid: false, message: '* 숫자, 특수문자를 포함한 8자 이상의 비밀번호를 설정해주세요.' }
     }
 
     // 연속된 문자 제한 (3회 이상 같은 문자 반복 방지)
@@ -238,7 +238,10 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
               onChange={e => setPasswordConfirmValue(e.target.value)}
             />
             <LucideIcon
-              onClick={() => setShowPasswordConfirm(prev => !prev)}
+              onClick={event => {
+                setShowPasswordConfirm(prev => !prev)
+                console.log(event)
+              }}
               name={showPasswordConfirm ? 'Eye' : 'EyeOff'}
               className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray'
             />
