@@ -113,7 +113,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
 
           {/* 날짜 */}
           <Name name='날짜' isNotNull={true} />
-          <DatePicker date={date} updatePartData={updatePartData} />
+          <DatePicker date={date} updatePartData={updatePartData} className='w-full' />
 
           {/* 시간 */}
           <Name name='시간' isNotNull={true} />
