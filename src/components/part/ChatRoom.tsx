@@ -94,18 +94,12 @@ const Chatroom = ({
   }
 
   const CHATS = chats.map((chat, chat_index) => {
-    // console.log('checking chat_number:', chat_index)
-    // console.log('checking chat: ', chat)
-    // console.log('CASE:', chat.type)
-
     // #1. AI 응답인 경우
     if (chat.speaker == 'ai' && chat.type) {
       const key = `${chat_index}`
 
       switch (chat.type) {
         case ResponseType.START:
-          // console.log('ResponseType.START')
-
           return (
             <AIChatFrame key={key} content={chat.content}>
               <div className='relative flex w-full flex-col items-center justify-start gap-1 rounded-md bg-rcChatGray py-2'>
