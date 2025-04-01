@@ -1,10 +1,9 @@
 'use client'
 import { format } from 'date-fns'
 import { useRouter } from 'next/navigation'
-import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { PartDTO } from '@app/(headerless)/part/page'
 import Backdrop from '@components/common/Backdrop'
 import { Button } from '@components/ui/button'
 import { DatePicker } from '@components/ui/DatePicker'
@@ -13,7 +12,7 @@ import Loading from '@components/ui/Loading'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@components/ui/select'
 import { TimePicker } from '@components/ui/timepicker/timepicker'
 import { URL } from '@lib/constants/routes'
-import { AuthDataType } from '@lib/hooks/useAuthData'
+import { AuthDataType, useAuthData } from '@lib/hooks/useAuthData'
 import { PartCreateType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
@@ -21,17 +20,21 @@ import { SpeedType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
 import { TrackTransformer } from '@public/data/tracks'
 
+import { PartDTO } from './PlaceList'
+
 interface PartCreationModalProps {
-  authData: AuthDataType
-  partData: PartDTO
+  partData: Partial<PartDTO>
   updatePartData: (partial: Partial<PartDTO>) => void
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>
+  toggleModal: () => void
 }
 
-const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen }: PartCreationModalProps): ReactNode => {
+const PartCreationModal = ({ partData, updatePartData, toggleModal }: PartCreationModalProps): ReactNode => {
   const router = useRouter()
 
+  /** 유저 정보 */
+  const authData: AuthDataType = useAuthData()
   const { id, name, nickname, track, accessToken } = authData
+
   const isAuthenticated: boolean = id === 0 ? false : true
   const { placeName, placeId, date, time, headCount, comment, mealSpeed } = partData
   const [tmpTime, setTmpTime] = useState<Date>()
@@ -57,11 +60,6 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
   // speed
   const speedHandler = (speed: SpeedType) => {
     updatePartData({ mealSpeed: speed })
-  }
-
-  // 닫기
-  const closeHandler = () => {
-    setIsModalOpen(false)
   }
 
   const { mutate: PartCreateMutate, isPending: isCreating } = useMutationStore<PartCreateType>(['part'])
@@ -97,7 +95,7 @@ const PartCreationModal = ({ authData, partData, updatePartData, setIsModalOpen 
     <>
       <Backdrop />
       <div className='fixed left-1/2 top-1/2 z-30 flex min-w-72 -translate-x-1/2 -translate-y-1/2 flex-col items-start justify-between rounded-lg border border-solid border-black bg-rcWhite px-10 py-8'>
-        <LucideIcon name='X' onClick={closeHandler} className='absolute right-4 top-4 cursor-pointer' size={20} />
+        <LucideIcon name='X' onClick={toggleModal} className='absolute right-4 top-4 cursor-pointer' size={20} />
         <h1 className='font-dohyeon text-2xl underline underline-offset-4'>밥팟 상세 정보 입력</h1>
         <span className='mb-8 mt-3 text-xs text-rcDarkGray'>* 생성하고자 하는 밥팟의 정보를 입력 및 확인해주세요!</span>
 
