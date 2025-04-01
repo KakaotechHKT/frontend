@@ -240,7 +240,6 @@ const RegisterStep = ({ data, navigateToNextStep, updateData }: RegisterPageProp
             <LucideIcon
               onClick={event => {
                 setShowPasswordConfirm(prev => !prev)
-                console.log(event)
               }}
               name={showPasswordConfirm ? 'Eye' : 'EyeOff'}
               className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-rcDarkGray'

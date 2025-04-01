@@ -9,7 +9,7 @@ const breakpoints = {
   xll: 1536,
 }
 
-// ✅ Zustand Store 생성 (각 Breakpoint를 Boolean 값으로 저장)
+// Zustand Store 생성 (각 Breakpoint를 Boolean 값으로 저장)
 interface ResponsiveState {
   width: number
   tn: boolean // sm보다 작은 경우

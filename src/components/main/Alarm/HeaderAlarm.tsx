@@ -2,13 +2,13 @@ import { ReactNode, RefObject, useRef } from 'react'
 import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 
 import { AlarmDTO } from '@components/Header'
-import { formatDate } from '@components/mypage/settlement/SettlementTable'
 import { Button } from '@components/ui/button'
 import Loading from '@components/ui/Loading'
 import { AuthDataType } from '@lib/hooks/useAuthData'
 import { FinishSettlementType } from '@lib/HTTP/API/mypage/settlement'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { FormatISOString } from '@lib/utils/date/fromISOString'
 import { cn } from '@lib/utils/utils'
 
 interface HeaderAlarmProps {
@@ -79,7 +79,7 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, AlarmData, clas
                     {payStatus === 'PAID' ? '정산 완료' : '정산 전'}
                   </span>
                   <span className={cn('hidden text-xs sm:block')}>
-                    ({`${restaurantName} · ${leaderNickname} · ${formatDate(babpatAt)}`})
+                    ({`${restaurantName} · ${leaderNickname} · ${FormatISOString.formateISODate(babpatAt)}`})
                   </span>
                 </li>
                 <li className='ml-2 py-1 text-xs'>

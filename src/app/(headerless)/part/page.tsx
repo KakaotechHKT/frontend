@@ -5,14 +5,12 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import KakaoMap from '@components/common/KakaoMap'
 import Chatroom from '@components/part/ChatRoom'
-import PartCreationModal from '@components/part/PartCreationModal'
 import PlaceList from '@components/part/PlaceList'
 import RefuseModal from '@components/part/RefuseModal'
 import { URL } from '@lib/constants/routes'
-import { AuthDataType, useAuthData } from '@lib/hooks/useAuthData'
 import { ChattingType, CreateChatType } from '@lib/HTTP/API/chat'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
-import { GeoType, SpeedType } from '@lib/types/part/part'
+import { GeoType } from '@lib/types/part/part'
 import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
 import { MainCategories, MainCategoriesType } from '@public/data/categories'
@@ -23,16 +21,6 @@ import LogoImage from '@public/images/logo.svg'
 export type CategoryType = {
   mainCategory: MainCategoriesType | ''
   keywords: string[] | ''
-}
-
-export type PartDTO = {
-  placeName: string | undefined
-  placeId: number | undefined
-  date: Date | undefined
-  time: string | undefined
-  headCount: number | undefined
-  comment: string | undefined
-  mealSpeed: SpeedType | null
 }
 
 export type Menu = {
@@ -53,10 +41,8 @@ export type placeDTO = {
 }
 
 const PartPage = (): ReactNode => {
-  const authData: AuthDataType = useAuthData()
-  /** 모바일인지 확인 */
+  /** 모바일 여부 확인 */
   const [showRefuseModal, setShowRefuseModal] = useState<boolean>(false)
-
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase()
     const mobileKeywords = ['iphone', 'android', 'ipad', 'mobile']
@@ -67,13 +53,10 @@ const PartPage = (): ReactNode => {
     }
   }, [])
 
-  // 검색값
+  /** 좌측 검색리스트 관련 상태 */
   const [placeList, setPlaceList] = useState<placeDTO[]>(placeListDummyData)
 
-  // 지도 관련 상태
-  const [center, setCenter] = useState<GeoType>(KTB_Position)
-  const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
-  // 채팅 관련 상태
+  /** 채팅 관련 상태 */
   const [chatId, setChatId] = useState<number>()
   const [category, setCategory] = useState<CategoryType>({
     mainCategory: '',
@@ -86,20 +69,9 @@ const PartPage = (): ReactNode => {
   const [userChat, setUserChat] = useState<string>('')
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
-  // 밥팟 데이터
-  const [partData, setPartData] = useState<PartDTO>({
-    placeName: undefined,
-    placeId: undefined,
-    date: undefined,
-    time: undefined,
-    headCount: undefined,
-    comment: undefined,
-    mealSpeed: 'MIDDLE',
-  })
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const updatePartData = (partial: Partial<PartDTO>) => {
-    setPartData(prev => ({ ...prev, ...partial }))
-  }
+  /** 지도 관련 상태 */
+  const [center, setCenter] = useState<GeoType>(KTB_Position)
+  const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
 
   const { mutate: CreateChatMutate, isPending: isCreatingChat } = useMutationStore<CreateChatType>(['chat'])
 
@@ -235,8 +207,6 @@ const PartPage = (): ReactNode => {
   // 유저가 채팅창 이용한 경우
   const sendInputChat = () => {
     if (chatId) {
-      console.log('유저가 채팅창 이용한 경우')
-
       ChattingMutate(
         {
           chatId: chatId,
@@ -248,8 +218,6 @@ const PartPage = (): ReactNode => {
         },
         {
           onSuccess(data, variables, context) {
-            console.log('채팅 응답 성공')
-
             // #1. 음식점 리스트 최신화
             setPlaceList(data.data.placeList)
 
@@ -310,8 +278,6 @@ const PartPage = (): ReactNode => {
           centerHandler={centerHandler}
           focusedPlaceId={focusedPlaceId}
           focusedPlaceIdHandler={focusedPlaceIdHandler}
-          updatePartData={updatePartData}
-          setIsModalOpen={setIsModalOpen}
         />
       </div>
 
@@ -342,10 +308,6 @@ const PartPage = (): ReactNode => {
       <div className='h-screen grow'>
         <KakaoMap center={center} placeList={placeList} />
       </div>
-
-      {isModalOpen && (
-        <PartCreationModal setIsModalOpen={setIsModalOpen} authData={authData} partData={partData} updatePartData={updatePartData} />
-      )}
 
       <RefuseModal isOpen={showRefuseModal} text='밥팟 만들기는 웹 환경에서 작동합니다!' />
     </>

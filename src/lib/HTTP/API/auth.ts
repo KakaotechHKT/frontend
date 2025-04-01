@@ -33,8 +33,6 @@ export const Register = async ({ id, password, nickname, name, track }: Register
   )
 
   if (!res.ok) {
-    console.log('register error occured!')
-
     const error = new Error()
     const data = await res.json()
     error.message = data.message

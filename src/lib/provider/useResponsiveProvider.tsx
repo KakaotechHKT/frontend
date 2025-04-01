@@ -10,6 +10,9 @@ export const ResponsiveProvider = ({ children }: { children: ReactNode }) => {
     updateWidth(window.innerWidth)
   }, [updateWidth])
 
+  /**
+   * 웹사이트 크기가 변경될때 재측정
+   */
   useEffect(() => {
     window.addEventListener('resize', handleResize)
     handleResize() // 초기 실행

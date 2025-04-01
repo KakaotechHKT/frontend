@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   description: '카카오테크 부트캠프 밥팟 커뮤니티',
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode
-}>) {
+}
+
+export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang='ko'>
       <Script type='text/javascript' src='//developers.kakao.com/dfk/js/kakao.min.js' />

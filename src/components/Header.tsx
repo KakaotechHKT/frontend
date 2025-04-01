@@ -13,6 +13,7 @@ import { LogoutType } from '@lib/HTTP/API/auth'
 import { SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
 import { QUERY_KEYS, useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { ISOString } from '@lib/utils/date/fromISOString'
 import { cn } from '@lib/utils/utils'
 import { TrackTransformer } from '@public/data/tracks'
 import BabPulImage from '@public/images/babpul.svg'
@@ -39,7 +40,7 @@ export type AlarmDTO = {
   accountHolder: string
   restaurantName: string
   leaderNickname: string
-  babpatAt: string
+  babpatAt: ISOString
   payStatus: PaymentStatusType
 }
 

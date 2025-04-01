@@ -20,6 +20,8 @@ export type NullableObject<T> = {
   [K in keyof T]: Nullable<T[K]>
 }
 
+export type Brand<K, T> = K & { __brand: T }
+
 /**
  * Type T에서 key K의 value들로 이루어진 Type 생성하는 유틸
  */

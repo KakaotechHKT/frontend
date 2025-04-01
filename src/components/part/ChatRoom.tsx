@@ -184,7 +184,6 @@ const Chatroom = ({
           )
 
         case ResponseType.KEYWORD:
-          console.log('ResponseType.KEYWORD')
           return (
             <AIChatButtonFrame
               key={key}
@@ -194,21 +193,17 @@ const Chatroom = ({
           )
         // 유저의 채팅
         case ResponseType.ELSE:
-          console.log('ResponseType.ELSE')
           return <div key={key}>나머지</div>
       }
     }
     // #2. 유저의 요청인 경우
     else if (chat.speaker === 'user') {
-      console.log('ResponseType.user')
       return (
         <div key={chat_index} className='my-2 self-end rounded-md bg-rcKakaoYellow px-2 py-3 text-xs'>
           {chat.content}
         </div>
       )
     }
-
-    // console.log()
   })
 
   const sendChatAndClear = () => {
