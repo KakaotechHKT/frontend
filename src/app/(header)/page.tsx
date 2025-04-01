@@ -10,8 +10,8 @@ import { URL } from '@lib/constants/routes'
 import { cn } from '@lib/utils/utils'
 import SpoonImage from '@public/images/spoon.svg'
 
-import { layoutStyle } from './layout'
-
+export const layoutStyle = `w-full px-8 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
+export const mypageLayoutStyle = `w-[90%] max-w-xl md:w-4/5 md:max-w-4xl lg:max-w-7xl`
 export default function Home() {
   return (
     <>

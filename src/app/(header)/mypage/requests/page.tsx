@@ -1,13 +1,12 @@
 'use client'
 import { ReactNode } from 'react'
 
+import { mypageLayoutStyle } from '@app/(header)/page'
 import RouteHeader from '@components/mypage/RouteHeader'
 import RouteText from '@components/mypage/RouteText'
 import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { cn } from '@lib/utils/utils'
-
-import { mypageLayoutStyle } from '../layout'
 
 interface RequestsPageProps {}
 
