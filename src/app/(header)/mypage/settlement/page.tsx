@@ -1,6 +1,7 @@
 'use client'
 import { ReactNode, Suspense } from 'react'
 
+import { mypageLayoutStyle } from '@app/(header)/page'
 import RouteHeader from '@components/mypage/RouteHeader'
 import RouteText from '@components/mypage/RouteText'
 import SettlementTable from '@components/mypage/settlement/SettlementTable'
@@ -8,8 +9,6 @@ import Loading from '@components/ui/Loading'
 import { URL } from '@lib/constants/routes'
 import { useAuthData } from '@lib/hooks/useAuthData'
 import { cn } from '@lib/utils/utils'
-
-import { mypageLayoutStyle } from '../layout'
 
 interface SettlementPageProps {}
 

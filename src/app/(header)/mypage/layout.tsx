@@ -2,11 +2,11 @@ import { ReactNode } from 'react'
 
 import { cn } from '@lib/utils/utils'
 
+import { mypageLayoutStyle } from '../page'
+
 interface MypageLayoutProps {
   children: ReactNode
 }
-
-export const mypageLayoutStyle = `w-[90%] max-w-xl md:w-4/5 md:max-w-4xl lg:max-w-7xl`
 
 const MypageLayout = ({ children }: MypageLayoutProps): ReactNode => {
   return (

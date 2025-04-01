@@ -145,8 +145,8 @@ const InfoInputStep = ({ data }: InfoInputStepProps) => {
   const { accessToken } = useAuthData()
   const router = useRouter()
 
-  const { participants } = data as SettlementDTO
-  const participantsCount = participants.length
+  const { payers } = data as SettlementDTO
+  const payersCount = payers.length
 
   const [inputData, setInputData] = useState<InputDataType>({
     totalPrice: 0,
