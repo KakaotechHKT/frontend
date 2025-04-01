@@ -10,11 +10,12 @@ import { URL } from '@lib/constants/routes'
 import { cn } from '@lib/utils/utils'
 import SpoonImage from '@public/images/spoon.svg'
 
+import { layoutStyle } from './layout'
+
 export default function Home() {
-  const pageSize = `w-full px-8 sm:px-6 lg:px-8 max-w-xl md:max-w-4xl lg:max-w-7xl`
   return (
     <>
-      <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', pageSize)}>
+      <main className={cn('mx-auto mb-6 flex grow flex-col items-center justify-start gap-10 font-pretendard', layoutStyle)}>
         <video
           preload='metadata'
           src='https://oopy.lazyrockets.com/api/v2/notion/fileUrl?src=https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F38552da6-340d-42c1-a9a1-b181ff331f03%2F0a0dcb5e-97b6-46b1-936d-7ce51bc0c815%2FKTB_PC.mp4&amp;blockId=62cbf980-4a63-465c-9b11-d724edcafb6d#t=0.0001'

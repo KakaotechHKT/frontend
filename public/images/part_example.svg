@@ -1,3 +1,4 @@
+<!--웹 환경 외의 환경에서 밥팟 생성하기 페이지에 접속시 보여주는 더미 이미지 (피그마 참고)-->
 <svg width="565" height="292" viewBox="0 0 565 292" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g filter="url(#filter0_d_256_477)">
 <rect x="4" y="2" width="556.921" height="284" rx="10" fill="url(#pattern0_256_477)" shape-rendering="crispEdges"/>
