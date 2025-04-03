@@ -6,11 +6,11 @@ export type DateString = Brand<string, 'string'>
 /**
  * ISOString외의 형식의 데이터를 변경
  */
-export class FormatDateString {
+export const FormatDateString = {
   /**
    * "2025-03-18"을 "25.03.18 (수)" 형식으로 s
    */
-  static formatDateToFullString = (DateString: DateString) => {
+  formatDateToFullString: (DateString: DateString) => {
     const date = new Date(DateString)
 
     // 연도 뒤 두 자리 가져오기
@@ -23,5 +23,5 @@ export class FormatDateString {
     const dayOfWeek = days[date.getDay()]
 
     return `${year}.${month}.${day} (${dayOfWeek})`
-  }
+  },
 }
