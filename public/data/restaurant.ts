@@ -1,5 +1,9 @@
 import { placeDTO } from '@app/(headerless)/part/page'
 
+/**
+ * 처음 밥봇 대화시에 보여주는 더미 음식점입니다.
+ * TODO: 추후 무한스크롤로 데이터 교체
+ */
 export const placeListDummyData: placeDTO[] = [
   {
     id: 145,

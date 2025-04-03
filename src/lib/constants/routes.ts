@@ -1,12 +1,12 @@
 import { ExtractValueByKey } from '@lib/utils/typeUtils'
 
 export interface URL {
-  name: string // 링크 버튼에 표시될 Text
+  name: string // 구분값 (라우트 버튼 내 값으로도 사용 가능)
   value: string
 }
 
 /**
- * 새로운 Route 생성시 추가
+ * 라우트 엔드포인트 입니다
  */
 export const URL = {
   MAIN: {

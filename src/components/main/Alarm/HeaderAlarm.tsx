@@ -2,13 +2,13 @@ import { ReactNode, RefObject, useRef } from 'react'
 import { useEscClose, useOutsideClick } from 'usehooks-jihostudy'
 
 import { AlarmDTO } from '@components/Header'
-import { formatDate } from '@components/mypage/settlement/SettlementTable'
 import { Button } from '@components/ui/button'
 import Loading from '@components/ui/Loading'
 import { AuthDataType } from '@lib/hooks/useAuthData'
 import { FinishSettlementType } from '@lib/HTTP/API/mypage/settlement'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { FormatISOString } from '@lib/utils/date/fromISOString'
 import { cn } from '@lib/utils/utils'
 
 interface HeaderAlarmProps {
@@ -60,37 +60,38 @@ const HeaderAlarm = ({ authData, alarmStatus, alarmToggleStatus, AlarmData, clas
         <div className='relative mt-4 flex w-full flex-col items-start justify-start rounded-md bg-rcLightGray'>
           {AlarmData.map(alarm => {
             const {
-              payStatus,
+              settlementId,
+              totalPrice,
+              perPrice,
+              accountNumber,
+              bankName,
+              totalPeopleCount,
+              accountHolder,
               restaurantName,
               leaderNickname,
               babpatAt,
-              accountNumber,
-              accountHolder,
-              totalPrice,
-              totalPeopleCount,
-              perPrice,
+              payStatus,
             } = alarm
             return (
-              <ul
-                className='relative flex w-full list-inside list-disc flex-col items-start justify-start px-6 py-4'
-                key={alarm.settlementId}
-              >
+              <ul className='relative flex w-full list-inside list-disc flex-col items-start justify-start px-6 py-4' key={settlementId}>
                 <li className={cn('mb-2 flex items-center justify-start gap-2')}>
                   <span className={cn(payStatus === 'PAID' ? 'text-rcBlue' : 'text-rcRed', 'text-lg font-bold')}>
                     {payStatus === 'PAID' ? '정산 완료' : '정산 전'}
                   </span>
                   <span className={cn('hidden text-xs sm:block')}>
-                    ({`${restaurantName} · ${leaderNickname} · ${formatDate(babpatAt)}`})
+                    ({`${restaurantName} · ${leaderNickname} · ${FormatISOString.formateISODate(babpatAt)}`})
                   </span>
                 </li>
-                <li className='ml-2 py-1 text-xs'>계좌번호 : {accountNumber}</li>
+                <li className='ml-2 py-1 text-xs'>
+                  {bankName} 계좌번호 : {accountNumber}
+                </li>
                 <li className='ml-2 py-1 text-xs'>수령인 : {accountHolder}</li>
                 <li className='ml-2 py-1 text-xs'>총 가격 : {totalPrice}</li>
                 <li className='ml-2 py-1 text-xs'>참여자 : {totalPeopleCount}</li>
                 <li className='ml-2 py-1 text-xs'>인당 가격 : {perPrice}</li>
                 {payStatus === 'UNPAID' && (
                   <Button
-                    onClick={() => completeSettlementHandler(alarm.settlementId)}
+                    onClick={() => completeSettlementHandler(settlementId)}
                     className='relative mt-4 w-full sm:absolute sm:bottom-4 sm:right-4 sm:w-max'
                     variant='rcKakaoYellow'
                   >

@@ -11,7 +11,7 @@ import useModal from '@lib/hooks/useModal'
 import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import { SpeedType } from '@lib/types/part/part'
-import { formatDateToFullString } from '@lib/utils/date'
+import { DateString, FormatDateString } from '@lib/utils/date/fromDateString'
 import { SpeedTransformer } from '@public/data'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
 
@@ -36,7 +36,7 @@ export type BabpartDTO = {
       filledSlots: number // 남은 자리
     }
     mealSpeed: SpeedType
-    date: string
+    date: DateString
     time: string
     leaderProfile: {
       name: string
@@ -150,7 +150,7 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
             </ul>
 
             <div className='mb-1 mt-4 flex items-center justify-between gap-1 self-end text-xs'>
-              <span>{formatDateToFullString(date)}</span>
+              <span>{FormatDateString.formatDateToFullString(date)}</span>
               <span>{time.slice(0, 5)}</span>
             </div>
           </div>

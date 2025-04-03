@@ -94,18 +94,12 @@ const Chatroom = ({
   }
 
   const CHATS = chats.map((chat, chat_index) => {
-    // console.log('checking chat_number:', chat_index)
-    // console.log('checking chat: ', chat)
-    // console.log('CASE:', chat.type)
-
     // #1. AI 응답인 경우
     if (chat.speaker == 'ai' && chat.type) {
       const key = `${chat_index}`
 
       switch (chat.type) {
         case ResponseType.START:
-          // console.log('ResponseType.START')
-
           return (
             <AIChatFrame key={key} content={chat.content}>
               <div className='relative flex w-full flex-col items-center justify-start gap-1 rounded-md bg-rcChatGray py-2'>
@@ -190,7 +184,6 @@ const Chatroom = ({
           )
 
         case ResponseType.KEYWORD:
-          console.log('ResponseType.KEYWORD')
           return (
             <AIChatButtonFrame
               key={key}
@@ -200,21 +193,17 @@ const Chatroom = ({
           )
         // 유저의 채팅
         case ResponseType.ELSE:
-          console.log('ResponseType.ELSE')
           return <div key={key}>나머지</div>
       }
     }
     // #2. 유저의 요청인 경우
     else if (chat.speaker === 'user') {
-      console.log('ResponseType.user')
       return (
         <div key={chat_index} className='my-2 self-end rounded-md bg-rcKakaoYellow px-2 py-3 text-xs'>
           {chat.content}
         </div>
       )
     }
-
-    // console.log()
   })
 
   const sendChatAndClear = () => {

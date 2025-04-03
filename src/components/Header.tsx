@@ -13,6 +13,7 @@ import { LogoutType } from '@lib/HTTP/API/auth'
 import { SettlementAlarmList } from '@lib/HTTP/API/mypage/settlement'
 import { QUERY_KEYS, useMutationStore } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
+import { ISOString } from '@lib/utils/date/fromISOString'
 import { cn } from '@lib/utils/utils'
 import { TrackTransformer } from '@public/data/tracks'
 import BabPulImage from '@public/images/babpul.svg'
@@ -39,7 +40,7 @@ export type AlarmDTO = {
   accountHolder: string
   restaurantName: string
   leaderNickname: string
-  babpatAt: string
+  babpatAt: ISOString
   payStatus: PaymentStatusType
 }
 
@@ -130,7 +131,9 @@ const MobileNavBar = ({
         {isAuthenticated && (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
-            {AlarmData && AlarmData.length !== 0 && <div className='absolute -right-1 -top-1 aspect-square w-2 rounded-full bg-rcOrange' />}
+            {AlarmData && AlarmData.length !== 0 && (
+              <div className='absolute -right-1 -top-1 aspect-square w-2 animate-opacityDelay1 rounded-full bg-rcOrange' />
+            )}
             {alarmStatus && (
               <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} AlarmData={AlarmData} />
             )}
@@ -175,10 +178,8 @@ const MenuBar = ({ isAuthenticated, navbarStatus, navbarToggleStatus, isDesktop 
         accessToken,
       },
       {
-        /** TODO: 로그아웃시 메인페이지로 이동하는 로직 (메인페이지에서 로그아웃 시 제대로 안됨) */
         onSuccess(data, variables, context) {
-          router.replace(URL.MAIN.INDEX.value)
-          window.location.reload()
+          router.push(URL.MAIN.INDEX.value)
 
           sessionStorage.removeItem('authData')
           sessionStorage.removeItem('accessToken')
@@ -340,6 +341,9 @@ const DesktopNavBar = ({
         {isAuthenticated ? (
           <li className='relative cursor-pointer'>
             <LucideIcon name='Bell' size={20} onClick={alarmToggleStatus} />
+            {AlarmData && AlarmData.length !== 0 && (
+              <div className={cn('absolute -right-1 -top-1 aspect-square w-2 animate-opacityDelay1 rounded-full bg-rcOrange')} />
+            )}
             {alarmStatus && (
               <HeaderAlarm authData={authData} alarmStatus={alarmStatus} alarmToggleStatus={alarmToggleStatus} AlarmData={AlarmData} />
             )}

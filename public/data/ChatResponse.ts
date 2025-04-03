@@ -11,12 +11,15 @@ export type ChatType = {
   speaker: 'user' | 'ai'
   content: string
   type?: ResponseType
-  doneClicking: boolean // 메인카테고리 or 키워드 선택하였는지 여부
-
+  doneClicking: boolean // 메인카테고리 or 키워드 선택하였는지 여부 (재선택 불가 로직을 위한 인자)
   lastMainCategory?: MainCategoriesType
   lastKeywords?: string[]
 }
 
+/**
+ * 채팅이 입력되었을때 추가되는 채팅에 대한 클래스입니다.
+ * 각 상황에 맞는 정적 메소드를 사용합니다.
+ */
 export class Chatting {
   // #1 유저 채팅
   static UserRequest = (UserRequest: string): ChatType => {
@@ -42,9 +45,9 @@ export class Chatting {
   static MainCategoryResponse(mainCategory: MainCategoriesType): ChatType {
     return {
       speaker: 'ai',
-      content: `카테고리 선택을 완료하셨군요!\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
       // Todo: 메인 카테고리 선택에 따른 이름 변동이 되도록 처리
       // content: `${mainCategory}을 선택하셨네요.\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
+      content: `카테고리 선택을 완료하셨군요!\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
       type: ResponseType.MAIN_CATEGORY,
       doneClicking: false,
       lastMainCategory: undefined,

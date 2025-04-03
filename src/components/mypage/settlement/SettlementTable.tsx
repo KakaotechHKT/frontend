@@ -10,6 +10,7 @@ import useScrollLock from '@lib/hooks/useScrollLock'
 import useToggle from '@lib/hooks/useToggle'
 import { SettlementList } from '@lib/HTTP/API/mypage/settlement'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
+import { FormatISOString, ISOString } from '@lib/utils/date/fromISOString'
 import { cn } from '@lib/utils/utils'
 import { TrackType } from '@public/data/tracks'
 import { useQuery } from '@tanstack/react-query'
@@ -24,9 +25,9 @@ type SettlementStatusType = 'BEFORE' | 'PENDING' | 'COMPLETED'
 export type SettlementDTO = {
   babpatId: number
   restaurantName: string
-  babpatAt: string // "2025-03-17T22:57:58.758871" 형식
+  babpatAt: ISOString
   settlementStatus: SettlementStatusType
-  participants: {
+  payers: {
     nickname: string
     name: string
     track: TrackType
@@ -48,12 +49,6 @@ const TransformStatusType = (status: SettlementStatusType) => {
     case 'COMPLETED':
       return <span className='font-semibold text-rcBlack'>완료</span>
   }
-}
-
-export const formatDate = (dateString: string) => {
-  const [fullYear, month, day] = dateString.split('T')[0].split('-')
-  const shortYear = fullYear.slice(2) // 연도의 뒤 두 자리만 추출
-  return `${shortYear}.${month}.${day}`
 }
 
 const SettlementTable = ({ className }: SettlementTableProps) => {
@@ -117,16 +112,18 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
     } else {
       /** 참여자가 있는  경우 */
       contents = contentList.map((content, index) => {
-        const participantsCount = content.participants.length
-        const participantsString = participantsCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${content.participants.length - 1}명`
+        const { babpatId, babpatAt, restaurantName, settlementStatus, payers } = content
+
+        const payersCount = payers.length
+        const participantsString = payersCount === 1 ? '아직 신청자 없음' : `${nickname} 외 ${payersCount - 1}명`
 
         return (
-          <tr key={content.babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-xs sm:text-sm')}>
-            <td className='min w-[18%] py-6 pr-2 sm:px-4'>{TransformStatusType(content.settlementStatus)}</td>
-            <td className='w-[25%] truncate px-2 py-6 sm:px-4'>{content.restaurantName}</td>
-            <td className='w-[10%] px-2 py-6 sm:px-4'>{formatDate(content.babpatAt)}</td>
+          <tr key={babpatId} className={cn(index % 2 === 0 ? 'bg-white' : 'bg-gray-50', 'relative text-xs sm:text-sm')}>
+            <td className='min w-[18%] py-6 pr-2 sm:px-4'>{TransformStatusType(settlementStatus)}</td>
+            <td className='w-[25%] truncate px-2 py-6 sm:px-4'>{restaurantName}</td>
+            <td className='w-[10%] px-2 py-6 sm:px-4'>{FormatISOString.formateISODate(babpatAt)}</td>
             <td className='w-auto px-2 py-6 sm:px-4'>{participantsString}</td>
-            {content.settlementStatus === 'BEFORE' && participantsCount != 1 ? (
+            {settlementStatus === 'BEFORE' && payersCount != 1 ? (
               <td
                 onClick={() => openRequestModalHandler(content)}
                 className='absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer rounded-md bg-rcKakaoYellow px-4 py-2 font-pretendard hover:bg-rcKakaoYellowHover'

@@ -171,8 +171,6 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
           onChange={e => setSearchInput(e.target.value)}
           onKeyDown={e => {
             if (e.key === 'Enter' && !isComposing) {
-              console.log('reftechings')
-
               e.preventDefault()
               refetch()
             }

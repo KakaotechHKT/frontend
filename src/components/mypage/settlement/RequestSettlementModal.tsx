@@ -145,8 +145,8 @@ const InfoInputStep = ({ data }: InfoInputStepProps) => {
   const { accessToken } = useAuthData()
   const router = useRouter()
 
-  const { participants } = data as SettlementDTO
-  const participantsCount = participants.length
+  const { payers } = data as SettlementDTO
+  const payersCount = payers.length
 
   const [inputData, setInputData] = useState<InputDataType>({
     totalPrice: 0,
@@ -242,7 +242,7 @@ const InfoInputStep = ({ data }: InfoInputStepProps) => {
           <Input
             onChange={e => handleChange('accountNumber', e.target.value)}
             type='text'
-            placeholder='계좌번호'
+            placeholder='계좌번호 (-) 없이 작성해주세요!'
             className='h-9 w-full text-xs'
           />
           {/* 은행 */}
