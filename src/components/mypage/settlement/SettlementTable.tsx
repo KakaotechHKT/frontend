@@ -15,7 +15,7 @@ import { cn } from '@lib/utils/utils'
 import { TrackType } from '@public/data/tracks'
 import { useQuery } from '@tanstack/react-query'
 
-import RequestSettlementModal from './RequestSettlementModal'
+import { RequestSettlementModal } from './request-settlement-modal'
 
 interface SettlementTableProps {
   className?: string
