@@ -1,4 +1,4 @@
-import { SettlementDTO } from './types/table'
+import { SettlementDTO } from '../SettlementTable'
 
 export interface RequestSettlementModalProps {
   modalData: SettlementDTO | undefined
