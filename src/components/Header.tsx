@@ -53,7 +53,6 @@ const Header = ({ className }: HeaderProps): ReactNode => {
   const isAuthenticated = authData.id !== 0
 
   const { accessToken } = authData
-  console.log('accessToken: ', accessToken)
 
   const { data: AlarmData, isPending: isPendingAlarmData } = useQuery({
     queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST,
