@@ -72,8 +72,6 @@ const PartPage = (): ReactNode => {
   const [userChat, setUserChat] = useState<string>('')
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
-  console.log(chats)
-
   /** 지도 관련 상태 */
   const [center, setCenter] = useState<GeoType>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
@@ -150,9 +148,6 @@ const PartPage = (): ReactNode => {
   }
 
   const restartMainCategoryClickHandler = (chat_index: number) => {
-    console.log('entered restart main cateogry')
-    console.log('main cateogry: ', category)
-
     // 재시작
     if (chat_index !== undefined) {
       const newChat = chats.map((chat, index) =>
