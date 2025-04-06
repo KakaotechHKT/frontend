@@ -16,7 +16,7 @@ export const useAuthData = (): AuthDataType => {
     name: '',
     nickname: '',
     track: 'AI',
-    accessToken: '',
+    accessToken: undefined,
   })
 
   useEffect(() => {

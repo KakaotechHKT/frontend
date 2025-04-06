@@ -67,7 +67,7 @@ const SettlementTable = ({ className }: SettlementTableProps) => {
   const { data, isPending } = useQuery({
     queryKey: QUERY_KEYS.MYPAGE.SETTLEMENT_LIST(pageNumber),
     queryFn: ({ signal }) => SettlementList({ pageNumber, accessToken }),
-    enabled: !!accessToken /** 로그인되어 있을 경우만 */,
+    enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
     staleTime: 0, // 항상 최신 데이터 유지
     refetchOnMount: true, // 라우팅 후 항상 최신 데이터 가져오기
     refetchOnWindowFocus: true, // 창 포커스 변경 시 최신 데이터 가져오기
