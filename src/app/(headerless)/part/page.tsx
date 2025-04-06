@@ -72,6 +72,8 @@ const PartPage = (): ReactNode => {
   const [userChat, setUserChat] = useState<string>('')
   const [chats, setChats] = useState<ChatType[]>([Chatting.StartResponse()])
 
+  console.log(chats)
+
   /** 지도 관련 상태 */
   const [center, setCenter] = useState<GeoType>(KTB_Position)
   const [focusedPlaceId, setFocusedPlaceId] = useState<number>()
@@ -92,10 +94,7 @@ const PartPage = (): ReactNode => {
 
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
-    setCategory({
-      ...category,
-      mainCategory,
-    })
+    updateCategory({ mainCategory: mainCategory })
     // 채팅에서 클릭한 경우
     if (chat_index !== undefined) {
       const newChat = chats.map((chat, index) =>
@@ -117,10 +116,7 @@ const PartPage = (): ReactNode => {
     let newKeywords: string[] | ''
     if (!category.keywords) {
       newKeywords = [keyword]
-      setCategory(prev => ({
-        ...prev,
-        keywords: newKeywords,
-      }))
+      updateCategory({ keywords: newKeywords })
     }
     // 기존에 키워드가 있었던 경우
     else {
@@ -131,14 +127,14 @@ const PartPage = (): ReactNode => {
           ? [...category.keywords, keyword]
           : category.keywords
 
-      setCategory(prev => ({
-        ...prev,
-        keywords: newKeywords,
-      }))
+      updateCategory({ keywords: newKeywords })
     }
   }
 
   const restartClickHandler = (chat_index: number) => {
+    // 카테고리, 키워드 초기화
+    updateCategory({ keywords: '', mainCategory: '' })
+
     // 재시작
     if (chat_index !== undefined) {
       const newChat = chats.map((chat, index) =>
@@ -151,6 +147,27 @@ const PartPage = (): ReactNode => {
       )
       setChats(newChat)
     }
+  }
+
+  const restartMainCategoryClickHandler = (chat_index: number) => {
+    console.log('entered restart main cateogry')
+    console.log('main cateogry: ', category)
+
+    // 재시작
+    if (chat_index !== undefined) {
+      const newChat = chats.map((chat, index) =>
+        chat_index === index
+          ? {
+              ...chat,
+              doneClicking: true,
+              lastMainCategory: category.mainCategory as MainCategoriesType,
+            }
+          : chat,
+      )
+      setChats(newChat)
+    }
+    // 카테고리, 키워드 초기화
+    updateCategory({ keywords: '', mainCategory: '' })
   }
 
   const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
@@ -308,6 +325,7 @@ const PartPage = (): ReactNode => {
           keywordClickHandler={keywordClickHandler}
           sendKeywordSelection={sendKeywordSelection}
           restartClickHandler={restartClickHandler}
+          restartMainCategoryClickHandler={restartMainCategoryClickHandler}
           isChatting={isChatting}
         />
       </div>

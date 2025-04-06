@@ -26,6 +26,7 @@ interface ChatroomProps {
   keywordClickHandler: (keyword: string, mainCategory: MainCategoriesType, chat_index: number) => void
   sendKeywordSelection: (keywords: string[], mainCategory: MainCategoriesType, chat_index: number) => void
   restartClickHandler: (chat_index: number) => void
+  restartMainCategoryClickHandler: (chat_index: number) => void
   isChatting: boolean
 }
 
@@ -41,6 +42,7 @@ const Chatroom = ({
   keywordClickHandler,
   sendKeywordSelection,
   restartClickHandler,
+  restartMainCategoryClickHandler,
   isChatting,
 }: ChatroomProps): ReactNode => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
@@ -74,11 +76,15 @@ const Chatroom = ({
       // 키워드 변경
       keywordClickHandler(keyword, mainCategory, chat_index)
     }
+    static restartMainCategory = (chat_index: number) => {
+      // 채팅 잠금
+      restartMainCategoryClickHandler(chat_index)
+
+      // 초기 채팅 더하기
+      addChatHandler(Chatting.StartResponse())
+    }
 
     static restart = (chat_index: number) => {
-      // 카테고리, 키워드 초기화
-      updateCategory({ keywords: '', mainCategory: '' })
-
       // 채팅 잠금
       restartClickHandler(chat_index)
 
@@ -171,6 +177,14 @@ const Chatroom = ({
                     </li>
                   ))}
                 </ul>
+                <Button
+                  disabled={chat.doneClicking ? true : false}
+                  onClick={() => ClickHandlers.restartMainCategory(chat_index)}
+                  variant='rcDarkGray'
+                  className='w-full font-pretendard text-xs font-medium'
+                >
+                  선호 음식 재선택하기
+                </Button>
                 <Button
                   disabled={category.keywords === '' || chat.doneClicking ? true : false}
                   onClick={() => searchHandler(chat_index)}
