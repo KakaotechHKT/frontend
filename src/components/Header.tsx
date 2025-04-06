@@ -61,7 +61,7 @@ const Header = ({ className }: HeaderProps): ReactNode => {
 
       return data.data as AlarmDTO[]
     },
-    enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
+    enabled: accessToken !== '' /** 로그인되어 있을 경우만 */,
   })
 
   let navContent
