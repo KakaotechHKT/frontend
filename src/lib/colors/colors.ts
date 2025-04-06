@@ -19,6 +19,7 @@ export const colorSet = {
   rcKakaoYellowHover: config.theme.extend.colors.rcKakaoYellowHover,
   rcGreenHover: config.theme.extend.colors.rcGreenHover,
   rcBlueHover: config.theme.extend.colors.rcBlueHover,
+  rcDarkGrayHover: config.theme.extend.colors.rcDarkGrayHover,
 }
 
 export type ColorType = keyof typeof colorSet

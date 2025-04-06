@@ -66,6 +66,7 @@ export default {
         rcKakaoYellowHover: '#FFDC44',
         rcGreenHover: '#B9E49C',
         rcBlueHover: '#3470B9',
+        rcDarkGrayHover: '#7D7F82',
       },
       borderRadius: {
         lg: 'var(--radius)',
