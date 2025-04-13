@@ -18,6 +18,7 @@ export const QUERY_KEYS = {
   PART: {
     LIST: (pageNumber: number, filters: Partial<FilterType>) => ['part', pageNumber, filters.mainCategory, filters.capacity, filters.track],
     RECOMMEND_LIST: ['part', 'recommend'],
+    PARTICIPATING_LIST: ['part', 'participating'],
   },
   MYPAGE: {
     SETTLEMENT_LIST: (pageNumber: number) => ['settlement', pageNumber],

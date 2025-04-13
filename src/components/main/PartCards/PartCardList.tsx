@@ -11,7 +11,7 @@ import { URL } from '@lib/constants/routes'
 import { AuthDataType, useAuthData } from '@lib/hooks/useAuthData'
 import useModal from '@lib/hooks/useModal'
 import { usePagination } from '@lib/hooks/usePagination'
-import { PartList } from '@lib/HTTP/API/part'
+import { ParticipatingPartList, PartList } from '@lib/HTTP/API/part'
 import { QUERY_KEYS } from '@lib/HTTP/tanstack-query'
 import LucideIcon from '@lib/provider/LucideIcon'
 import { cn } from '@lib/utils/utils'
@@ -77,6 +77,17 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
     setSearchInput('')
   }
 
+  // 참여 중인 밥팟 목록 가져오기
+  const { data: participatingData, isSuccess: participatingSuccess } = useQuery({
+    queryKey: QUERY_KEYS.PART.PARTICIPATING_LIST,
+    queryFn: () => ParticipatingPartList(authData.accessToken),
+    enabled: !!authData.accessToken, // 로그인 되어 있을 때만 호출
+    staleTime: 0,
+  })
+
+  // 내가 참여 중인 밥팟 ID 리스트
+  const participatingBabpatIds: number[] = participatingSuccess ? participatingData.data.map((item: any) => item.babpatId) : []
+
   const { data, isPending, refetch } = useQuery({
     queryKey: QUERY_KEYS.PART.LIST(pageNumber, filters),
     queryFn: ({ signal }) => {
@@ -130,7 +141,10 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
       contents = (
         <ul className={cn(!isPending ? 'grid gap-x-8 gap-y-10' : 'flex items-center justify-center', className)}>
           {content.map((elm: BabpartDTO) => {
-            return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} />
+            // 내가 참여 중인 밥팟인지 확인
+            const isParticipating = participatingBabpatIds.includes(elm.babpatInfo.id)
+
+            return <PartCard key={elm.babpatInfo.id} authData={authData} babpartData={elm} isMyBabpot={isParticipating} />
           })}
         </ul>
       )
@@ -171,8 +185,6 @@ const PartCardList = ({ className }: PartCardListProps): ReactNode => {
           onChange={e => setSearchInput(e.target.value)}
           onKeyDown={e => {
             if (e.key === 'Enter' && !isComposing) {
-              console.log('reftechings')
-
               e.preventDefault()
               refetch()
             }

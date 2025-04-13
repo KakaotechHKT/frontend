@@ -12,6 +12,7 @@ import { PartApplyType } from '@lib/HTTP/API/part'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
 import { SpeedType } from '@lib/types/part/part'
 import { formatDateToFullString } from '@lib/utils/date'
+import { cn } from '@lib/utils/utils'
 import { SpeedTransformer } from '@public/data'
 import { TrackTransformer, TrackType } from '@public/data/tracks'
 
@@ -49,9 +50,10 @@ export type BabpartDTO = {
 interface PartCardProps {
   authData: AuthDataType
   babpartData: BabpartDTO
+  isMyBabpot?: boolean // 내가 참여 중인 밥팟인지 여부
 }
 
-const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
+const PartCard = ({ authData, babpartData, isMyBabpot = false }: PartCardProps): ReactNode => {
   const { openModalHandler, Modal } = useModal()
   const router = useRouter()
 
@@ -115,11 +117,20 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
       },
     )
   }
+
+  // 참여 중인 밥팟 스타일
+  // const participatingStyles = isMyBabpot
+  //   ? 'bg-gray-100 border-rcBlue'
+  //   : 'border-rcBlack';
+
   return (
     <>
       <li
         onClick={applyHandler}
-        className='group relative flex h-full cursor-pointer flex-col items-start justify-start rounded-xl border-sm border-solid border-rcBlack'
+        className={cn(
+          'group relative flex h-full cursor-pointer flex-col items-start justify-start rounded-xl border-sm border-solid',
+          // participatingStyles
+        )}
       >
         <div className='relative w-full'>
           <Image
@@ -132,6 +143,11 @@ const PartCard = ({ authData, babpartData }: PartCardProps): ReactNode => {
           <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-dohyeon text-lg text-transparent underline underline-offset-4 group-hover:text-rcBlack'>
             밥팟 참여하기
           </div>
+          {/* {isMyBabpot && (
+            <div className='absolute left-0 top-0 rounded-tl-xl bg-rcBlue px-2 py-1 text-xs font-bold text-white'>
+              참여 중
+            </div>
+          )} */}
         </div>
 
         <div className='relative flex w-full flex-col items-start justify-start py-3'>

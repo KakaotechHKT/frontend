@@ -36,6 +36,10 @@ export const API_ROUTES = {
       method: HttpMethod.POST,
       url: '/babpat/post/apply',
     },
+    PARTICIPATING_LIST: {
+      method: HttpMethod.GET,
+      url: '/babpat/participating',
+    },
   },
   CHAT: {
     CREATE: {
