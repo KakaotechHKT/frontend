@@ -16,7 +16,7 @@ export const queryClient = new QueryClient({
       retry: false, // 실패시 재시도하지 않음
       retryDelay: 0,
       staleTime: 1000 * 60 * 5, // 5분 동안 refetch 안 함
-      cacheTime: 1000 * 60 * 10, // 언마운트 후 10분 동안 캐시 유지
+      gcTime: 1000 * 60 * 10, // 언마운트 후 10분 동안 캐시 유지
     },
     mutations: {
       retry: 1, // 실패시 재시도하지 않음
