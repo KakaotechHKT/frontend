@@ -29,6 +29,8 @@
 
 카카오테크 부트캠프 주변의 맛집을 소개하고, 같이 식사할 수 있는 모임인 ‘밥팟’을 모집하고 참여할 수 있는 지도 기반 서비스
 
+### [발표 자료 보러가기](https://docs.google.com/presentation/d/1nALvVPgiVQ4iKfs8G17iWEFI5H2hjbmx/edit?usp=drive_link&ouid=103722667745901978766&rtpof=true&sd=true)
+
 - 스택 : Typescript, Next.js 15, Tanstack-Query, tailwindcss, zustand, date-fns
 
 ### 1.1 메인 화면
