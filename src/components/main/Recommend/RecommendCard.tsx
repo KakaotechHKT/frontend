@@ -75,7 +75,7 @@ const RecommendPartCard = ({ pardData, isVisible, className }: RecommendPartCard
           src={thumbnailUrl}
           width={100}
           height={100}
-          alt='식당 이미지 '
+          alt='식당 이미지'
         />
         <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-dohyeon text-lg text-transparent underline underline-offset-4 group-hover:text-rcBlack'>
           지도 링크

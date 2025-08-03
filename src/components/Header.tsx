@@ -53,6 +53,7 @@ const Header = ({ className }: HeaderProps): ReactNode => {
   const isAuthenticated = authData.id !== 0
 
   const { accessToken } = authData
+
   const { data: AlarmData, isPending: isPendingAlarmData } = useQuery({
     queryKey: QUERY_KEYS.MYPAGE.ALARM_LIST,
     queryFn: async () => {
@@ -60,7 +61,7 @@ const Header = ({ className }: HeaderProps): ReactNode => {
 
       return data.data as AlarmDTO[]
     },
-    enabled: accessToken !== undefined /** 로그인되어 있을 경우만 */,
+    enabled: accessToken !== '' /** 로그인되어 있을 경우만 */,
   })
 
   let navContent

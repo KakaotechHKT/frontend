@@ -2,6 +2,7 @@
 import { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import useServiceError from '../hooks/useServiceError'
 
@@ -14,7 +15,8 @@ export const queryClient = new QueryClient({
     queries: {
       retry: false, // 실패시 재시도하지 않음
       retryDelay: 0,
-      staleTime: 1 * 60 * 1000 * 2, // 2분으로 staleTime 지정하기
+      staleTime: 1000 * 60 * 5, // 5분 동안 refetch 안 함
+      gcTime: 1000 * 60 * 10, // 언마운트 후 10분 동안 캐시 유지
     },
     mutations: {
       retry: 1, // 실패시 재시도하지 않음
@@ -31,6 +33,11 @@ const CustomQueryClientProvider = ({ children }: CustomQueryClientProviderProps)
       onError: handleError,
     },
   })
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools />
+    </QueryClientProvider>
+  )
 }
 export default CustomQueryClientProvider

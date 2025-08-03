@@ -24,10 +24,10 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
     <html lang='ko'>
       <Script type='text/javascript' src='//developers.kakao.com/dfk/js/kakao.min.js' />
       <body className={cn(pretendard.variable, doHyeon.variable, 'justify-star relative flex flex-col items-center font-pretendard')}>
-        <CustomQueryClientProvider>
-          <ResponsiveProvider>{children}</ResponsiveProvider>
-        </CustomQueryClientProvider>
-        <Toaster />
+        <ResponsiveProvider>
+          <CustomQueryClientProvider>{children}</CustomQueryClientProvider>
+          <Toaster />
+        </ResponsiveProvider>
       </body>
     </html>
   )
