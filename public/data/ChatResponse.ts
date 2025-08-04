@@ -7,11 +7,16 @@ export enum ResponseType {
   ELSE = 'ELSE',
 }
 
+/**
+ * doneClicking
+ * 카테고리 > 키워드까지 선택하면 재선택 불가,
+ * 카테고리만 선택한 상황에서는 카테고리 재선택가능 (단, 직전의 카테고리만 선택한 것만 재선택 가능)
+ */
 export type ChatType = {
   speaker: 'user' | 'ai'
   content: string
   type?: ResponseType
-  doneClicking: boolean // 메인카테고리 or 키워드 선택하였는지 여부 (재선택 불가 로직을 위한 인자)
+  doneClicking: boolean // 키워드 선택하였는지 여부 (재선택 불가 로직을 위한 인자)
   lastMainCategory?: MainCategoriesType
   lastKeywords?: string[]
 }
@@ -47,7 +52,7 @@ export class Chatting {
       speaker: 'ai',
       // Todo: 메인 카테고리 선택에 따른 이름 변동이 되도록 처리
       // content: `${mainCategory}을 선택하셨네요.\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
-      content: `카테고리 선택을 완료하셨군요!\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 ${mainCategory}을 원하는지 추가 키워드를 선택해주세요.`,
+      content: `카테고리 선택을 완료하셨군요!\n\n더 좋은 응답을 생성하기 위해 어떤 종류의 음식을 원하는지 추가 키워드를 선택해주세요.`,
       type: ResponseType.MAIN_CATEGORY,
       doneClicking: false,
       lastMainCategory: undefined,

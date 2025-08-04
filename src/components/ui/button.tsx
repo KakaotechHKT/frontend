@@ -21,6 +21,7 @@ const buttonVariants = cva(
         rcKakaoLightYellow: 'bg-rcKakaoLightYellow text-black hover:opacity-75 shadow-rc-shadow',
         rcGreen: 'bg-rcGreen text-black hover:bg-rcGreenHover shadow-rc-shadow',
         rcLightGray: 'bg-rcLightGray text-black hover:bg-rcGray shadow-rc-shadow',
+        rcDarkGray: 'bg-rcDarkGray hover:bg-rcDarkGrayHover shadow-rc-shadow text-rcWhite',
       },
       size: {
         default: 'h-9 px-4 py-2',

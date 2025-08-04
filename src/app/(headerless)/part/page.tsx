@@ -7,13 +7,14 @@ import KakaoMap from '@components/common/KakaoMap'
 import Chatroom from '@components/part/ChatRoom'
 import PlaceList from '@components/part/PlaceList'
 import RefuseModal from '@components/part/RefuseModal'
+import { Input } from '@components/ui/input'
 import { URL } from '@lib/constants/routes'
 import { ChattingType, CreateChatType } from '@lib/HTTP/API/chat'
 import { useMutationStore } from '@lib/HTTP/tanstack-query'
+import LucideIcon from '@lib/provider/LucideIcon'
 import { GeoType } from '@lib/types/part/part'
-import { cn } from '@lib/utils/utils'
 import { KTB_Position } from '@public/data'
-import { MainCategories, MainCategoriesType } from '@public/data/categories'
+import { MainCategoriesType } from '@public/data/categories'
 import { Chatting, ChatType } from '@public/data/ChatResponse'
 import { placeListDummyData } from '@public/data/restaurant'
 import LogoImage from '@public/images/logo.svg'
@@ -54,6 +55,8 @@ const PartPage = (): ReactNode => {
   }, [])
 
   /** 좌측 검색리스트 관련 상태 */
+  const [searchInput, setSearchInput] = useState<string>('')
+  const [isComposing, setIsComposing] = useState<boolean>(false)
   const [placeList, setPlaceList] = useState<placeDTO[]>(placeListDummyData)
 
   /** 채팅 관련 상태 */
@@ -89,10 +92,7 @@ const PartPage = (): ReactNode => {
 
   // 카테고리 함수
   const mainCategoryClickHandler = (mainCategory: MainCategoriesType, chat_index?: number) => {
-    setCategory({
-      ...category,
-      mainCategory,
-    })
+    updateCategory({ mainCategory: mainCategory })
     // 채팅에서 클릭한 경우
     if (chat_index !== undefined) {
       const newChat = chats.map((chat, index) =>
@@ -114,10 +114,7 @@ const PartPage = (): ReactNode => {
     let newKeywords: string[] | ''
     if (!category.keywords) {
       newKeywords = [keyword]
-      setCategory(prev => ({
-        ...prev,
-        keywords: newKeywords,
-      }))
+      updateCategory({ keywords: newKeywords })
     }
     // 기존에 키워드가 있었던 경우
     else {
@@ -128,14 +125,14 @@ const PartPage = (): ReactNode => {
           ? [...category.keywords, keyword]
           : category.keywords
 
-      setCategory(prev => ({
-        ...prev,
-        keywords: newKeywords,
-      }))
+      updateCategory({ keywords: newKeywords })
     }
   }
 
   const restartClickHandler = (chat_index: number) => {
+    // 카테고리, 키워드 초기화
+    updateCategory({ keywords: '', mainCategory: '' })
+
     // 재시작
     if (chat_index !== undefined) {
       const newChat = chats.map((chat, index) =>
@@ -148,6 +145,24 @@ const PartPage = (): ReactNode => {
       )
       setChats(newChat)
     }
+  }
+
+  const restartMainCategoryClickHandler = (chat_index: number) => {
+    // 재시작
+    if (chat_index !== undefined) {
+      const newChat = chats.map((chat, index) =>
+        chat_index === index
+          ? {
+              ...chat,
+              doneClicking: true,
+              lastMainCategory: category.mainCategory as MainCategoriesType,
+            }
+          : chat,
+      )
+      setChats(newChat)
+    }
+    // 카테고리, 키워드 초기화
+    updateCategory({ keywords: '', mainCategory: '' })
   }
 
   const { mutate: ChattingMutate, isPending: isChatting } = useMutationStore<ChattingType>(['chatting'])
@@ -251,26 +266,30 @@ const PartPage = (): ReactNode => {
           밥팟
         </Link>
 
-        <div className='flex flex-col items-start justify-start gap-1 pl-8'>
-          <span className='font-dohyeon text-2xl'>선호 음식</span>
-          <span className='text-xss text-rcDarkGray'>* 선호 음식을 눌러 카테부 주변의 맛집을 추천 받아보세요!</span>
-
-          <ul className='mb-2 grid w-full grid-cols-4 grid-rows-2 gap-2'>
-            {MainCategories.map(cat => (
-              <li
-                onClick={() => mainCategoryClickHandler(cat)}
-                className={cn(
-                  cat === category.mainCategory && 'bg-rcKakaoYellow hover:bg-rcKakaoYellowHover',
-                  'flex cursor-pointer items-center justify-center rounded-md border-[0.5px] border-solid border-rcGray px-1 py-2 text-[10px] font-semibold hover:bg-rcKakaoYellow',
-                )}
-                key={cat}
-              >
-                {cat}
-              </li>
-            ))}
-          </ul>
+        <div className='relative my-3 flex w-full flex-col items-start justify-start gap-1 pl-8'>
+          <span className='font-dohyeon text-2xl'>밥팟 음식점</span>
+          <div className='flex w-full items-center justify-start border-b-2 border-solid border-rcKakaoYellow'>
+            <LucideIcon name='Search' />
+            <Input
+              type='text'
+              placeholder='식당 이름을 검색해보세요'
+              className='h-9 w-full rounded-none border-0 py-0 text-sm shadow-none outline-none focus:outline-none focus-visible:ring-0 sm:w-60'
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
+              // onKeyDown={e => {
+              //   if (e.key === 'Enter' && !isComposing) {
+              //     e.preventDefault()
+              //     refetch()
+              //   }
+              // }}
+              onCompositionStart={() => setIsComposing(true)} // 한글 조합 시작
+              onCompositionEnd={() => setIsComposing(false)} // 한글 조합 끝
+            />
+          </div>
         </div>
-
+        <div className='self-end'>
+          총 <span className='text-rcBlue'>12</span>건
+        </div>
         <div className='my-1 h-[1px] w-full bg-rcLightGray' />
 
         <PlaceList
@@ -288,6 +307,7 @@ const PartPage = (): ReactNode => {
         </span>
 
         {/* 채팅내용 */}
+
         <Chatroom
           category={category}
           updateCategory={updateCategory}
@@ -300,6 +320,7 @@ const PartPage = (): ReactNode => {
           keywordClickHandler={keywordClickHandler}
           sendKeywordSelection={sendKeywordSelection}
           restartClickHandler={restartClickHandler}
+          restartMainCategoryClickHandler={restartMainCategoryClickHandler}
           isChatting={isChatting}
         />
       </div>

@@ -24,7 +24,7 @@ const AIChatButtonFrame = ({ content, clickHandler, children }: AIChatButtonFram
             }}
           />
           <Button onClick={clickHandler} variant='rcGreen' className='mt-2 w-full font-pretendard text-xs font-medium'>
-            키워드 재선택하기
+            선호 음식 재선택하기
           </Button>
         </div>
       </div>
